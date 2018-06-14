@@ -1,13 +1,13 @@
 image: gradle:jdk10
 
+before_script:
+  - sudo apt-get update && sudo apt-get install openjfx -y
+
 stages:
   - build
 
 gradle-build:
   stage: build
-  before_script:
-    - su -
-    - apt-get install openjfx -y
   script:
     - gradle jar
   artifacts:
