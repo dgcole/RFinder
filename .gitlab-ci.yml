@@ -1,0 +1,13 @@
+image: gradle:latest
+
+stages:
+  - build
+
+gradle-build:
+  stage: build
+  script: "gradle jar"
+  artifacts:
+    paths:
+      - target/*.jar
+  only:
+    - master
