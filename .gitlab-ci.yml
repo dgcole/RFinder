@@ -6,6 +6,7 @@ stages:
 gradle-build:
   stage: build
   before_script:
+    - su -
     - apt-get install openjfx -y
   script:
     - gradle jar
