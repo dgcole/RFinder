@@ -1,4 +1,15 @@
+# Idea Project Files
 .idea/
 *.iml
 *.ipr
 *.iws
+
+# Gradle Files
+gradle/
+.gradle/
+gradlew.bat
+gradlew
+
+# Build Files
+out/
+build/
