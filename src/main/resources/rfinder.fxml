@@ -10,10 +10,12 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" minHeight="360.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.RFinder">
+<GridPane alignment="center" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.RFinder">
     <columnConstraints>
         <ColumnConstraints />
         <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints />
@@ -21,13 +23,13 @@
         <RowConstraints />
     </rowConstraints>
     <children>
-        <SplitPane disable="true" dividerPositions="0.25" orientation="VERTICAL" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+        <SplitPane fx:id="mainSplit" disable="true" dividerPositions="0.25" orientation="VERTICAL" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
             <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                <AnchorPane fx:id="topPane" maxHeight="100.0" minHeight="100.0" minWidth="960.0" prefHeight="100.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" />
             </items>
         </SplitPane>
-        <MenuBar>
+        <MenuBar GridPane.columnIndex="2">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
