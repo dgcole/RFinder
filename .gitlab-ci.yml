@@ -1,7 +1,7 @@
 image: maven:3.5.3-jdk-10
 
 before_script:
-  - sudo apt-get update && sudo apt-get install openjfx -y
+  - sudo apt-get update && sudo apt-get install openjfx libopenjfx-java -y
 
 stages:
   - build
