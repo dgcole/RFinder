@@ -5,9 +5,11 @@ stages:
 
 gradle-build:
   stage: build
+  before_script:
+    - apt-get update
+    - apt-get install openjfx
   script:
-      - sudo apt-get update
-      - sudo apt-get install openjfx
+    - gradle jar
   artifacts:
     paths:
       - target/*.jar
