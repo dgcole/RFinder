@@ -33,6 +33,8 @@ public class RFinder extends Application {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("Resource Finder 0.1.0");
-        alert.setContentText("© 2018 expert700, all right reserved.");
+        alert.setContentText("Copyright © 2018 expert700, all right reserved.");
+
+        alert.show();
     }
 }
