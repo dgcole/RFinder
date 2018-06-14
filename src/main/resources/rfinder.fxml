@@ -34,6 +34,7 @@
                 <Menu mnemonicParsing="false" text="File">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#importStarmap" text="Import Starmap" />
+                  <MenuItem mnemonicParsing="false" text="Clear Starmap" />
                         <SeparatorMenuItem />
                         <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
                     </items>

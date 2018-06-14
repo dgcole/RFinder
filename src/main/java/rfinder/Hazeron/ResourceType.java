@@ -1,6 +1,6 @@
 package rfinder.Hazeron;
 
-public enum ResourceTypes {
+public enum ResourceType {
 
     ANIMAL_CARCASS("Animal Carcass"), BEANS("Beans"),
     CHEESE("Cheese"), EGGS("Eggs"),
@@ -27,7 +27,7 @@ public enum ResourceTypes {
 
     private final String text;
 
-    ResourceTypes(final String text) {
+    ResourceType(final String text) {
         this.text = text;
     }
 }
