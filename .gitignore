@@ -4,12 +4,7 @@
 *.ipr
 *.iws
 
-# Gradle Files
-gradle/
-.gradle/
-gradlew.bat
-gradlew
-
 # Build Files
 out/
 build/
+target/

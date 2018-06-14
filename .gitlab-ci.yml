@@ -1,7 +1,4 @@
-image: gradle:jdk10
-
-before_script:
-  - sudo apt-get update && sudo apt-get install openjfx -y
+image: maven:jdk10
 
 stages:
   - build
@@ -9,7 +6,7 @@ stages:
 gradle-build:
   stage: build
   script:
-    - gradle jar
+    - mvn package
   artifacts:
     paths:
       - target/*.jar
