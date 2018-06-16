@@ -23,11 +23,18 @@ public enum ResourceType {
     PHLOGISTON("Phlogiston"), POLYTARIDE("Polytaride"),
     VIATHOL("Viathol"), FLOMENTUM("Flomentum"),
     MAGMEX("Magmex"), MYRATHANE("Myrathane"),
-    WATER("Water");
+    WATER("Water"), NULL("Null");
 
     private final String text;
 
     ResourceType(final String text) {
         this.text = text;
+    }
+
+    public static ResourceType getType(String in) {
+        for (ResourceType type : ResourceType.values()) {
+            if (type.text.equals(in)) return type;
+        }
+        return NULL;
     }
 }
