@@ -10,16 +10,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.w3c.dom.*;
 import rfinder.Hazeron.*;
-import rfinder.Hazeron.System;
 import rfinder.StarMapHandler;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
+import java.lang.System;
 import java.util.Objects;
 
 public class RFinder extends Application {
