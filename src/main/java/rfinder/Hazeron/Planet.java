@@ -13,10 +13,11 @@ public class Planet {
         this.bodyType = bodyType;
         this.orbit = orbit;
         this.zone = zone;
+        this.resources = new HashMap<>();
     }
 
-    public void addSphere(Resource sphere, ResourceType type) {
-        resources.put(type, sphere);
+    public void addResource(Resource resource, ResourceType type) {
+        resources.put(type, resource);
     }
 
     public String getID() {

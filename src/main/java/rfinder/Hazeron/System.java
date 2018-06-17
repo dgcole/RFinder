@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class System {
     private String systemID, name, eod;
     private double x, y, z;
-    private Star star;
+    private HashMap<String, Star> stars;
     private HashMap<String, Planet> planets;
 
     public System(String systemID, String name, String eod, double x, double y, double z) {
@@ -16,12 +16,12 @@ public class System {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.star = null;
+        this.stars = new HashMap<>();
         this.planets = new HashMap<>();
     }
 
-    public void setStar(Star star) {
-        this.star = star;
+    public void addStar(Star star, String starID) {
+        stars.put(starID, star);
     }
 
     public void addPlanet(Planet planet, String planetID) {
@@ -52,8 +52,8 @@ public class System {
         return z;
     }
 
-    public Star getStar() {
-        return star;
+    public ArrayList<Star> getStars() {
+        return new ArrayList<>(stars.values());
     }
 
     public ArrayList<Planet> getPlanets() {

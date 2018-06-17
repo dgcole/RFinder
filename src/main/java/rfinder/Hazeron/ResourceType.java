@@ -23,7 +23,11 @@ public enum ResourceType {
     PHLOGISTON("Phlogiston"), POLYTARIDE("Polytaride"),
     VIATHOL("Viathol"), FLOMENTUM("Flomentum"),
     MAGMEX("Magmex"), MYRATHANE("Myrathane"),
-    WATER("Water"), NULL("Null");
+    WATER("Water"), TYPE_A_PREONS("Type A Preons"),
+    TYPE_B_PREONS("Type B Preons"), TYPE_F_PREONS("Type F Preons"),
+    TYPE_G_PREONS("Type G Preons"), TYPE_K_PREONS("Type K Preons"),
+    TYPE_M_PREONS("Type M Preons"), TYPE_O_PREONS("Type O Preons"),
+    COAL("Coal"), NULL("Null");
 
     private final String text;
 

@@ -13,15 +13,18 @@ import javafx.stage.Stage;
 import org.w3c.dom.*;
 import rfinder.Hazeron.*;
 import rfinder.Hazeron.System;
+import rfinder.StarMapHandler;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
-import java.lang.System;
 import java.util.Objects;
 
 public class RFinder extends Application {
     private static Stage mainStage;
+    private static StarMap starMap;
 
     @FXML
     private AnchorPane topPane;
@@ -63,68 +66,11 @@ public class RFinder extends Application {
         File selectedFile = fileChooser.showOpenDialog(mainStage);
         if (selectedFile != null) {
             try {
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                Document document = documentBuilder.parse(selectedFile);
-                Element root = document.getDocumentElement();
-
-                NodeList galaxyNodes = root.getChildNodes();
-                StarMap starMap = new StarMap(root.getAttribute("empire"));
-                for (int i = 0; i < galaxyNodes.getLength(); i++) {
-                    Node galaxyNode = galaxyNodes.item(i);
-                    if (!galaxyNode.getNodeName().equals("galaxy")) continue;
-                    Galaxy galaxy = new Galaxy(galaxyNode.getAttributes().getNamedItem("name").getNodeValue());
-                    NodeList sectorNodes = galaxyNode.getChildNodes();
-                    for (int j = 0; j < sectorNodes.getLength(); j++) {
-                        Node sectorNode = sectorNodes.item(j);
-                        if (!sectorNode.getNodeName().equals("sector")) continue;
-                        NamedNodeMap sectorAttributes = sectorNode.getAttributes();
-                        Sector sector = new Sector(sectorAttributes.getNamedItem("sectorId").getNodeValue(),
-                                sectorAttributes.getNamedItem("name").getNodeValue(),
-                                Integer.parseInt(sectorAttributes.getNamedItem("x").getNodeValue()),
-                                Integer.parseInt(sectorAttributes.getNamedItem("y").getNodeValue()),
-                                Integer.parseInt(sectorAttributes.getNamedItem("z").getNodeValue()));
-                        NodeList systemNodes = sectorNode.getChildNodes();
-                        for (int k = 0; k < systemNodes.getLength(); k++) {
-                            Node systemNode = systemNodes.item(k);
-                            if (!systemNode.getNodeName().equals("system")) continue;
-                            NamedNodeMap systemAttributes = systemNode.getAttributes();
-                            rfinder.Hazeron.System system = new rfinder.Hazeron.System(systemAttributes.getNamedItem("systemId").getNodeValue(),
-                                    systemAttributes.getNamedItem("name").getNodeValue(),
-                                    systemAttributes.getNamedItem("eod").getNodeValue(),
-                                    Double.parseDouble(systemAttributes.getNamedItem("x").getNodeValue()),
-                                    Double.parseDouble(systemAttributes.getNamedItem("y").getNodeValue()),
-                                    Double.parseDouble(systemAttributes.getNamedItem("z").getNodeValue()));
-                            NodeList celestialBodies = systemNode.getChildNodes();
-                            for (int l = 0; l < celestialBodies.getLength(); l++) {
-                                Node body = celestialBodies.item(l);
-                                if (body.getNodeName().equals("star")) {
-                                    NamedNodeMap starAttributes = body.getAttributes();
-                                    Star star = new Star(starAttributes.getNamedItem("starId").getNodeValue(),
-                                            starAttributes.getNamedItem("name").getNodeValue(),
-                                            starAttributes.getNamedItem("orbit").getNodeValue(),
-                                            starAttributes.getNamedItem("spectralClass").getNodeValue(),
-                                            starAttributes.getNamedItem("size").getNodeValue(),
-                                            starAttributes.getNamedItem("hab").getNodeValue(),
-                                            starAttributes.getNamedItem("shell").getNodeValue(),
-                                            starAttributes.getNamedItem("diameter").getNodeValue());
-                                    NodeList resourceNodes = body.getChildNodes();
-                                    for (int m = 0; m < resourceNodes.getLength(); m++) {
-                                        Node resourceNode = resourceNodes.item(m);
-                                        if (!resourceNode.getNodeName().equals("resource")) continue;
-                                        NamedNodeMap resourceAttributes = resourceNode.getAttributes();
-                                        //TODO; Add preons.
-                                    }
-                                } else if (body.getNodeName().equals("planet")) {
-
-                                }
-                            }
-                            sector.addSystem(system, system.getID());
-                        }
-                        galaxy.addSector(sector, sector.getID());
-                    }
-                    starMap.addGalaxy(galaxy, galaxy.getName());
-                }
+                SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+                SAXParser saxParser = saxParserFactory.newSAXParser();
+                StarMapHandler starMapHandler = new StarMapHandler();
+                saxParser.parse(selectedFile, starMapHandler);
+                starMap = starMapHandler.getStarMap();
             } catch (Exception e) {
                 e.printStackTrace();
             }
