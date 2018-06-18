@@ -4,16 +4,20 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.RFinder">
+<GridPane alignment="center" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.Main">
     <columnConstraints>
         <ColumnConstraints />
         <ColumnConstraints />
+      <ColumnConstraints />
       <ColumnConstraints />
       <ColumnConstraints />
     </columnConstraints>
@@ -21,15 +25,10 @@
         <RowConstraints />
         <RowConstraints />
         <RowConstraints />
+      <RowConstraints />
     </rowConstraints>
     <children>
-        <SplitPane fx:id="mainSplit" disable="true" dividerPositions="0.25" orientation="VERTICAL" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-            <items>
-                <AnchorPane fx:id="topPane" maxHeight="100.0" minHeight="100.0" minWidth="960.0" prefHeight="100.0" />
-                <AnchorPane minHeight="0.0" minWidth="0.0" />
-            </items>
-        </SplitPane>
-        <MenuBar GridPane.columnIndex="2">
+        <MenuBar GridPane.columnIndex="3">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -46,5 +45,32 @@
                 </Menu>
             </menus>
         </MenuBar>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+        <tabs>
+          <Tab text="Tests">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="Resources">
+               <content>
+                  <TableView fx:id="resourceTable" prefHeight="200.0" prefWidth="200.0">
+                     <columns>
+                        <TableColumn fx:id="col1" prefWidth="75.0" resizable="false" text="Resource" />
+                        <TableColumn fx:id="col2" prefWidth="75.0" resizable="false" text="Galaxy" />
+                        <TableColumn fx:id="col3" prefWidth="75.0" resizable="false" text="Sector" />
+                        <TableColumn fx:id="col4" prefWidth="75.0" resizable="false" text="System" />
+                        <TableColumn fx:id="col5" prefWidth="75.0" resizable="false" text="Q1" />
+                        <TableColumn fx:id="col6" prefWidth="75.0" resizable="false" text="Q2" />
+                        <TableColumn fx:id="col7" prefWidth="75.0" resizable="false" text="Q3" />
+                        <TableColumn fx:id="col8" prefWidth="75.0" resizable="false" text="A1" />
+                        <TableColumn fx:id="col9" prefWidth="75.0" resizable="false" text="A2" />
+                        <TableColumn fx:id="col10" prefWidth="75.0" resizable="false" text="A3" />
+                     </columns>
+                  </TableView>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
     </children>
 </GridPane>
