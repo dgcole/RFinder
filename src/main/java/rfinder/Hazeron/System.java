@@ -8,14 +8,16 @@ public class System {
     private double x, y, z;
     private HashMap<String, Star> stars;
     private HashMap<String, Planet> planets;
+    private Sector parent;
 
-    public System(String systemID, String name, String eod, double x, double y, double z) {
+    public System(String systemID, String name, String eod, double x, double y, double z, Sector parent) {
         this.systemID = systemID;
         this.name = name;
         this.eod = eod;
         this.x = x;
         this.y = y;
         this.z = z;
+        this.parent = parent;
         this.stars = new HashMap<>();
         this.planets = new HashMap<>();
     }
@@ -58,5 +60,9 @@ public class System {
 
     public ArrayList<Planet> getPlanets() {
         return new ArrayList<>(planets.values());
+    }
+
+    public Sector getParent() {
+        return parent;
     }
 }

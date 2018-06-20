@@ -27,7 +27,7 @@ public class StarMapHandler extends DefaultHandler {
                 break;
             case "galaxy":
                 String galaxyName = attributes.getValue("name");
-                galaxy = new Galaxy(galaxyName);
+                galaxy = new Galaxy(galaxyName, starMap);
                 starMap.addGalaxy(galaxy, galaxyName);
                 break;
             case "sector":
@@ -35,7 +35,7 @@ public class StarMapHandler extends DefaultHandler {
                 sector = new Sector(sectorID, attributes.getValue("name"),
                         Integer.parseInt(attributes.getValue("x")),
                         Integer.parseInt(attributes.getValue("y")),
-                        Integer.parseInt(attributes.getValue("z")));
+                        Integer.parseInt(attributes.getValue("z")), galaxy);
                 galaxy.addSector(sector, sectorID);
                 break;
             case "system":
@@ -44,7 +44,7 @@ public class StarMapHandler extends DefaultHandler {
                         attributes.getValue("eod"),
                         Double.parseDouble(attributes.getValue("x")),
                         Double.parseDouble(attributes.getValue("y")),
-                        Double.parseDouble(attributes.getValue("z")));
+                        Double.parseDouble(attributes.getValue("z")), sector);
                 sector.addSystem(system, systemID);
                 break;
             case "star":
@@ -57,7 +57,7 @@ public class StarMapHandler extends DefaultHandler {
                         attributes.getValue("size"),
                         attributes.getValue("hab"),
                         attributes.getValue("shell"),
-                        attributes.getValue("diameter"));
+                        attributes.getValue("diameter"), system);
                 system.addStar(star, starID);
                 break;
             case "planet":
@@ -66,7 +66,7 @@ public class StarMapHandler extends DefaultHandler {
                 planet = new Planet(planetID, attributes.getValue("name"),
                         attributes.getValue("bodyType"),
                         attributes.getValue("orbit"),
-                        attributes.getValue("zone"));
+                        attributes.getValue("zone"), system);
                 system.addPlanet(planet, planetID);
                 break;
             case "geosphere":
@@ -86,23 +86,31 @@ public class StarMapHandler extends DefaultHandler {
                 ResourceType resourceType = ResourceType.getType(attributes.getValue("name"));
 
                 int q1 = attributes.getValue("qualityZone1") != null ?
-                        Integer.parseInt(attributes.getValue("qualityZone1")) : 0;
+                        Integer.parseInt(attributes.getValue("qualityZone1")) :
+                        (attributes.getValue("quality") != null ? Integer.parseInt(attributes.getValue("quality")) : 0);
                 int q2 = attributes.getValue("qualityZone2") != null ?
                         Integer.parseInt(attributes.getValue("qualityZone2")) : 0;
                 int q3 = attributes.getValue("qualityZone3") != null ?
                         Integer.parseInt(attributes.getValue("qualityZone3")) : 0;
                 int a1 = attributes.getValue("abundanceZone1") != null ?
-                        Integer.parseInt(attributes.getValue("abundanceZone1")) : 0;
+                        Integer.parseInt(attributes.getValue("abundanceZone1")) :
+                        (attributes.getValue("abundance") != null ? Integer.parseInt(attributes.getValue("abundance")) : 0);
                 int a2 = attributes.getValue("abundanceZone2") != null ?
                         Integer.parseInt(attributes.getValue("abundanceZone2")) : 0;
                 int a3 = attributes.getValue("abundanceZone3") != null ?
                         Integer.parseInt(attributes.getValue("abundanceZone3")) : 0;
 
-                Resource resource = new Resource(resourceType, sphere.equals("geosphere") ? zones : 1, q1, q2, q3, a1,
-                        a2, a3, sphere);
-
-                if (parsingStar) star.addResource(resource, resourceType);
-                else planet.addResource(resource, resourceType);
+                if (parsingStar) {
+                    Resource resource = new Resource(resourceType, sphere.equals("geosphere") ? zones : 1, q1, q2, q3, a1,
+                            a2, a3, sphere, star);
+                    star.addResource(resource, resourceType);
+                    starMap.addResource(resource);
+                } else {
+                    Resource resource = new Resource(resourceType, sphere.equals("geosphere") ? zones : 1, q1, q2, q3, a1,
+                            a2, a3, sphere, planet);
+                    planet.addResource(resource, resourceType);
+                    starMap.addResource(resource);
+                }
                 break;
         }
     }

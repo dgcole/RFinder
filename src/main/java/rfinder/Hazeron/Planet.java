@@ -6,13 +6,15 @@ import java.util.HashMap;
 public class Planet {
     private String planetID, name, bodyType, orbit, zone;
     private HashMap<ResourceType, Resource> resources;
+    private System parent;
 
-    public Planet(String planetID, String name, String bodyType, String orbit, String zone) {
+    public Planet(String planetID, String name, String bodyType, String orbit, String zone, System parent) {
         this.planetID = planetID;
         this.name = name;
         this.bodyType = bodyType;
         this.orbit = orbit;
         this.zone = zone;
+        this.parent = parent;
         this.resources = new HashMap<>();
     }
 
@@ -42,5 +44,9 @@ public class Planet {
 
     public ArrayList<Resource> getResources() {
         return new ArrayList<>(resources.values());
+    }
+
+    public System getParent() {
+        return parent;
     }
 }

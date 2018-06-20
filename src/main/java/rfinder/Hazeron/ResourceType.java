@@ -1,5 +1,7 @@
 package rfinder.Hazeron;
 
+import java.util.ArrayList;
+
 public enum ResourceType {
 
     ANIMAL_CARCASS("Animal Carcass"), BEANS("Beans"),
@@ -40,5 +42,17 @@ public enum ResourceType {
             if (type.text.equals(in)) return type;
         }
         return NULL;
+    }
+
+
+    @Override
+    public String toString() {
+        return text;
+    }
+
+    public static ArrayList<String> getAllNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (ResourceType type : values()) names.add(type.text);
+        return names;
     }
 }

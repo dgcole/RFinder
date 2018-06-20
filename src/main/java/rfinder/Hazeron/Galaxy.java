@@ -6,9 +6,11 @@ import java.util.HashMap;
 public class Galaxy {
     private String name;
     private HashMap<String, Sector> sectors;
+    private StarMap parent;
 
-    public Galaxy(String name) {
+    public Galaxy(String name, StarMap parent) {
         this.name = name;
+        this.parent = parent;
         sectors = new HashMap<>();
     }
 
@@ -22,5 +24,9 @@ public class Galaxy {
 
     public ArrayList<Sector> getSectors() {
         return new ArrayList<>(sectors.values());
+    }
+
+    public StarMap getParent() {
+        return parent;
     }
 }

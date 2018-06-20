@@ -21,8 +21,6 @@ import java.util.Objects;
 public class RFinder extends Application {
     public static Stage mainStage;
 
-
-
     @Override
     public void start(Stage mainStage) throws Exception {
         RFinder.mainStage = mainStage;

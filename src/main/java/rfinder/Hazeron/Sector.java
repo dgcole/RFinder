@@ -7,13 +7,15 @@ public class Sector {
     private String id, name;
     private int x, y, z;
     private HashMap<String, System> systems;
+    private Galaxy parent;
 
-    public Sector(String id, String name, int x, int y, int z) {
+    public Sector(String id, String name, int x, int y, int z, Galaxy parent) {
         this.id = id;
         this.name = name;
         this.x = x;
         this.y = y;
         this.z = z;
+        this.parent = parent;
         this.systems = new HashMap<>();
     }
 
@@ -48,5 +50,9 @@ public class Sector {
 
     public ArrayList<System> getSystems() {
         return new ArrayList<>(systems.values());
+    }
+
+    public Galaxy getParent() {
+        return parent;
     }
 }

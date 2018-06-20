@@ -6,8 +6,9 @@ import java.util.HashMap;
 public class Star {
     private String starID, name, orbit, spectralClass, size, hab, shell, diameter;
     private HashMap<ResourceType, Resource> resources;
+    private System parent;
 
-    public Star(String starID, String name, String orbit, String spectralClass, String size, String hab, String shell, String diameter) {
+    public Star(String starID, String name, String orbit, String spectralClass, String size, String hab, String shell, String diameter, System parent) {
         this.starID = starID;
         this.name = name;
         this.orbit = orbit;
@@ -16,6 +17,7 @@ public class Star {
         this.hab = hab;
         this.shell = shell;
         this.diameter = diameter;
+        this.parent = parent;
         this.resources = new HashMap<>();
     }
 
@@ -57,5 +59,9 @@ public class Star {
 
     public ArrayList<Resource> getResources() {
         return new ArrayList<>(resources.values());
+    }
+
+    public System getParent() {
+        return parent;
     }
 }
