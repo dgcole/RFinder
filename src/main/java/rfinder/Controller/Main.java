@@ -50,8 +50,10 @@ public class Main {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(Object item, boolean empty) {
-                        if (item != null) {
+                        if (item != null && !empty) {
                             super.setText(((Integer) item) == 0 ? "" : item.toString());
+                        } else {
+                            super.setText("");
                         }
                     }
                 };
@@ -70,6 +72,7 @@ public class Main {
         resourceTypePicker.setItems(FXCollections.observableArrayList(resourceTypeNames));
 
         minimumQuality.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal.equals("")) return;
             if (!newVal.matches("\\d*")) {
                 minimumQuality.setText(newVal.replaceAll("[^\\d]", ""));
             } else if (Integer.parseInt(newVal) > 255) {
