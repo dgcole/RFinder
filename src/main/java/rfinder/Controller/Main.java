@@ -22,7 +22,7 @@ import java.util.Comparator;
 public class Main {
 
     @FXML
-    private TableColumn<Object, Object> col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12;
+    private TableColumn<Object, Object> col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13;
 
     @FXML
     private TableView resourceTable;
@@ -53,6 +53,7 @@ public class Main {
         col4.setCellValueFactory(new PropertyValueFactory<>("system"));
         col5.setCellValueFactory(new PropertyValueFactory<>("body"));
         col6.setCellValueFactory(new PropertyValueFactory<>("diameter"));
+        col7.setCellValueFactory(new PropertyValueFactory<>("zone"));
 
         var blanker = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
             @Override
@@ -69,14 +70,14 @@ public class Main {
                 };
             }
         };
-        col7.setCellValueFactory(new PropertyValueFactory<>("q1"));
-        col8.setCellValueFactory(new PropertyValueFactory<>("q2"));
-        col8.setCellFactory(blanker);
-        col9.setCellValueFactory(new PropertyValueFactory<>("q3"));
+        col8.setCellValueFactory(new PropertyValueFactory<>("q1"));
+        col9.setCellValueFactory(new PropertyValueFactory<>("q2"));
         col9.setCellFactory(blanker);
-        col10.setCellValueFactory(new PropertyValueFactory<>("a1"));
-        col11.setCellValueFactory(new PropertyValueFactory<>("a2"));
-        col12.setCellValueFactory(new PropertyValueFactory<>("a3"));
+        col10.setCellValueFactory(new PropertyValueFactory<>("q3"));
+        col10.setCellFactory(blanker);
+        col11.setCellValueFactory(new PropertyValueFactory<>("a1"));
+        col12.setCellValueFactory(new PropertyValueFactory<>("a2"));
+        col13.setCellValueFactory(new PropertyValueFactory<>("a3"));
 
         ArrayList<String> resourceTypeNames = ResourceType.getAllNames();
         resourceTypeBox.setItems(FXCollections.observableArrayList(resourceTypeNames));

@@ -113,6 +113,15 @@ public class Resource {
     }
 
     @FXML
+    public String getZone() {
+        if (parentIsStar) {
+            return "N/A";
+        } else {
+            return ((Planet) parent).getZone();
+        }
+    }
+
+    @FXML
     public int getQ1() {
         return q1;
     }
