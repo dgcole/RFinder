@@ -140,7 +140,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <children>
-                                    <Label text="Range:">
+                                    <Label text="Range (pc):">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin>
