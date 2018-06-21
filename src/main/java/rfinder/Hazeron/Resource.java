@@ -115,7 +115,7 @@ public class Resource {
     @FXML
     public String getZone() {
         if (parentIsStar) {
-            return "N/A";
+            return "Star";
         } else {
             return ((Planet) parent).getZone();
         }

@@ -54,6 +54,32 @@ public class Main {
         col5.setCellValueFactory(new PropertyValueFactory<>("body"));
         col6.setCellValueFactory(new PropertyValueFactory<>("diameter"));
         col7.setCellValueFactory(new PropertyValueFactory<>("zone"));
+        var colorizer = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+            @Override
+            public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
+                return new TableCell<Object, Object>() {
+                    @Override
+                    protected void updateItem(Object item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setText(empty ? null : getString());
+                        String styleText = "-fx-background-color:";
+                        if (getString().contains("Star")) styleText += "red";
+                        else if (getString().contains("Inf")) styleText += "red";
+                        else if (getString().contains("Inn")) styleText += "orange";
+                        else if (getString().contains("Hab")) styleText += "green";
+                        else if (getString().contains("Out")) styleText += "blue";
+                        else if (getString().contains("Fri")) styleText += "lightblue";
+                        else styleText += "white";
+                        setStyle(styleText);
+                    }
+
+                    private String getString() {
+                        return getItem() == null ? "" : getItem().toString();
+                    }
+                };
+            };
+        };
+        col7.setCellFactory(colorizer);
 
         var blanker = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
             @Override
