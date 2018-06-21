@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -78,7 +78,7 @@
                         <HBox alignment="CENTER">
                            <children>
                               <Label text="Resource Type: " />
-                              <ChoiceBox fx:id="resourceTypePicker" prefWidth="150.0" />
+                              <ComboBox fx:id="resourceTypePicker" prefWidth="150.0" />
                               <Label text="Minimum Quality: ">
                                  <opaqueInsets>
                                     <Insets />
@@ -95,6 +95,20 @@
                               <Insets top="2.0" />
                            </VBox.margin>
                         </Separator>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <ComboBox fx:id="galaxyBox" onAction="#setGalaxy" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <ComboBox fx:id="sectorBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                           </children>
+                        </GridPane>
                      </children>
                   </VBox>
                </content>

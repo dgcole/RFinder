@@ -27,7 +27,7 @@ public class Main {
     private TableView resourceTable;
 
     @FXML
-    private ChoiceBox<String> resourceTypePicker;
+    private ComboBox<String> resourceTypePicker, galaxyBox, sectorBox;
 
     @FXML
     private TextField minimumQuality;
@@ -116,6 +116,11 @@ public class Main {
 
                 starMap = starMapHandler.getStarMap();
                 refreshTable();
+                ArrayList<String> galaxyNames = new ArrayList<>();
+                for (Galaxy g : starMap.getGalaxies()) {
+                    galaxyNames.add(g.getName());
+                }
+                galaxyBox.setItems(FXCollections.observableArrayList(galaxyNames));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -167,6 +172,7 @@ public class Main {
     @FXML
     public void clearStarmap() {
         resourceTable.getItems().clear();
+        galaxyBox.getItems().clear();
     }
 
     @FXML
@@ -177,5 +183,19 @@ public class Main {
     @FXML
     public void clearTable(ActionEvent actionEvent) {
         resourceTable.getItems().clear();
+    }
+
+    public void setGalaxy(ActionEvent actionEvent) {
+        String galaxyName = galaxyBox.getValue();
+        ArrayList<Galaxy> galaxies = starMap.getGalaxies();
+        Galaxy galaxy = galaxies.get(0);
+        for (Galaxy g : galaxies) {
+            if (g.getName().equals(galaxyName)) galaxy = g;
+        }
+        ArrayList<String> sectorNames = new ArrayList<>();
+        for (Sector s : galaxy.getSectors()) {
+            sectorNames.add(s.getName());
+        }
+        sectorBox.setItems(FXCollections.observableArrayList(sectorNames));
     }
 }
