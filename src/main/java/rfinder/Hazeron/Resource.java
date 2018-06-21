@@ -1,5 +1,7 @@
 package rfinder.Hazeron;
 
+import javafx.fxml.FXML;
+
 public class Resource {
     private ResourceType type;
     private int zones;
@@ -35,10 +37,12 @@ public class Resource {
         this.parentIsStar = false;
     }
 
+    @FXML
     public String getResource() {
         return type.toString();
     }
 
+    @FXML
     public String getGalaxy() {
         if (parentIsStar) {
             return ((Star) parent).getParent().getParent().getParent().getName();
@@ -47,6 +51,7 @@ public class Resource {
         }
     }
 
+    @FXML
     public String getSector() {
         if (parentIsStar) {
             return ((Star) parent).getParent().getParent().getName();
@@ -55,6 +60,7 @@ public class Resource {
         }
     }
 
+    @FXML
     public String getSystem() {
         if (parentIsStar) {
             return ((Star) parent).getParent().getName();
@@ -63,6 +69,7 @@ public class Resource {
         }
     }
 
+    @FXML
     public String getBody() {
         if (parentIsStar) {
             return ((Star) parent).getName();
@@ -71,26 +78,32 @@ public class Resource {
         }
     }
 
+    @FXML
     public String getQ1() {
         return q1;
     }
 
+    @FXML
     public String getQ2() {
         return q2;
     }
 
+    @FXML
     public String getQ3() {
         return q2;
     }
 
+    @FXML
     public String getA1() {
         return a1;
     }
 
+    @FXML
     public String getA2() {
         return a2;
     }
 
+    @FXML
     public String getA3() {
         return a3;
     }

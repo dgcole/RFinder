@@ -50,20 +50,22 @@ public class Main {
         resourceTypePicker.setItems(FXCollections.observableArrayList(resourceTypeNames));
     }
 
+    @FXML
     public void exit(ActionEvent actionEvent) {
         RFinder.mainStage.close();
     }
 
+    @FXML
     public void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("RFinder 0.1.0");
-        alert.setContentText("RFinder Copyright © 2018 expert700, all right reserved.\n" +
-                "Icons Copyright © 1999-2018 Software Engineering, Inc.");
+        alert.setContentText("RFinder Copyright © 2018 expert700, all right reserved.");
 
         alert.show();
     }
 
+    @FXML
     public void importStarmap(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open StarMap");
@@ -87,6 +89,7 @@ public class Main {
         }
     }
 
+    @FXML
     public void refreshTable() {
         if (starMap == null) return;
         resourceTable.getItems().clear();
@@ -121,14 +124,17 @@ public class Main {
         }
     }
 
+    @FXML
     public void clearStarmap() {
         resourceTable.getItems().clear();
     }
 
+    @FXML
     public void setResize(ActionEvent actionEvent) {
         resize = ((CheckBox) actionEvent.getSource()).isSelected();
     }
 
+    @FXML
     public void clearTable(ActionEvent actionEvent) {
         resourceTable.getItems().clear();
     }

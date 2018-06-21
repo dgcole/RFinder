@@ -21,7 +21,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>rfinder.Main</mainClass>
+                            <mainClass>rfinder.RFinder</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
