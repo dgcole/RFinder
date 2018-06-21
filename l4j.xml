@@ -11,7 +11,7 @@
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
-  <restartOnCrash>false</restartOnCrash>
+  <restartOnCrash>true</restartOnCrash>
   <manifest></manifest>
   <icon>D:\Projects\RFinder\l4j_assets\icon.ico</icon>
   <jre>
@@ -23,10 +23,18 @@
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
   </jre>
-  <splash>
-    <file>D:\Projects\RFinder\l4j_assets\splash.bmp</file>
-    <waitForWindow>true</waitForWindow>
-    <timeout>60</timeout>
-    <timeoutErr>true</timeoutErr>
-  </splash>
+  <versionInfo>
+    <fileVersion>0.1.0.0</fileVersion>
+    <txtFileVersion>0.1.0</txtFileVersion>
+    <fileDescription>A Hazeron Star Map helper.</fileDescription>
+    <copyright>Copyright © 2018 expert700, all right reserved.</copyright>
+    <productVersion>0.1.0.0</productVersion>
+    <txtProductVersion>0.1.0</txtProductVersion>
+    <productName>RFinder</productName>
+    <companyName></companyName>
+    <internalName>RFinder</internalName>
+    <originalFilename>RFinder.exe</originalFilename>
+    <trademarks></trademarks>
+    <language>ENGLISH_US</language>
+  </versionInfo>
 </launch4jConfig>
