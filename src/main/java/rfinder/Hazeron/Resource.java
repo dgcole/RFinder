@@ -51,6 +51,14 @@ public class Resource {
         }
     }
 
+    public Galaxy getGalaxyInternal() {
+        if (parentIsStar) {
+            return ((Star) parent).getParent().getParent().getParent();
+        } else {
+            return ((Planet) parent).getParent().getParent().getParent();
+        }
+    }
+
     @FXML
     public String getSector() {
         if (parentIsStar) {
@@ -60,12 +68,28 @@ public class Resource {
         }
     }
 
+    public Sector getSectorInternal() {
+        if (parentIsStar) {
+            return ((Star) parent).getParent().getParent();
+        } else {
+            return ((Planet) parent).getParent().getParent();
+        }
+    }
+
     @FXML
     public String getSystem() {
         if (parentIsStar) {
             return ((Star) parent).getParent().getName();
         } else {
             return ((Planet) parent).getParent().getName();
+        }
+    }
+
+    public System getSystemInternal() {
+        if (parentIsStar) {
+            return ((Star) parent).getParent();
+        } else {
+            return ((Planet) parent).getParent();
         }
     }
 

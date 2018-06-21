@@ -78,7 +78,7 @@
                         <HBox alignment="CENTER">
                            <children>
                               <Label text="Resource Type: " />
-                              <ComboBox fx:id="resourceTypePicker" prefWidth="150.0" />
+                              <ComboBox fx:id="resourceTypeBox" prefWidth="150.0" />
                               <Label text="Minimum Quality: ">
                                  <opaqueInsets>
                                     <Insets />
@@ -106,7 +106,9 @@
                           </rowConstraints>
                            <children>
                               <ComboBox fx:id="galaxyBox" onAction="#setGalaxy" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <ComboBox fx:id="sectorBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <ComboBox fx:id="sectorBox" onAction="#setSector" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <ComboBox fx:id="systemBox" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>

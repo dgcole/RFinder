@@ -9,14 +9,15 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import rfinder.Hazeron.*;
+import rfinder.Hazeron.System;
 import rfinder.RFinder;
-import rfinder.Util.MixedComparator;
 import rfinder.Util.StarMapHandler;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Main {
 
@@ -27,7 +28,16 @@ public class Main {
     private TableView resourceTable;
 
     @FXML
-    private ComboBox<String> resourceTypePicker, galaxyBox, sectorBox;
+    private ComboBox<String> resourceTypeBox;
+
+    @FXML
+    private ComboBox<Galaxy> galaxyBox;
+
+    @FXML
+    private ComboBox<Sector> sectorBox;
+
+    @FXML
+    private ComboBox<System> systemBox;
 
     @FXML
     private TextField minimumQuality;
@@ -69,7 +79,7 @@ public class Main {
         col12.setCellValueFactory(new PropertyValueFactory<>("a3"));
 
         ArrayList<String> resourceTypeNames = ResourceType.getAllNames();
-        resourceTypePicker.setItems(FXCollections.observableArrayList(resourceTypeNames));
+        resourceTypeBox.setItems(FXCollections.observableArrayList(resourceTypeNames));
 
         minimumQuality.textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.equals("")) return;
@@ -81,6 +91,36 @@ public class Main {
                 minimumQuality.setText("1");
             }
         });
+
+        Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
+            @Override
+            protected void updateItem(Galaxy item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        };
+        galaxyBox.setCellFactory(galaxyBoxFactory);
+        galaxyBox.setButtonCell(galaxyBoxFactory.call(null));
+
+        Callback<ListView<Sector>, ListCell<Sector>> sectorBoxFactory = lv -> new ListCell<Sector>() {
+            @Override
+            protected void updateItem(Sector item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : (item.getName().equals("Sector") ? item.getID() : item.getName()));
+            }
+        };
+        sectorBox.setCellFactory(sectorBoxFactory);
+        sectorBox.setButtonCell(sectorBoxFactory.call(null));
+
+        Callback<ListView<System>, ListCell<System>> systemBoxFactory = lv -> new ListCell<System>() {
+            @Override
+            protected void updateItem(System item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        };
+        systemBox.setCellFactory(systemBoxFactory);
+        systemBox.setButtonCell(systemBoxFactory.call(null));
     }
 
     @FXML
@@ -116,11 +156,10 @@ public class Main {
 
                 starMap = starMapHandler.getStarMap();
                 refreshTable();
-                ArrayList<String> galaxyNames = new ArrayList<>();
-                for (Galaxy g : starMap.getGalaxies()) {
-                    galaxyNames.add(g.getName());
-                }
-                galaxyBox.setItems(FXCollections.observableArrayList(galaxyNames));
+
+                ArrayList<Galaxy> galaxies = starMap.getGalaxies();
+                galaxies.sort(Comparator.comparing(Galaxy::getName));
+                galaxyBox.setItems(FXCollections.observableArrayList(galaxies));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -132,21 +171,22 @@ public class Main {
         if (starMap == null) return;
         resourceTable.getItems().clear();
 
-        String type = resourceTypePicker.getValue();
+        String type = resourceTypeBox.getValue();
         int minQual = Integer.parseInt(minimumQuality.textProperty().get());
-        if (type == null) {
-            for (Resource r : starMap.getResources()) {
-                resourceTable.getItems().add(r);
-            }
-        } else {
-            for (Resource r : starMap.getResources()) {
-                boolean resourceMatch = r.getResource().equals(type);
-                boolean qualityMatch = (r.getQ1() >= minQual ||
+        for (Resource r : starMap.getResources()) {
+            boolean resourceMatch = type == null || r.getResource().equals(type);
+
+            boolean qualityMatch = (r.getQ1() >= minQual ||
                 r.getQ2() >= minQual || r.getQ3() >= minQual);
 
-                if (resourceMatch && qualityMatch) {
-                    resourceTable.getItems().add(r);
-                }
+            boolean galaxyMatch = galaxyBox.getValue() == null || galaxyBox.getValue() == r.getGalaxyInternal();
+
+            boolean sectorMatch = sectorBox.getValue() == null || sectorBox.getValue() == r.getSectorInternal();
+
+            boolean systemMatch = systemBox.getValue() == null || systemBox.getValue() == r.getSystemInternal();
+
+            if (resourceMatch && qualityMatch && galaxyMatch && sectorMatch && systemMatch) {
+                resourceTable.getItems().add(r);
             }
         }
 
@@ -173,6 +213,8 @@ public class Main {
     public void clearStarmap() {
         resourceTable.getItems().clear();
         galaxyBox.getItems().clear();
+        sectorBox.getItems().clear();
+        systemBox.getItems().clear();
     }
 
     @FXML
@@ -185,17 +227,23 @@ public class Main {
         resourceTable.getItems().clear();
     }
 
+    @FXML
     public void setGalaxy(ActionEvent actionEvent) {
-        String galaxyName = galaxyBox.getValue();
-        ArrayList<Galaxy> galaxies = starMap.getGalaxies();
-        Galaxy galaxy = galaxies.get(0);
-        for (Galaxy g : galaxies) {
-            if (g.getName().equals(galaxyName)) galaxy = g;
-        }
-        ArrayList<String> sectorNames = new ArrayList<>();
-        for (Sector s : galaxy.getSectors()) {
-            sectorNames.add(s.getName());
-        }
-        sectorBox.setItems(FXCollections.observableArrayList(sectorNames));
+        if (galaxyBox.getValue() == null) return;
+        ArrayList<Sector> sectors = galaxyBox.getValue().getSectors();
+        sectors.sort((o1, o2) -> {
+            String text1 = o1.getName().equals("Sector") ? o1.getID() : o1.getName();
+            String text2 = o2.getName().equals("Sector") ? o2.getID() : o2.getName();
+            return text1.compareTo(text2);
+        });
+        sectorBox.setItems(FXCollections.observableArrayList(sectors));
+    }
+
+    @FXML
+    public void setSector(ActionEvent actionEvent) {
+        if (sectorBox.getValue() == null) return;
+        ArrayList<System> systems = sectorBox.getValue().getSystems();
+        systems.sort(Comparator.comparing(System::getName));
+        systemBox.setItems(FXCollections.observableArrayList(systems));
     }
 }
