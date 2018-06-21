@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -20,6 +21,7 @@ public class RFinder extends Application {
         Scene rootScene = new Scene(root);
 
         mainStage.setTitle("RFinder");
+        mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("icon.png")).toString()));
         mainStage.setScene(rootScene);
         mainStage.setMinWidth(960);
         mainStage.setMinHeight(540);
