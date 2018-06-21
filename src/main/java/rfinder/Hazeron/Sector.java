@@ -33,7 +33,7 @@ public class Sector {
     }
 
     public String getName() {
-        return name;
+        return name.equals("Sector") ? String.format("Sector (%d, %d, %d)", x, y, z) : name;
     }
 
     public int getX() {

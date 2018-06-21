@@ -40,7 +40,7 @@ public class Main {
     private ComboBox<System> systemBox;
 
     @FXML
-    private TextField minimumQuality;
+    private TextField minimumQuality, range;
 
     private StarMap starMap;
     private boolean resize = false;
@@ -82,13 +82,20 @@ public class Main {
         resourceTypeBox.setItems(FXCollections.observableArrayList(resourceTypeNames));
 
         minimumQuality.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal.equals("")) return;
+            if (newVal.isEmpty()) return;
             if (!newVal.matches("\\d*")) {
                 minimumQuality.setText(newVal.replaceAll("[^\\d]", ""));
             } else if (Integer.parseInt(newVal) > 255) {
                 minimumQuality.setText("255");
             } else if (Integer.parseInt(newVal) < 1) {
                 minimumQuality.setText("1");
+            }
+        });
+
+        range.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal.isEmpty()) return;
+            if (!newVal.matches("\\d*")) {
+                range.setText(newVal.replaceAll("[^\\d]", ""));
             }
         });
 
@@ -106,7 +113,7 @@ public class Main {
             @Override
             protected void updateItem(Sector item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty ? "" : (item.getName().equals("Sector") ? item.getID() : item.getName()));
+                setText(empty ? "" : item.getName());
             }
         };
         sectorBox.setCellFactory(sectorBoxFactory);
@@ -185,7 +192,34 @@ public class Main {
 
             boolean systemMatch = systemBox.getValue() == null || systemBox.getValue() == r.getSystemInternal();
 
-            if (resourceMatch && qualityMatch && galaxyMatch && sectorMatch && systemMatch) {
+            boolean rangeMatch = false;
+
+            if (!range.getText().isEmpty()) {
+                double targetX, targetY, targetZ;
+                targetX = targetY = targetZ = 0;
+                if (systemBox.getValue() == null && sectorBox.getValue() != null) {
+                    Sector target = sectorBox.getValue();
+                    targetX = target.getX() * 10;
+                    targetY = target.getY() * 10;
+                    targetZ = target.getZ() * 10;
+                } else if (systemBox.getValue() != null) {
+                    System target = systemBox.getValue();
+                    targetX = target.getX();
+                    targetY = target.getY();
+                    targetZ = target.getZ();
+                }
+
+                double originX = r.getSystemInternal().getX();
+                double originY = r.getSystemInternal().getY();
+                double originZ = r.getSystemInternal().getZ();
+
+                double dist = Math.sqrt((targetX - originX) * (targetX - originX) +
+                        (targetY - originY) * (targetY - originY) + (targetZ - originZ) * (targetZ - originZ));
+                if (dist < Double.parseDouble(range.getText())) rangeMatch = true;
+            }
+
+
+            if (resourceMatch && qualityMatch && ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch)) {
                 resourceTable.getItems().add(r);
             }
         }
@@ -231,11 +265,7 @@ public class Main {
     public void setGalaxy(ActionEvent actionEvent) {
         if (galaxyBox.getValue() == null) return;
         ArrayList<Sector> sectors = galaxyBox.getValue().getSectors();
-        sectors.sort((o1, o2) -> {
-            String text1 = o1.getName().equals("Sector") ? o1.getID() : o1.getName();
-            String text2 = o2.getName().equals("Sector") ? o2.getID() : o2.getName();
-            return text1.compareTo(text2);
-        });
+        sectors.sort(Comparator.comparing(Sector::getName));
         sectorBox.setItems(FXCollections.observableArrayList(sectors));
     }
 

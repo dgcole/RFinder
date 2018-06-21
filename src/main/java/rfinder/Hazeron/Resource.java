@@ -61,6 +61,7 @@ public class Resource {
 
     @FXML
     public String getSector() {
+        Sector s;
         if (parentIsStar) {
             return ((Star) parent).getParent().getParent().getName();
         } else {
