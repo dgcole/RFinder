@@ -12,7 +12,7 @@
 -libraryjars 'D:\Program Files\Java\jdk-10.0.1\jmods\javafx.web.jmod'
 -libraryjars 'D:\Program Files\Java\jdk-10.0.1\jmods\java.xml.jmod'
 
--target 1.5
+-target 1.8
 -dontshrink
 -optimizationpasses 2
 -allowaccessmodification
