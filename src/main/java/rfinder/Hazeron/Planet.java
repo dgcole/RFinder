@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Planet {
-    private String planetID, name, bodyType, orbit, zone;
+    private String planetID, name, bodyType, orbit, zone, diameter;
     private HashMap<ResourceType, Resource> resources;
     private System parent;
 
@@ -48,5 +48,13 @@ public class Planet {
 
     public System getParent() {
         return parent;
+    }
+
+    public void setDiameter(String diameter) {
+        this.diameter = diameter;
+    }
+
+    public String getDiameter() {
+        return diameter;
     }
 }

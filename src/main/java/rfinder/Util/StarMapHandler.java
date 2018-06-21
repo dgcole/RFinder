@@ -1,4 +1,4 @@
-package rfinder;
+package rfinder.Util;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -51,13 +51,15 @@ public class StarMapHandler extends DefaultHandler {
                 sphere = "heliosphere";
                 parsingStar = true;
                 String starID = attributes.getValue("starId");
+                String diameter = attributes.getValue("diameter");
+                diameter = diameter.substring(0, diameter.indexOf("au") + 2);
                 star = new Star(starID, attributes.getValue("name"),
                         attributes.getValue("orbit"),
                         attributes.getValue("spectralClass"),
                         attributes.getValue("size"),
                         attributes.getValue("hab"),
                         attributes.getValue("shell"),
-                        attributes.getValue("diameter"), system);
+                        diameter, system);
                 system.addStar(star, starID);
                 break;
             case "planet":
@@ -72,6 +74,9 @@ public class StarMapHandler extends DefaultHandler {
             case "geosphere":
                 sphere = "geosphere";
                 zones = Integer.parseInt(attributes.getValue("resourceZones"));
+                String pDiameter = attributes.getValue("diameter");
+                pDiameter = pDiameter.substring(0, pDiameter.indexOf("m") + 1);
+                planet.setDiameter(pDiameter);
                 break;
             case "hydrosphere":
                 sphere = "hydrosphere";

@@ -14,6 +14,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -78,6 +79,15 @@
                            <children>
                               <Label text="Resource Type: " />
                               <ChoiceBox fx:id="resourceTypePicker" prefWidth="150.0" />
+                              <Label text="Minimum Quality: ">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <HBox.margin>
+                                    <Insets left="25.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="minimumQuality" text="1" />
                            </children>
                         </HBox>
                         <Separator prefWidth="200.0">
@@ -98,12 +108,13 @@
                         <TableColumn fx:id="col3" prefWidth="75.0" text="Sector" />
                         <TableColumn fx:id="col4" prefWidth="75.0" text="System" />
                         <TableColumn fx:id="col5" prefWidth="75.0" text="Body" />
-                        <TableColumn fx:id="col6" prefWidth="75.0" text="Q1" />
-                        <TableColumn fx:id="col7" prefWidth="75.0" text="Q2" />
-                        <TableColumn fx:id="col8" prefWidth="75.0" text="Q3" />
-                        <TableColumn fx:id="col9" prefWidth="75.0" text="A1" />
-                        <TableColumn fx:id="col10" prefWidth="75.0" text="A2" />
-                        <TableColumn fx:id="col11" prefWidth="75.0" text="A3" />
+                        <TableColumn fx:id="col6" prefWidth="75.0" text="Diameter" />
+                        <TableColumn fx:id="col7" prefWidth="75.0" text="Q1" />
+                        <TableColumn fx:id="col8" prefWidth="75.0" text="Q2" />
+                        <TableColumn fx:id="col9" prefWidth="75.0" text="Q3" />
+                        <TableColumn fx:id="col10" prefWidth="75.0" text="A1" />
+                        <TableColumn fx:id="col11" prefWidth="75.0" text="A2" />
+                        <TableColumn fx:id="col12" prefWidth="75.0" text="A3" />
                      </columns>
                   </TableView>
                </content>
