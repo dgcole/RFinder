@@ -280,7 +280,7 @@ public class Main {
                 TableColumn column = (TableColumn) col;
                 Text t = new Text(column.getText());
                 double max = t.getLayoutBounds().getWidth();
-                for (int i = 0; i < resourceTable.getItems().size(); i++) {
+                for (int i = 0; i < resourceTable.getItems().size(); i = i + (resourceTable.getItems().size() / 50)) {
                     if (column.getCellData(i) != null) {
                         t = new Text(column.getCellData(i).toString());
                         double calcwidth = t.getLayoutBounds().getWidth();
@@ -289,7 +289,7 @@ public class Main {
                         }
                     }
                 }
-                column.setPrefWidth(max + 10.0d);
+                column.setPrefWidth(max + 20.0d);
             });
         }
     }
