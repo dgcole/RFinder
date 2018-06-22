@@ -1,5 +1,7 @@
 package rfinder.Controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,11 +43,12 @@ public class Main {
     private ComboBox<System> systemBox;
 
     @FXML
-    private TextField minimumQuality, range;
+    private TextField minimumQuality, range, diameter;
 
     private StarMap starMap;
     private boolean resize = false;
 
+    @SuppressWarnings("Duplicates")
     @FXML
     void initialize() {
         col1.setCellValueFactory(new PropertyValueFactory<>("resource"));
@@ -150,6 +153,13 @@ public class Main {
             }
         });
 
+        diameter.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal.isEmpty()) return;
+            if (!newVal.matches("\\d*")) {
+                diameter.setText(newVal.replaceAll("[^\\d]", ""));
+            }
+        });
+
         Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
             @Override
             protected void updateItem(Galaxy item, boolean empty) {
@@ -243,6 +253,17 @@ public class Main {
 
             boolean systemMatch = systemBox.getValue() == null || systemBox.getValue() == r.getSystemInternal();
 
+            boolean diameterMatch = diameter.getText().isEmpty();
+            if (!diameterMatch) {
+                String diamString = r.getDiameter();
+                if (diamString.contains("au")) {
+                    diameterMatch = true;
+                } else {
+                    int numDiameter = Integer.parseInt(diamString.substring(0, diamString.indexOf("m")));
+                    diameterMatch = numDiameter > Integer.parseInt(diameter.getText());
+                }
+            }
+
             boolean rangeMatch = false;
 
             if (!range.getText().isEmpty()) {
@@ -270,7 +291,7 @@ public class Main {
             }
 
 
-            if (resourceMatch && qualityMatch && ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch)) {
+            if (resourceMatch && qualityMatch && diameterMatch && ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch)) {
                 resourceTable.getItems().add(r);
             }
         }

@@ -63,6 +63,7 @@
                       <RowConstraints percentHeight="33.0" vgrow="SOMETIMES" />
                       <RowConstraints percentHeight="33.0" vgrow="SOMETIMES" />
                       <RowConstraints percentHeight="33.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" percentHeight="33.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <GridPane>
@@ -149,6 +150,19 @@
                                  </children></HBox>
                            </children>
                         </GridPane>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                           <children>
+                              <Label text="Diameter (m):">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <TextField fx:id="diameter" />
+                           </children>
+                        </HBox>
                      </children>
                   </GridPane>
                </content>
