@@ -9,6 +9,12 @@ public class System {
     private HashMap<String, Star> stars;
     private HashMap<String, Planet> planets;
     private Sector parent;
+    private boolean placeholder;
+
+    public System() {
+        this.placeholder = true;
+        this.name = "Any";
+    }
 
     public System(String systemID, String name, String eod, double x, double y, double z, Sector parent) {
         this.systemID = systemID;
@@ -18,6 +24,7 @@ public class System {
         this.y = y;
         this.z = z;
         this.parent = parent;
+        this.placeholder = false;
         this.stars = new HashMap<>();
         this.planets = new HashMap<>();
     }
@@ -64,5 +71,9 @@ public class System {
 
     public Sector getParent() {
         return parent;
+    }
+
+    public boolean isPlaceholder() {
+        return placeholder;
     }
 }

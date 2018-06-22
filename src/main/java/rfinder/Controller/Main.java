@@ -21,6 +21,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class Main {
@@ -134,7 +135,22 @@ public class Main {
         col13.setCellFactory(percentAdder);
 
         ArrayList<String> resourceTypeNames = ResourceType.getAllNames();
+        resourceTypeNames.sort(Comparator.comparing(String::toString));
+        resourceTypeNames.add(0, "Any");
         resourceTypeBox.setItems(FXCollections.observableArrayList(resourceTypeNames));
+        resourceTypeBox.setValue("Any");
+
+        Galaxy placeholderGalaxy = new Galaxy();
+        galaxyBox.setItems(FXCollections.observableArrayList(placeholderGalaxy));
+        galaxyBox.setValue(placeholderGalaxy);
+
+        Sector placeholderSector = new Sector();
+        sectorBox.setItems(FXCollections.observableArrayList(placeholderSector));
+        sectorBox.setValue(placeholderSector);
+
+        System placeholderSystem = new System();
+        systemBox.setItems(FXCollections.observableArrayList(placeholderSystem));
+        systemBox.setValue(placeholderSystem);
 
         minimumQuality.textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.isEmpty()) return;
@@ -199,7 +215,7 @@ public class Main {
     public void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
-        alert.setHeaderText("RFinder 0.1.1");
+        alert.setHeaderText("RFinder 0.1.2");
         alert.setContentText("RFinder Copyright © 2018 expert700, all right reserved.");
 
         alert.show();
@@ -226,6 +242,7 @@ public class Main {
 
                 ArrayList<Galaxy> galaxies = starMap.getGalaxies();
                 galaxies.sort(Comparator.comparing(Galaxy::getName));
+                galaxies.add(0, new Galaxy());
                 galaxyBox.setItems(FXCollections.observableArrayList(galaxies));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -241,18 +258,23 @@ public class Main {
         String type = resourceTypeBox.getValue();
         int minQual = Integer.parseInt(minimumQuality.textProperty().get());
         for (Resource r : starMap.getResources()) {
-            boolean resourceMatch = type == null || r.getResource().equals(type);
+            boolean resourceMatch = (type == null || type.equals("Any")) || r.getResource().equals(type);
 
             boolean qualityMatch = (r.getQ1() >= minQual ||
                 r.getQ2() >= minQual || r.getQ3() >= minQual);
 
-            boolean galaxyMatch = galaxyBox.getValue() == null || galaxyBox.getValue() == r.getGalaxyInternal();
+            boolean galaxyMatch = (galaxyBox.getValue() == null || galaxyBox.getValue().isPlaceholder())
+                    || galaxyBox.getValue() == r.getGalaxyInternal();
 
-            boolean sectorMatch = sectorBox.getValue() == null || sectorBox.getValue() == r.getSectorInternal();
+            boolean sectorMatch = (sectorBox.getValue() == null || sectorBox.getValue().isPlaceholder())
+                    || sectorBox.getValue() == r.getSectorInternal();
 
-            boolean systemMatch = systemBox.getValue() == null || systemBox.getValue() == r.getSystemInternal();
+            boolean systemMatch = (systemBox.getValue() == null || systemBox.getValue().isPlaceholder())
+                    || systemBox.getValue() == r.getSystemInternal();
 
-            boolean diameterMatch = (diameter.getValue() == null || diameter.getValue().equals("Any")) || (diameter.getValue().equals("Ringworld") && r.getBody().contains("Ringworld"));
+            boolean diameterMatch = (diameter.getValue() == null || diameter.getValue().equals("Any"))
+                    || (diameter.getValue().equals("Ringworld") && r.getBody().contains("Ringworld"));
+
             if (!diameterMatch) {
                 diameterMatch = diameter.getValue().equals(r.getDiameter());
             }
@@ -262,25 +284,33 @@ public class Main {
             if (!range.getText().isEmpty()) {
                 double targetX, targetY, targetZ;
                 targetX = targetY = targetZ = 0;
-                if (systemBox.getValue() == null && sectorBox.getValue() != null) {
+                boolean set = false;
+                if ((systemBox.getValue() == null || systemBox.getValue().isPlaceholder())
+                        && (sectorBox.getValue() != null && !sectorBox.getValue().isPlaceholder())) {
                     Sector target = sectorBox.getValue();
                     targetX = target.getX() * 10;
                     targetY = target.getY() * 10;
                     targetZ = target.getZ() * 10;
-                } else if (systemBox.getValue() != null) {
+                    set = true;
+                } else if ((systemBox.getValue() != null && !systemBox.getValue().isPlaceholder())) {
                     System target = systemBox.getValue();
                     targetX = target.getX();
                     targetY = target.getY();
                     targetZ = target.getZ();
+                    set = true;
                 }
 
-                double originX = r.getSystemInternal().getX();
-                double originY = r.getSystemInternal().getY();
-                double originZ = r.getSystemInternal().getZ();
+                if (set) {
+                    double originX = r.getSystemInternal().getX();
+                    double originY = r.getSystemInternal().getY();
+                    double originZ = r.getSystemInternal().getZ();
 
-                double dist = Math.sqrt((targetX - originX) * (targetX - originX) +
-                        (targetY - originY) * (targetY - originY) + (targetZ - originZ) * (targetZ - originZ));
-                if (dist < Double.parseDouble(range.getText())) rangeMatch = true;
+                    double dist = Math.sqrt((targetX - originX) * (targetX - originX) +
+                            (targetY - originY) * (targetY - originY) + (targetZ - originZ) * (targetZ - originZ));
+                    if (dist < Double.parseDouble(range.getText())) rangeMatch = true;
+                } else {
+                    rangeMatch = true;
+                }
             }
 
 
@@ -328,17 +358,19 @@ public class Main {
 
     @FXML
     public void setGalaxy(ActionEvent actionEvent) {
-        if (galaxyBox.getValue() == null) return;
+        if (galaxyBox.getValue() == null || galaxyBox.getValue().isPlaceholder()) return;
         ArrayList<Sector> sectors = galaxyBox.getValue().getSectors();
         sectors.sort(Comparator.comparing(Sector::getName));
+        sectors.add(0, new Sector());
         sectorBox.setItems(FXCollections.observableArrayList(sectors));
     }
 
     @FXML
     public void setSector(ActionEvent actionEvent) {
-        if (sectorBox.getValue() == null) return;
+        if (sectorBox.getValue() == null || sectorBox.getValue().isPlaceholder()) return;
         ArrayList<System> systems = sectorBox.getValue().getSystems();
         systems.sort(Comparator.comparing(System::getName));
+        systems.add(0, new System());
         systemBox.setItems(FXCollections.observableArrayList(systems));
     }
 }

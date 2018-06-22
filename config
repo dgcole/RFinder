@@ -1,5 +1,5 @@
--injars target\rfinder-0.1.1.jar
--outjars target\rfinder-0.1.1-obf.jar
+-injars target\rfinder-0.1.2.jar
+-outjars target\rfinder-0.1.2-obf.jar
 
 -libraryjars 'D:\Program Files\Java\jdk-10.0.1\jmods\java.base.jmod'
 -libraryjars 'D:\Program Files\Java\jdk-10.0.1\jmods\javafx.base.jmod'

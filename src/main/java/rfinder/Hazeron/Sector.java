@@ -8,6 +8,12 @@ public class Sector {
     private int x, y, z;
     private HashMap<String, System> systems;
     private Galaxy parent;
+    private boolean placeholder;
+
+    public Sector() {
+        this.placeholder = true;
+        this.name = "Any";
+    }
 
     public Sector(String id, String name, int x, int y, int z, Galaxy parent) {
         this.id = id;
@@ -16,6 +22,7 @@ public class Sector {
         this.y = y;
         this.z = z;
         this.parent = parent;
+        this.placeholder = false;
         this.systems = new HashMap<>();
     }
 
@@ -54,5 +61,9 @@ public class Sector {
 
     public Galaxy getParent() {
         return parent;
+    }
+
+    public boolean isPlaceholder() {
+        return placeholder;
     }
 }
