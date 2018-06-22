@@ -20,6 +20,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class Main {
@@ -31,7 +32,7 @@ public class Main {
     private TableView resourceTable;
 
     @FXML
-    private ComboBox<String> resourceTypeBox;
+    private ComboBox<String> resourceTypeBox, diameter;
 
     @FXML
     private ComboBox<Galaxy> galaxyBox;
@@ -43,7 +44,7 @@ public class Main {
     private ComboBox<System> systemBox;
 
     @FXML
-    private TextField minimumQuality, range, diameter;
+    private TextField minimumQuality, range;
 
     private StarMap starMap;
     private boolean resize = false;
@@ -153,12 +154,10 @@ public class Main {
             }
         });
 
-        diameter.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal.isEmpty()) return;
-            if (!newVal.matches("\\d*")) {
-                diameter.setText(newVal.replaceAll("[^\\d]", ""));
-            }
-        });
+
+        diameter.setItems(FXCollections.observableArrayList(Arrays.asList("Any", "1800m", "3800m", "5700m",
+                "7600m", "9400m", "11400m", "15200m", "17000m", "19000m", "20800m", "22800m", "Ringworld")));
+        diameter.setValue("Any");
 
         Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
             @Override
@@ -253,15 +252,9 @@ public class Main {
 
             boolean systemMatch = systemBox.getValue() == null || systemBox.getValue() == r.getSystemInternal();
 
-            boolean diameterMatch = diameter.getText().isEmpty();
+            boolean diameterMatch = (diameter.getValue() == null || diameter.getValue().equals("Any")) || (diameter.getValue().equals("Ringworld") && r.getBody().contains("Ringworld"));
             if (!diameterMatch) {
-                String diamString = r.getDiameter();
-                if (diamString.contains("au")) {
-                    diameterMatch = true;
-                } else {
-                    int numDiameter = Integer.parseInt(diamString.substring(0, diamString.indexOf("m")));
-                    diameterMatch = numDiameter > Integer.parseInt(diameter.getText());
-                }
+                diameterMatch = diameter.getValue().equals(r.getDiameter());
             }
 
             boolean rangeMatch = false;

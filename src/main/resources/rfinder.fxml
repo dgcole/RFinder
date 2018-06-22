@@ -152,7 +152,7 @@
                         </GridPane>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                            <children>
-                              <Label text="Diameter (m):">
+                              <Label text="Diameter:">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -160,7 +160,7 @@
                                     <Insets right="10.0" />
                                  </padding>
                               </Label>
-                              <TextField fx:id="diameter" />
+                              <ComboBox fx:id="diameter" prefWidth="150.0" />
                            </children>
                         </HBox>
                      </children>
