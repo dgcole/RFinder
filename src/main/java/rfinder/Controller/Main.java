@@ -1,7 +1,5 @@
 package rfinder.Controller;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +19,6 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class Main {
@@ -33,7 +30,7 @@ public class Main {
     private TableView resourceTable;
 
     @FXML
-    private ComboBox<String> resourceTypeBox, diameter;
+    private ComboBox<String> resourceTypeBox, diameterBox, zoneBox;
 
     @FXML
     private ComboBox<Galaxy> galaxyBox;
@@ -171,9 +168,12 @@ public class Main {
         });
 
 
-        diameter.setItems(FXCollections.observableArrayList(Arrays.asList("Any", "1800m", "3800m", "5700m",
-                "7600m", "9400m", "11400m", "15200m", "17000m", "19000m", "20800m", "22800m", "Ringworld")));
-        diameter.setValue("Any");
+        diameterBox.setItems(FXCollections.observableArrayList("Any", "1800m", "3800m", "5700m",
+                "7600m", "9400m", "11400m", "15200m", "17000m", "19000m", "20800m", "22800m", "Ringworld"));
+        diameterBox.setValue("Any");
+
+        zoneBox.setItems(FXCollections.observableArrayList("Any", "Star", "Inferno", "Inner", "Habitable", "Frigid", "Outer"));
+        zoneBox.setValue("Any");
 
         Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
             @Override
@@ -215,7 +215,7 @@ public class Main {
     public void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
-        alert.setHeaderText("RFinder 0.1.2");
+        alert.setHeaderText("RFinder 0.1.3");
         alert.setContentText("RFinder Copyright © 2018 expert700, all right reserved.");
 
         alert.show();
@@ -272,11 +272,14 @@ public class Main {
             boolean systemMatch = (systemBox.getValue() == null || systemBox.getValue().isPlaceholder())
                     || systemBox.getValue() == r.getSystemInternal();
 
-            boolean diameterMatch = (diameter.getValue() == null || diameter.getValue().equals("Any"))
-                    || (diameter.getValue().equals("Ringworld") && r.getBody().contains("Ringworld"));
+            boolean diameterMatch = (diameterBox.getValue() == null || diameterBox.getValue().equals("Any"))
+                    || (diameterBox.getValue().equals("Ringworld") && r.getBody().contains("Ringworld"));
+
+            boolean zoneMatch = (zoneBox.getValue() == null || zoneBox.getValue().equals("Any"))
+                    || zoneBox.getValue().equals(r.getZone());
 
             if (!diameterMatch) {
-                diameterMatch = diameter.getValue().equals(r.getDiameter());
+                diameterMatch = diameterBox.getValue().equals(r.getDiameter());
             }
 
             boolean rangeMatch = false;
@@ -314,7 +317,7 @@ public class Main {
             }
 
 
-            if (resourceMatch && qualityMatch && diameterMatch && ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch)) {
+            if (resourceMatch && qualityMatch && diameterMatch && zoneMatch && ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch)) {
                 resourceTable.getItems().add(r);
             }
         }

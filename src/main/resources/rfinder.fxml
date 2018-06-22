@@ -160,7 +160,13 @@
                                     <Insets right="10.0" />
                                  </padding>
                               </Label>
-                              <ComboBox fx:id="diameter" prefWidth="150.0" />
+                              <ComboBox fx:id="diameterBox" prefWidth="150.0" />
+                              <Label text="Zone: ">
+                                 <HBox.margin>
+                                    <Insets left="25.0" right="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ComboBox fx:id="zoneBox" prefWidth="150.0" />
                            </children>
                         </HBox>
                      </children>

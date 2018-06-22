@@ -65,10 +65,12 @@ public class StarMapHandler extends DefaultHandler {
             case "planet":
                 parsingStar = false;
                 String planetID = attributes.getValue("planetId");
+                String planetZone = attributes.getValue("zone");
+                planetZone = planetZone.substring(0, planetZone.indexOf(" "));
                 planet = new Planet(planetID, attributes.getValue("name"),
                         attributes.getValue("bodyType"),
                         attributes.getValue("orbit"),
-                        attributes.getValue("zone"), system);
+                        planetZone, system);
                 system.addPlanet(planet, planetID);
                 break;
             case "geosphere":
