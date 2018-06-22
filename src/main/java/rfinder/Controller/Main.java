@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
@@ -62,15 +63,12 @@ public class Main {
                     protected void updateItem(Object item, boolean empty) {
                         super.updateItem(item, empty);
                         setText(empty ? null : getString());
-                        String styleText = "-fx-background-color:";
-                        if (getString().contains("Star")) styleText += "red";
-                        else if (getString().contains("Inf")) styleText += "red";
-                        else if (getString().contains("Inn")) styleText += "orange";
-                        else if (getString().contains("Hab")) styleText += "green";
-                        else if (getString().contains("Out")) styleText += "blue";
-                        else if (getString().contains("Fri")) styleText += "lightblue";
-                        else styleText += "white";
-                        setStyle(styleText);
+                        if (getString().contains("Star")) this.setTextFill(Color.RED);
+                        else if (getString().contains("Inf")) this.setTextFill(Color.RED);
+                        else if (getString().contains("Inn")) this.setTextFill(Color.ORANGE);
+                        else if (getString().contains("Hab")) this.setTextFill(Color.GREEN);
+                        else if (getString().contains("Out")) this.setTextFill(Color.BLUE);
+                        else if (getString().contains("Fri")) this.setTextFill(Color.LIGHTBLUE);
                     }
 
                     private String getString() {
@@ -88,7 +86,16 @@ public class Main {
                     @Override
                     protected void updateItem(Object item, boolean empty) {
                         if (item != null && !empty) {
-                            super.setText(((Integer) item) == 0 ? "" : item.toString());
+                            if (((Integer) item) == 0) {
+                                super.setText("");
+                                return;
+                            }
+                            super.setText(item.toString());
+                            if (((Integer) item) < 75) this.setTextFill(Color.RED);
+                            else if (((Integer) item) < 155) this.setTextFill(Color.ORANGE);
+                            else if (((Integer) item) < 225) this.setTextFill(Color.GREEN);
+                            else if (((Integer) item) < 245) this.setTextFill(Color.DARKGREEN);
+                            else this.setTextFill(Color.BLUE);
                         } else {
                             super.setText("");
                         }
@@ -96,14 +103,31 @@ public class Main {
                 };
             }
         };
+
+        var percentAdder = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+            @Override
+            public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
+                return new TableCell<>() {
+                    @Override
+                    protected void updateItem(Object item, boolean empty) {
+                        super.setText(empty ? "" : item.toString() + "%");
+                    }
+                };
+            }
+        };
+
         col8.setCellValueFactory(new PropertyValueFactory<>("q1"));
+        col8.setCellFactory(blanker);
         col9.setCellValueFactory(new PropertyValueFactory<>("q2"));
         col9.setCellFactory(blanker);
         col10.setCellValueFactory(new PropertyValueFactory<>("q3"));
         col10.setCellFactory(blanker);
         col11.setCellValueFactory(new PropertyValueFactory<>("a1"));
+        col11.setCellFactory(percentAdder);
         col12.setCellValueFactory(new PropertyValueFactory<>("a2"));
+        col12.setCellFactory(percentAdder);
         col13.setCellValueFactory(new PropertyValueFactory<>("a3"));
+        col13.setCellFactory(percentAdder);
 
         ArrayList<String> resourceTypeNames = ResourceType.getAllNames();
         resourceTypeBox.setItems(FXCollections.observableArrayList(resourceTypeNames));
