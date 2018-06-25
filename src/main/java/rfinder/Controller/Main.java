@@ -242,7 +242,7 @@ public class Main {
     public void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
-        alert.setHeaderText("RFinder 0.1.3");
+        alert.setHeaderText("RFinder 0.2.0");
         alert.setContentText("RFinder Copyright © 2018 expert700, all right reserved.");
 
         alert.show();

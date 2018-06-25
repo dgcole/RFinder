@@ -23,8 +23,8 @@ public class RFinder extends Application {
         mainStage.setTitle("RFinder");
         mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("icon.png")).toString()));
         mainStage.setScene(rootScene);
-        mainStage.setMinWidth(960);
-        mainStage.setMinHeight(540);
+        mainStage.setMinWidth(1024);
+        mainStage.setMinHeight(768);
         mainStage.show();
 
 
