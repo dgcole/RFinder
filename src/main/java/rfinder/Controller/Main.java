@@ -3,8 +3,11 @@ package rfinder.Controller;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -13,6 +16,8 @@ import javafx.util.Callback;
 import rfinder.Hazeron.*;
 import rfinder.Hazeron.System;
 import rfinder.RFinder;
+import rfinder.Tasks.DistributionCalculatorTask;
+import rfinder.Tasks.ResourceFilterTask;
 import rfinder.Util.StarMapHandler;
 
 import javax.xml.parsers.SAXParser;
@@ -20,6 +25,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
@@ -55,6 +61,9 @@ public class Main {
 
     @FXML
     private CheckBox resizeCheckbox;
+
+    @FXML
+    private LineChart<Integer, Double> distributionChart;
 
     private StarMap starMap;
     private boolean resize = false;
@@ -240,7 +249,7 @@ public class Main {
     public void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
-        alert.setHeaderText("RFinder 0.2.0");
+        alert.setHeaderText("RFinder 0.3.0");
         alert.setContentText("Developed by expert700.");
 
         alert.show();
@@ -255,22 +264,39 @@ public class Main {
 
         File selectedFile = fileChooser.showOpenDialog(RFinder.mainStage);
         if (selectedFile != null) {
+            clearStarmap(actionEvent);
             try {
-                SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-                SAXParser saxParser = saxParserFactory.newSAXParser();
 
-                StarMapHandler starMapHandler = new StarMapHandler();
-                saxParser.parse(selectedFile, starMapHandler);
+                Task<StarMap> mainTask = new Task<StarMap>() {
+                    @Override
+                    protected StarMap call() throws Exception {
+                        SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+                        SAXParser saxParser = saxParserFactory.newSAXParser();
 
-                starMap = starMapHandler.getStarMap();
-                refreshTable(null);
+                        StarMapHandler starMapHandler = new StarMapHandler();
+                        saxParser.parse(selectedFile, starMapHandler);
 
-                ArrayList<Galaxy> galaxies = starMap.getGalaxies();
-                Galaxy placeholderGalaxy = new Galaxy();
-                galaxies.sort(Comparator.comparing(Galaxy::getName));
-                galaxies.add(0, placeholderGalaxy);
-                galaxyBox.setItems(FXCollections.observableArrayList(galaxies));
-                galaxyBox.setValue(placeholderGalaxy);
+                        return starMapHandler.getStarMap();
+                    }
+                };
+
+                mainTask.setOnSucceeded(event -> {
+                    starMap = mainTask.getValue();
+                    refreshTable(null);
+
+                    ArrayList<Galaxy> galaxies = starMap.getGalaxies();
+                    Galaxy placeholderGalaxy = new Galaxy();
+                    galaxies.sort(Comparator.comparing(Galaxy::getName));
+                    galaxies.add(0, placeholderGalaxy);
+                    galaxyBox.setItems(FXCollections.observableArrayList(galaxies));
+                    galaxyBox.setValue(placeholderGalaxy);
+
+                    DistributionCalculatorTask distributionCalculatorTask = new DistributionCalculatorTask(starMap.getResources());
+                    distributionCalculatorTask.setOnSucceeded(param -> distributionChart.getData().add(distributionCalculatorTask.getValue()));
+                    new Thread(distributionCalculatorTask).start();
+                });
+
+                new Thread(mainTask).start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -283,76 +309,20 @@ public class Main {
         if (starMap == null) return;
         resourceTable.getItems().clear();
 
-        String type = resourceTypeBox.getValue();
         int minQual = Integer.parseInt(minimumQuality.textProperty().get());
-        for (Resource r : starMap.getResources()) {
-            boolean resourceMatch = (type == null || type.equals("Any")) || r.getResource().equals(type);
 
-            boolean qualityMatch = (r.getQ1() >= minQual ||
-                r.getQ2() >= minQual || r.getQ3() >= minQual);
+        ResourceFilterTask resourceFilterTask = new ResourceFilterTask(starMap.getResources(),
+                resourceTypeBox.getValue(), minQual, galaxyBox.getValue(), sectorBox.getValue(), systemBox.getValue(),
+                range.getText(), diameterBox.getValue(), zoneBox.getValue());
 
-            boolean galaxyMatch = (galaxyBox.getValue() == null || galaxyBox.getValue().isPlaceholder())
-                    || galaxyBox.getValue() == r.getGalaxyInternal();
-
-            boolean sectorMatch = (sectorBox.getValue() == null || sectorBox.getValue().isPlaceholder())
-                    || sectorBox.getValue() == r.getSectorInternal();
-
-            boolean systemMatch = (systemBox.getValue() == null || systemBox.getValue().isPlaceholder())
-                    || systemBox.getValue() == r.getSystemInternal();
-
-            boolean diameterMatch = (diameterBox.getValue() == null || diameterBox.getValue().equals("Any"))
-                    || (diameterBox.getValue().equals("Ringworld") && r.getBody().contains("Ringworld"));
-
-            boolean zoneMatch = (zoneBox.getValue() == null || zoneBox.getValue().equals("Any"))
-                    || zoneBox.getValue().equals(r.getZone());
-
-            if (!diameterMatch) {
-                diameterMatch = diameterBox.getValue().equals(r.getDiameter());
+        resourceFilterTask.setOnSucceeded(event -> {
+            resourceTable.setItems(FXCollections.observableArrayList(resourceFilterTask.getValue()));
+            if (resize) {
+                autoResize();
             }
+        });
 
-            boolean rangeMatch = false;
-
-            if (!range.getText().isEmpty()) {
-                double targetX, targetY, targetZ;
-                targetX = targetY = targetZ = 0;
-                boolean set = false;
-                if ((systemBox.getValue() == null || systemBox.getValue().isPlaceholder())
-                        && (sectorBox.getValue() != null && !sectorBox.getValue().isPlaceholder())) {
-                    Sector target = sectorBox.getValue();
-                    targetX = target.getX() * 10;
-                    targetY = target.getY() * 10;
-                    targetZ = target.getZ() * 10;
-                    set = true;
-                } else if ((systemBox.getValue() != null && !systemBox.getValue().isPlaceholder())) {
-                    System target = systemBox.getValue();
-                    targetX = target.getX();
-                    targetY = target.getY();
-                    targetZ = target.getZ();
-                    set = true;
-                }
-
-                if (set) {
-                    double originX = r.getSystemInternal().getX();
-                    double originY = r.getSystemInternal().getY();
-                    double originZ = r.getSystemInternal().getZ();
-
-                    double dist = Math.sqrt((targetX - originX) * (targetX - originX) +
-                            (targetY - originY) * (targetY - originY) + (targetZ - originZ) * (targetZ - originZ));
-                    if (dist < Double.parseDouble(range.getText())) rangeMatch = true;
-                } else {
-                    rangeMatch = true;
-                }
-            }
-
-
-            if (resourceMatch && qualityMatch && diameterMatch && zoneMatch && ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch)) {
-                resourceTable.getItems().add(r);
-            }
-        }
-
-        if (resize) {
-            autoResize();
-        }
+        new Thread(resourceFilterTask).start();
     }
 
     private void autoResize() {
@@ -374,6 +344,7 @@ public class Main {
 
     @FXML
     public void clearStarmap(ActionEvent actionEvent) {
+        if (starMap == null) return;
         resourceTable.getItems().clear();
         galaxyBox.getItems().clear();
         galaxyBox.setItems(FXCollections.observableArrayList(new Galaxy()));
@@ -381,6 +352,8 @@ public class Main {
         sectorBox.setItems(FXCollections.observableArrayList(new Sector()));
         systemBox.getItems().clear();
         systemBox.setItems(FXCollections.observableArrayList(new System()));
+        distributionChart.getData().clear();
+        starMap = null;
     }
 
     @FXML
