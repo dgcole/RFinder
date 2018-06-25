@@ -31,6 +31,7 @@ public class ResourceFilterTask extends Task<ArrayList<Resource>> {
     @Override
     protected ArrayList<Resource> call() throws Exception {
         ArrayList<Resource> matches = new ArrayList<>();
+
         for (Resource r : resources) {
             boolean resourceMatch = (type == null || type.equals("Any")) || r.getResource().equals(type);
 

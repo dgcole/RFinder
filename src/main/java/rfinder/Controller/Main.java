@@ -1,14 +1,18 @@
 package rfinder.Controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -80,6 +84,40 @@ public class Main {
         clearButton.setOnAction(this::clearTable);
         galaxyBox.setOnAction(this::setGalaxy);
         sectorBox.setOnAction(this::setSector);
+
+        resourceTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        Platform.runLater(() -> {
+            resourceTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), () -> {
+                ObservableList<Resource> resources = resourceTable.getSelectionModel().getSelectedItems();
+                final Clipboard clipboard = Clipboard.getSystemClipboard();
+                final ClipboardContent content = new ClipboardContent();
+                ArrayList<String> data = new ArrayList<String>();
+                for (Resource r : resources) {
+                    data.add(r.getResource());
+                    data.add(r.getGalaxy());
+                    data.add(r.getSector());
+                    data.add(r.getSystem());
+                    data.add(r.getBody());
+                    data.add(r.getDiameter());
+                    data.add(r.getZone());
+                    data.add(String.valueOf(r.getQ1()));
+                    data.add(String.valueOf(r.getQ2()));
+                    data.add(String.valueOf(r.getQ3()));
+                    data.add(String.valueOf(r.getA1()));
+                    data.add(String.valueOf(r.getA2()));
+                    data.add(String.valueOf(r.getA3()));
+                    data.add("\n");
+                }
+                StringBuilder raw = new StringBuilder();
+                for (String s : data) {
+                    raw.append(s);
+                    if (!s.equals("\n")) raw.append("\t");
+                }
+                content.putString(raw.toString());
+                clipboard.setContent(content);
+            });
+        });
 
         col1.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getResource()));
         col2.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getGalaxy()));
@@ -326,10 +364,11 @@ public class Main {
     }
 
     private void autoResize() {
+        if (resourceTable.getItems().isEmpty()) return;
         resourceTable.getColumns().forEach((col) -> {
             Text t = new Text(col.getText());
             double max = t.getLayoutBounds().getWidth();
-            for (int i = 0; i < resourceTable.getItems().size(); i = i + (resourceTable.getItems().size() / 50)) {
+            for (int i = 0; i < resourceTable.getItems().size(); i = i + (resourceTable.getItems().size() / 50) + 1) {
                 if (((TableColumn) col).getCellData(i) != null) {
                     t = new Text(((TableColumn) col).getCellData(i).toString());
                     double calcwidth = t.getLayoutBounds().getWidth();
