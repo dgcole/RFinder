@@ -241,7 +241,7 @@ public class Main {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("RFinder 0.2.0");
-        alert.setContentText("RFinder Copyright © 2018 expert700, all right reserved.");
+        alert.setContentText("Developed by expert700.");
 
         alert.show();
     }
@@ -398,8 +398,10 @@ public class Main {
         if (galaxyBox.getValue() == null || galaxyBox.getValue().isPlaceholder()) return;
         ArrayList<Sector> sectors = galaxyBox.getValue().getSectors();
         sectors.sort(Comparator.comparing(Sector::getName));
-        sectors.add(0, new Sector());
+        Sector placeholderSector = new Sector();
+        sectors.add(0, placeholderSector);
         sectorBox.setItems(FXCollections.observableArrayList(sectors));
+        sectorBox.setValue(placeholderSector);
     }
 
     @FXML
@@ -407,7 +409,9 @@ public class Main {
         if (sectorBox.getValue() == null || sectorBox.getValue().isPlaceholder()) return;
         ArrayList<System> systems = sectorBox.getValue().getSystems();
         systems.sort(Comparator.comparing(System::getName));
-        systems.add(0, new System());
+        System placeholderSystem = new System();
+        systems.add(0, placeholderSystem);
         systemBox.setItems(FXCollections.observableArrayList(systems));
+        systemBox.setValue(placeholderSystem);
     }
 }
