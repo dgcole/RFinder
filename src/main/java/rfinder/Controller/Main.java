@@ -2,12 +2,10 @@ package rfinder.Controller;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -114,15 +112,15 @@ public class Main {
                     @Override
                     protected void updateItem(Integer item, boolean empty) {
                         if (item != null && !empty) {
-                            if (((Integer) item) == 0) {
+                            if (item == 0) {
                                 super.setText("");
                                 return;
                             }
                             super.setText(item.toString());
-                            if (((Integer) item) < 75) this.setTextFill(Color.RED);
-                            else if (((Integer) item) < 155) this.setTextFill(Color.ORANGE);
-                            else if (((Integer) item) < 225) this.setTextFill(Color.GREEN);
-                            else if (((Integer) item) < 245) this.setTextFill(Color.DARKGREEN);
+                            if (item < 75) this.setTextFill(Color.RED);
+                            else if (item < 155) this.setTextFill(Color.ORANGE);
+                            else if (item < 225) this.setTextFill(Color.GREEN);
+                            else if (item < 245) this.setTextFill(Color.DARKGREEN);
                             else this.setTextFill(Color.BLUE);
                         } else {
                             super.setText("");
