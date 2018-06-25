@@ -8,8 +8,6 @@
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod
 -adaptresourcefilecontents **.fxml,**.properties,META-INF/MANIFEST.MF
 
-
-
 # Keep - Applications. Keep all application classes, along with their 'main'
 # methods.
 -keepclasseswithmembers public class com.javafx.main.Main,obfuscationexample.ObfuscationExample {

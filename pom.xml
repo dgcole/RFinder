@@ -53,7 +53,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <proguardInclude>config</proguardInclude>
+                    <proguardInclude>config.pro</proguardInclude>
                     <outjar>${project.build.finalName}-obf.jar</outjar>
                     <libs>
                         <lib>${java.home}/lib/rt.jar</lib>
@@ -79,8 +79,8 @@
                             <priority>normal</priority>
                             <downloadUrl>http://java.com/download</downloadUrl>
                             <stayAlive>false</stayAlive>
-                            <restartOnCrash>true</restartOnCrash>
-                            <icon>${project.basedir}/l4j_assets/icon.ico</icon>
+                            <restartOnCrash>false</restartOnCrash>
+                            <icon>l4j_assets/icon.ico</icon>
                             <jre>
                                 <bundledJre64Bit>false</bundledJre64Bit>
                                 <bundledJreAsFallback>false</bundledJreAsFallback>
@@ -91,7 +91,7 @@
                             <versionInfo>
                                 <fileVersion>${project.version}.0</fileVersion>
                                 <txtFileVersion>${project.version}</txtFileVersion>
-                                <fileDescription>A Hazeron Star Map helper.</fileDescription>
+                                <fileDescription>RFinder</fileDescription>
                                 <copyright>Copyright © 2018 expert700, all right reserved.</copyright>
                                 <productVersion>${project.version}.0</productVersion>
                                 <txtProductVersion>${project.version}</txtProductVersion>
