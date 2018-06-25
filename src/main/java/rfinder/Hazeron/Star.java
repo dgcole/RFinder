@@ -1,67 +1,24 @@
 package rfinder.Hazeron;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class Star {
-    private String starID, name, orbit, spectralClass, size, hab, shell, diameter;
-    private HashMap<ResourceType, Resource> resources;
+    private String name, diameter;
     private System parent;
 
-    public Star(String starID, String name, String orbit, String spectralClass, String size, String hab, String shell, String diameter, System parent) {
-        this.starID = starID;
+    public Star(String name, String diameter, System parent) {
         this.name = name;
-        this.orbit = orbit;
-        this.spectralClass = spectralClass;
-        this.size = size;
-        this.hab = hab;
-        this.shell = shell;
         this.diameter = diameter;
         this.parent = parent;
-        this.resources = new HashMap<>();
     }
 
-    public void addResource(Resource resource, ResourceType type) {
-        resources.put(type, resource);
-    }
-
-    public String getID() {
-        return starID;
-    }
-
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public String getOrbit() {
-        return orbit;
-    }
-
-    public String getSpectralClass() {
-        return spectralClass;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public String getHab() {
-        return hab;
-    }
-
-    public String getShell() {
-        return shell;
-    }
-
-    public String getDiameter() {
+    String getDiameter() {
         return diameter;
     }
 
-    public ArrayList<Resource> getResources() {
-        return new ArrayList<>(resources.values());
-    }
-
-    public System getParent() {
+    System getParent() {
         return parent;
     }
 }

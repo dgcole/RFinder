@@ -1,12 +1,8 @@
 package rfinder.Util;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import rfinder.Hazeron.*;
-
-import java.lang.System;
-import java.util.List;
 
 public class StarMapHandler extends DefaultHandler {
     private StarMap starMap;
@@ -15,24 +11,22 @@ public class StarMapHandler extends DefaultHandler {
     private rfinder.Hazeron.System system;
     private Planet planet;
     private Star star;
-    private String sphere;
-    private int zones = 0;
     private boolean parsingStar = false;
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
         switch (qName) {
             case "starmap":
-                starMap = new StarMap(attributes.getValue("empire"));
+                starMap = new StarMap();
                 break;
             case "galaxy":
                 String galaxyName = attributes.getValue("name");
-                galaxy = new Galaxy(galaxyName, starMap);
+                galaxy = new Galaxy(galaxyName);
                 starMap.addGalaxy(galaxy, galaxyName);
                 break;
             case "sector":
                 String sectorID = attributes.getValue("sectorId");
-                sector = new Sector(sectorID, attributes.getValue("name"),
+                sector = new Sector(attributes.getValue("name"),
                         Integer.parseInt(attributes.getValue("x")),
                         Integer.parseInt(attributes.getValue("y")),
                         Integer.parseInt(attributes.getValue("z")), galaxy);
@@ -40,54 +34,28 @@ public class StarMapHandler extends DefaultHandler {
                 break;
             case "system":
                 String systemID = attributes.getValue("systemId");
-                system = new rfinder.Hazeron.System(systemID, attributes.getValue("name"),
-                        attributes.getValue("eod"),
+                system = new rfinder.Hazeron.System(attributes.getValue("name"),
                         Double.parseDouble(attributes.getValue("x")),
                         Double.parseDouble(attributes.getValue("y")),
                         Double.parseDouble(attributes.getValue("z")), sector);
                 sector.addSystem(system, systemID);
                 break;
             case "star":
-                sphere = "heliosphere";
                 parsingStar = true;
-                String starID = attributes.getValue("starId");
                 String diameter = attributes.getValue("diameter");
                 diameter = diameter.substring(0, diameter.indexOf("au") + 2);
-                star = new Star(starID, attributes.getValue("name"),
-                        attributes.getValue("orbit"),
-                        attributes.getValue("spectralClass"),
-                        attributes.getValue("size"),
-                        attributes.getValue("hab"),
-                        attributes.getValue("shell"),
-                        diameter, system);
-                system.addStar(star, starID);
+                star = new Star(attributes.getValue("name"), diameter, system);
                 break;
             case "planet":
                 parsingStar = false;
-                String planetID = attributes.getValue("planetId");
                 String planetZone = attributes.getValue("zone");
                 planetZone = planetZone.substring(0, planetZone.indexOf(" "));
-                planet = new Planet(planetID, attributes.getValue("name"),
-                        attributes.getValue("bodyType"),
-                        attributes.getValue("orbit"),
-                        planetZone, system);
-                system.addPlanet(planet, planetID);
+                planet = new Planet(attributes.getValue("name"), planetZone, system);
                 break;
             case "geosphere":
-                sphere = "geosphere";
-                zones = Integer.parseInt(attributes.getValue("resourceZones"));
                 String pDiameter = attributes.getValue("diameter");
                 pDiameter = pDiameter.substring(0, pDiameter.indexOf("m") + 1);
                 planet.setDiameter(pDiameter);
-                break;
-            case "hydrosphere":
-                sphere = "hydrosphere";
-                break;
-            case "atmosphere":
-                sphere = "atmosphere";
-                break;
-            case "biosphere":
-                sphere = "biosphere";
                 break;
             case "resource":
                 ResourceType resourceType = ResourceType.getType(attributes.getValue("name"));
@@ -108,14 +76,12 @@ public class StarMapHandler extends DefaultHandler {
                         Integer.parseInt(attributes.getValue("abundanceZone3")) : 0;
 
                 if (parsingStar) {
-                    Resource resource = new Resource(resourceType, sphere.equals("geosphere") ? zones : 1, q1, q2, q3, a1,
-                            a2, a3, sphere, star);
-                    star.addResource(resource, resourceType);
+                    Resource resource = new Resource(resourceType, q1, q2, q3, a1,
+                            a2, a3, star);
                     starMap.addResource(resource);
                 } else {
-                    Resource resource = new Resource(resourceType, sphere.equals("geosphere") ? zones : 1, q1, q2, q3, a1,
-                            a2, a3, sphere, planet);
-                    planet.addResource(resource, resourceType);
+                    Resource resource = new Resource(resourceType, q1, q2, q3, a1,
+                            a2, a3, planet);
                     starMap.addResource(resource);
                 }
                 break;

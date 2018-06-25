@@ -4,18 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StarMap {
-    private String empireName;
     private HashMap<String, Galaxy> galaxies;
     private ArrayList<Resource> resources;
 
-    public StarMap(String empireName) {
-        this.empireName = empireName;
+    public StarMap() {
         galaxies = new HashMap<>();
         resources = new ArrayList<>();
-    }
-
-    public String getEmpireName() {
-        return empireName;
     }
 
     public void addGalaxy(Galaxy galaxy, String galaxyName) {

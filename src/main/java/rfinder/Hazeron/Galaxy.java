@@ -6,16 +6,14 @@ import java.util.HashMap;
 public class Galaxy {
     private String name;
     private HashMap<String, Sector> sectors;
-    private StarMap parent;
     private boolean placeholder;
 
     public Galaxy() {
         this.placeholder = true;
         this.name = "Any";
     }
-    public Galaxy(String name, StarMap parent) {
+    public Galaxy(String name) {
         this.name = name;
-        this.parent = parent;
         this.placeholder = false;
         sectors = new HashMap<>();
     }
@@ -30,10 +28,6 @@ public class Galaxy {
 
     public ArrayList<Sector> getSectors() {
         return new ArrayList<>(sectors.values());
-    }
-
-    public StarMap getParent() {
-        return parent;
     }
 
     public boolean isPlaceholder() {

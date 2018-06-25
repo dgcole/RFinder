@@ -18,7 +18,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 public class Main {
@@ -27,7 +26,7 @@ public class Main {
     private TableColumn<Object, Object> col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13;
 
     @FXML
-    private TableView resourceTable;
+    private TableView<Resource> resourceTable;
 
     @FXML
     private ComboBox<String> resourceTypeBox, diameterBox, zoneBox;
@@ -57,7 +56,8 @@ public class Main {
         col5.setCellValueFactory(new PropertyValueFactory<>("body"));
         col6.setCellValueFactory(new PropertyValueFactory<>("diameter"));
         col7.setCellValueFactory(new PropertyValueFactory<>("zone"));
-        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> colorizer = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> colorizer =
+                new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
             @Override
             public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
                 return new TableCell<Object, Object>() {
@@ -77,11 +77,12 @@ public class Main {
                         return getItem() == null ? "" : getItem().toString();
                     }
                 };
-            };
+            }
         };
         col7.setCellFactory(colorizer);
 
-        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> blanker = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> blanker =
+                new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
             @Override
             public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
                 return new TableCell<Object, Object>() {
@@ -106,7 +107,8 @@ public class Main {
             }
         };
 
-        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> percentAdder = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> percentAdder =
+                new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
             @Override
             public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
                 return new TableCell<Object, Object>() {
@@ -207,12 +209,12 @@ public class Main {
     }
 
     @FXML
-    public void exit(ActionEvent actionEvent) {
+    public void exit() {
         RFinder.mainStage.close();
     }
 
     @FXML
-    public void about(ActionEvent actionEvent) {
+    public void about() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("RFinder 0.1.3");
@@ -222,7 +224,7 @@ public class Main {
     }
 
     @FXML
-    public void importStarmap(ActionEvent actionEvent) {
+    public void importStarmap() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open StarMap");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("StarMap (*.xml)", "*.xml"));
@@ -250,6 +252,7 @@ public class Main {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @FXML
     public void refreshTable() {
         if (starMap == null) return;
@@ -323,30 +326,36 @@ public class Main {
         }
 
         if (resize) {
-            resourceTable.getColumns().stream().forEach((col) -> {
-                TableColumn column = (TableColumn) col;
-                Text t = new Text(column.getText());
-                double max = t.getLayoutBounds().getWidth();
-                for (int i = 0; i < resourceTable.getItems().size(); i = i + (resourceTable.getItems().size() / 50)) {
-                    if (column.getCellData(i) != null) {
-                        t = new Text(column.getCellData(i).toString());
-                        double calcwidth = t.getLayoutBounds().getWidth();
-                        if (calcwidth > max) {
-                            max = calcwidth;
-                        }
+            autoResize();
+        }
+    }
+
+    private void autoResize() {
+        resourceTable.getColumns().forEach((col) -> {
+            Text t = new Text(col.getText());
+            double max = t.getLayoutBounds().getWidth();
+            for (int i = 0; i < resourceTable.getItems().size(); i = i + (resourceTable.getItems().size() / 50)) {
+                if (((TableColumn) col).getCellData(i) != null) {
+                    t = new Text(((TableColumn) col).getCellData(i).toString());
+                    double calcwidth = t.getLayoutBounds().getWidth();
+                    if (calcwidth > max) {
+                        max = calcwidth;
                     }
                 }
-                column.setPrefWidth(max + 20.0d);
-            });
-        }
+            }
+            col.setPrefWidth(max + 20.0d);
+        });
     }
 
     @FXML
     public void clearStarmap() {
         resourceTable.getItems().clear();
         galaxyBox.getItems().clear();
+        galaxyBox.setItems(FXCollections.observableArrayList(new Galaxy()));
         sectorBox.getItems().clear();
+        sectorBox.setItems(FXCollections.observableArrayList(new Sector()));
         systemBox.getItems().clear();
+        systemBox.setItems(FXCollections.observableArrayList(new System()));
     }
 
     @FXML
@@ -355,12 +364,12 @@ public class Main {
     }
 
     @FXML
-    public void clearTable(ActionEvent actionEvent) {
+    public void clearTable() {
         resourceTable.getItems().clear();
     }
 
     @FXML
-    public void setGalaxy(ActionEvent actionEvent) {
+    public void setGalaxy() {
         if (galaxyBox.getValue() == null || galaxyBox.getValue().isPlaceholder()) return;
         ArrayList<Sector> sectors = galaxyBox.getValue().getSectors();
         sectors.sort(Comparator.comparing(Sector::getName));
@@ -369,7 +378,7 @@ public class Main {
     }
 
     @FXML
-    public void setSector(ActionEvent actionEvent) {
+    public void setSector() {
         if (sectorBox.getValue() == null || sectorBox.getValue().isPlaceholder()) return;
         ArrayList<System> systems = sectorBox.getValue().getSystems();
         systems.sort(Comparator.comparing(System::getName));

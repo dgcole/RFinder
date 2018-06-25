@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Sector {
-    private String id, name;
+    private String name;
     private int x, y, z;
     private HashMap<String, System> systems;
     private Galaxy parent;
@@ -15,8 +15,7 @@ public class Sector {
         this.name = "Any";
     }
 
-    public Sector(String id, String name, int x, int y, int z, Galaxy parent) {
-        this.id = id;
+    public Sector(String name, int x, int y, int z, Galaxy parent) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -33,10 +32,6 @@ public class Sector {
 
     public void addSystem(System system, String systemID) {
         systems.put(systemID, system);
-    }
-
-    public String getID() {
-        return id;
     }
 
     public String getName() {
@@ -59,7 +54,7 @@ public class Sector {
         return new ArrayList<>(systems.values());
     }
 
-    public Galaxy getParent() {
+    Galaxy getParent() {
         return parent;
     }
 
