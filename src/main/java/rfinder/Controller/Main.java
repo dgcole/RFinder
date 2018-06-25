@@ -58,7 +58,7 @@ public class Main {
         col5.setCellValueFactory(new PropertyValueFactory<>("body"));
         col6.setCellValueFactory(new PropertyValueFactory<>("diameter"));
         col7.setCellValueFactory(new PropertyValueFactory<>("zone"));
-        var colorizer = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> colorizer = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
             @Override
             public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
                 return new TableCell<Object, Object>() {
@@ -82,10 +82,10 @@ public class Main {
         };
         col7.setCellFactory(colorizer);
 
-        var blanker = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> blanker = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
             @Override
             public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
-                return new TableCell<>() {
+                return new TableCell<Object, Object>() {
                     @Override
                     protected void updateItem(Object item, boolean empty) {
                         if (item != null && !empty) {
@@ -107,10 +107,10 @@ public class Main {
             }
         };
 
-        var percentAdder = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> percentAdder = new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
             @Override
             public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
-                return new TableCell<>() {
+                return new TableCell<Object, Object>() {
                     @Override
                     protected void updateItem(Object item, boolean empty) {
                         super.setText(empty ? "" : item.toString() + "%");
