@@ -109,7 +109,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4">
                <children>
-                  <Label text="Diameter:">
+                  <Label text="Geosphere Diameter:">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
@@ -132,7 +132,7 @@
             <TableColumn fx:id="col3" prefWidth="75.0" text="Sector" />
             <TableColumn fx:id="col4" prefWidth="75.0" text="System" />
             <TableColumn fx:id="col5" prefWidth="75.0" text="Body" />
-            <TableColumn fx:id="col6" prefWidth="75.0" text="Diameter" />
+            <TableColumn fx:id="col6" prefWidth="125.0" text="Geosphere Diameter" />
             <TableColumn fx:id="col7" prefWidth="75.0" text="Zone" />
             <TableColumn fx:id="col8" prefWidth="75.0" text="Q1" />
             <TableColumn fx:id="col9" prefWidth="75.0" text="Q2" />

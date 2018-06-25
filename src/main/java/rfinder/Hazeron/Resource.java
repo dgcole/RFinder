@@ -100,7 +100,7 @@ public class Resource {
     @FXML
     public String getDiameter() {
         if (parentIsStar) {
-            return ((Star) parent).getDiameter();
+            return "N/A";
         } else {
             return ((Planet) parent).getDiameter();
         }
