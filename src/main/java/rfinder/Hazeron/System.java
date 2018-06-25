@@ -1,10 +1,10 @@
 package rfinder.Hazeron;
 
 public class System {
-    private String name;
+    private final String name;
     private double x, y, z;
     private Sector parent;
-    private boolean placeholder;
+    private final boolean placeholder;
 
     public System() {
         this.placeholder = true;

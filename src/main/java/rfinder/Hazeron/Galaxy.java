@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Galaxy {
-    private String name;
+    private final String name;
     private HashMap<String, Sector> sectors;
-    private boolean placeholder;
+    private final boolean placeholder;
 
     public Galaxy() {
         this.placeholder = true;

@@ -3,10 +3,10 @@ package rfinder.Hazeron;
 import javafx.fxml.FXML;
 
 public class Resource {
-    private ResourceType type;
-    private int q1, q2, q3, a1, a2, a3;
-    private Object parent;
-    private boolean parentIsStar;
+    private final ResourceType type;
+    private final int q1, q2, q3, a1, a2, a3;
+    private final Object parent;
+    private final boolean parentIsStar;
 
     public Resource(ResourceType type, int q1, int q2, int q3, int a1, int a2, int a3, Star parent) {
         this.type = type;

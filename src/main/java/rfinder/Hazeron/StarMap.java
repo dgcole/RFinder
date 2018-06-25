@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StarMap {
-    private HashMap<String, Galaxy> galaxies;
-    private ArrayList<Resource> resources;
+    private final HashMap<String, Galaxy> galaxies;
+    private final ArrayList<Resource> resources;
 
     public StarMap() {
         galaxies = new HashMap<>();

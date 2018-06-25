@@ -1,8 +1,9 @@
 package rfinder.Hazeron;
 
 public class Planet {
-    private String name, zone, diameter;
-    private System parent;
+    private final String name, zone;
+    private String diameter;
+    private final System parent;
 
     public Planet(String name, String zone, System parent) {
         this.name = name;

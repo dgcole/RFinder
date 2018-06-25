@@ -1,8 +1,8 @@
 package rfinder.Hazeron;
 
 public class Star {
-    private String name, diameter;
-    private System parent;
+    private final String name, diameter;
+    private final System parent;
 
     public Star(String name, String diameter, System parent) {
         this.name = name;

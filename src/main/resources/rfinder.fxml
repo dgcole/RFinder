@@ -19,182 +19,161 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.Main">
+<GridPane alignment="center" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/8.0.121"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.Main">
     <columnConstraints>
-        <ColumnConstraints />
-        <ColumnConstraints />
-      <ColumnConstraints />
-      <ColumnConstraints />
-      <ColumnConstraints />
+        <ColumnConstraints/>
+        <ColumnConstraints/>
+        <ColumnConstraints/>
+        <ColumnConstraints/>
+        <ColumnConstraints/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-      <RowConstraints />
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
     </rowConstraints>
-    <children>
-        <MenuBar GridPane.columnIndex="3">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#importStarmap" text="Import Starmap" />
-                        <MenuItem mnemonicParsing="false" onAction="#clearStarmap" text="Clear Starmap" />
-                        <SeparatorMenuItem />
-                        <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
-        <tabs>
-          <Tab text="Config">
-               <content>
-                  <GridPane>
+    <MenuBar GridPane.columnIndex="3">
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" onAction="#importStarmap" text="Import Starmap"/>
+            <MenuItem mnemonicParsing="false" onAction="#clearStarmap" text="Clear Starmap"/>
+            <SeparatorMenuItem/>
+            <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" onAction="#about" text="About"/>
+        </Menu>
+    </MenuBar>
+    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="3"
+             GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+        <Tab text="Config">
+            <GridPane>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="33.0" vgrow="SOMETIMES"/>
+                    <RowConstraints percentHeight="33.0" vgrow="SOMETIMES"/>
+                    <RowConstraints percentHeight="33.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" percentHeight="33.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                </rowConstraints>
+                <GridPane>
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints percentHeight="33.0" vgrow="SOMETIMES" />
-                      <RowConstraints percentHeight="33.0" vgrow="SOMETIMES" />
-                      <RowConstraints percentHeight="33.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" percentHeight="33.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                     </rowConstraints>
-                     <children>
-                        <GridPane>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#refreshTable" text="Refresh Table" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <CheckBox mnemonicParsing="false" onAction="#setResize" text="Auto-Resize Table" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Button mnemonicParsing="false" onAction="#clearTable" text="Clear Table" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                           </children>
-                        </GridPane>
-                        <HBox alignment="CENTER" GridPane.rowIndex="1">
-                           <children>
-                              <Label text="Resource Type:">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin></Label>
-                              <ComboBox fx:id="resourceTypeBox" prefWidth="150.0" />
-                              <Label text="Minimum Quality:">
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets>
-                                 <HBox.margin>
-                                    <Insets left="25.0" right="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <TextField fx:id="minimumQuality" text="1" />
-                           </children>
-                        </HBox>
-                        <GridPane GridPane.rowIndex="2">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label text="Galaxy:">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <ComboBox fx:id="galaxyBox" onAction="#setGalaxy" prefWidth="150.0" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                 <children>
-                                    <Label text="Sector:">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <ComboBox fx:id="sectorBox" onAction="#setSector" prefWidth="150.0" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                 <children>
-                                    <Label text="System:">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <ComboBox fx:id="systemBox" prefWidth="150.0" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <children>
-                                    <Label text="Range (pc):">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <TextField fx:id="range" />
-                                 </children></HBox>
-                           </children>
-                        </GridPane>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
-                           <children>
-                              <Label text="Diameter:">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets right="10.0" />
-                                 </padding>
-                              </Label>
-                              <ComboBox fx:id="diameterBox" prefWidth="150.0" />
-                              <Label text="Zone: ">
-                                 <HBox.margin>
-                                    <Insets left="25.0" right="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <ComboBox fx:id="zoneBox" prefWidth="150.0" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </GridPane>
-               </content>
-          </Tab>
-          <Tab text="Resources">
-               <content>
-                  <TableView fx:id="resourceTable" prefHeight="200.0" prefWidth="200.0">
-                     <columns>
-                        <TableColumn fx:id="col1" prefWidth="75.0" text="Resource" />
-                        <TableColumn fx:id="col2" prefWidth="75.0" text="Galaxy" />
-                        <TableColumn fx:id="col3" prefWidth="75.0" text="Sector" />
-                        <TableColumn fx:id="col4" prefWidth="75.0" text="System" />
-                        <TableColumn fx:id="col5" prefWidth="75.0" text="Body" />
-                        <TableColumn fx:id="col6" prefWidth="75.0" text="Diameter" />
-                        <TableColumn fx:id="col7" prefWidth="75.0" text="Zone" />
-                        <TableColumn fx:id="col8" prefWidth="75.0" text="Q1" />
-                        <TableColumn fx:id="col9" prefWidth="75.0" text="Q2" />
-                        <TableColumn fx:id="col10" prefWidth="75.0" text="Q3" />
-                        <TableColumn fx:id="col11" prefWidth="75.0" text="A1" />
-                        <TableColumn fx:id="col12" prefWidth="75.0" text="A2" />
-                        <TableColumn fx:id="col13" prefWidth="75.0" text="A3" />
-                     </columns>
-                  </TableView>
-               </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-    </children>
+                    <Button mnemonicParsing="false" onAction="#refreshTable" text="Refresh Table"
+                            GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+                    <CheckBox mnemonicParsing="false" onAction="#setResize" text="Auto-Resize Table"
+                              GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                              GridPane.valignment="CENTER"/>
+                    <Button mnemonicParsing="false" onAction="#clearTable" text="Clear Table"
+                            GridPane.columnIndex="2" GridPane.halignment="CENTER"
+                            GridPane.valignment="CENTER"/>
+                </GridPane>
+                <HBox alignment="CENTER" GridPane.rowIndex="1">
+                    <Label text="Resource Type:">
+                        <HBox.margin>
+                            <Insets right="10.0"/>
+                        </HBox.margin>
+                    </Label>
+                    <ComboBox fx:id="resourceTypeBox" prefWidth="150.0"/>
+                    <Label text="Minimum Quality:">
+                        <opaqueInsets>
+                            <Insets/>
+                        </opaqueInsets>
+                        <HBox.margin>
+                            <Insets left="25.0" right="10.0"/>
+                        </HBox.margin>
+                    </Label>
+                    <TextField fx:id="minimumQuality" text="1"/>
+                </HBox>
+                <GridPane GridPane.rowIndex="2">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <Label text="Galaxy:">
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <ComboBox fx:id="galaxyBox" onAction="#setGalaxy" prefWidth="150.0"/>
+                    </HBox>
+                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
+                          GridPane.columnIndex="1">
+                        <Label text="Sector:">
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <ComboBox fx:id="sectorBox" onAction="#setSector" prefWidth="150.0"/>
+                    </HBox>
+                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <Label text="System:">
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <ComboBox fx:id="systemBox" prefWidth="150.0"/>
+                    </HBox>
+                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
+                          GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="Range (pc):">
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="range"/>
+                    </HBox>
+                </GridPane>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                    <Label text="Diameter:">
+                        <HBox.margin>
+                            <Insets/>
+                        </HBox.margin>
+                        <padding>
+                            <Insets right="10.0"/>
+                        </padding>
+                    </Label>
+                    <ComboBox fx:id="diameterBox" prefWidth="150.0"/>
+                    <Label text="Zone: ">
+                        <HBox.margin>
+                            <Insets left="25.0" right="10.0"/>
+                        </HBox.margin>
+                    </Label>
+                    <ComboBox fx:id="zoneBox" prefWidth="150.0"/>
+                </HBox>
+            </GridPane>
+        </Tab>
+        <Tab text="Resources">
+            <TableView fx:id="resourceTable" prefHeight="200.0" prefWidth="200.0">
+                <columns>
+                    <TableColumn fx:id="col1" prefWidth="75.0" text="Resource"/>
+                    <TableColumn fx:id="col2" prefWidth="75.0" text="Galaxy"/>
+                    <TableColumn fx:id="col3" prefWidth="75.0" text="Sector"/>
+                    <TableColumn fx:id="col4" prefWidth="75.0" text="System"/>
+                    <TableColumn fx:id="col5" prefWidth="75.0" text="Body"/>
+                    <TableColumn fx:id="col6" prefWidth="75.0" text="Diameter"/>
+                    <TableColumn fx:id="col7" prefWidth="75.0" text="Zone"/>
+                    <TableColumn fx:id="col8" prefWidth="75.0" text="Q1"/>
+                    <TableColumn fx:id="col9" prefWidth="75.0" text="Q2"/>
+                    <TableColumn fx:id="col10" prefWidth="75.0" text="Q3"/>
+                    <TableColumn fx:id="col11" prefWidth="75.0" text="A1"/>
+                    <TableColumn fx:id="col12" prefWidth="75.0" text="A2"/>
+                    <TableColumn fx:id="col13" prefWidth="75.0" text="A3"/>
+                </columns>
+            </TableView>
+        </Tab>
+    </TabPane>
 </GridPane>

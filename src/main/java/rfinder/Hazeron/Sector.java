@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Sector {
-    private String name;
+    private final String name;
     private int x, y, z;
     private HashMap<String, System> systems;
     private Galaxy parent;
-    private boolean placeholder;
+    private final boolean placeholder;
 
     public Sector() {
         this.placeholder = true;
