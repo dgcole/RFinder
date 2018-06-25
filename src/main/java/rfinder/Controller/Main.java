@@ -268,9 +268,11 @@ public class Main {
                 refreshTable(null);
 
                 ArrayList<Galaxy> galaxies = starMap.getGalaxies();
+                Galaxy placeholderGalaxy = new Galaxy();
                 galaxies.sort(Comparator.comparing(Galaxy::getName));
-                galaxies.add(0, new Galaxy());
+                galaxies.add(0, placeholderGalaxy);
                 galaxyBox.setItems(FXCollections.observableArrayList(galaxies));
+                galaxyBox.setValue(placeholderGalaxy);
             } catch (Exception e) {
                 e.printStackTrace();
             }
