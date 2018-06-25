@@ -1,12 +1,15 @@
 -target 1.8
 -dontshrink
--optimizationpasses 2
+-optimizationpasses 4
 -allowaccessmodification
 -mergeinterfacesaggressively
 -overloadaggressively
--flattenpackagehierarchy ''
+-flattenpackagehierarchy 'go_away'
+-repackageclasses 'go_away'
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod
 -adaptresourcefilecontents **.fxml,**.properties,META-INF/MANIFEST.MF
+-adaptresourcefilenames **.fxml
+-adaptclassstrings
 
 # Keep - Applications. Keep all application classes, along with their 'main'
 # methods.
@@ -17,8 +20,9 @@
 -keepclassmembers,allowshrinking class * {
     @javafx.fxml.FXML
     <fields>;
+
     @javafx.fxml.FXML
-    <methods>;
+    void initialize();
 }
 
 # Remove - System method calls. Remove all invocations of System

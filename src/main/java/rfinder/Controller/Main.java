@@ -1,5 +1,8 @@
 package rfinder.Controller;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +26,10 @@ import java.util.Comparator;
 public class Main {
 
     @FXML
-    private TableColumn<Object, Object> col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13;
+    private TableColumn<Resource, String> col1, col2, col3, col4, col5, col6, col7;
+
+    @FXML
+    private TableColumn<Resource, Integer> col8, col9, col10, col11, col12, col13;
 
     @FXML
     private TableView<Resource> resourceTable;
@@ -43,26 +49,45 @@ public class Main {
     @FXML
     private TextField minimumQuality, range;
 
+    @FXML
+    private MenuItem importItem, clearItem, exitItem, aboutItem;
+
+    @FXML
+    private Button refreshButton, clearButton;
+
+    @FXML
+    private CheckBox resizeCheckbox;
+
     private StarMap starMap;
     private boolean resize = false;
 
     @SuppressWarnings("Duplicates")
     @FXML
     void initialize() {
-        col1.setCellValueFactory(new PropertyValueFactory<>("resource"));
-        col2.setCellValueFactory(new PropertyValueFactory<>("galaxy"));
-        col3.setCellValueFactory(new PropertyValueFactory<>("sector"));
-        col4.setCellValueFactory(new PropertyValueFactory<>("system"));
-        col5.setCellValueFactory(new PropertyValueFactory<>("body"));
-        col6.setCellValueFactory(new PropertyValueFactory<>("diameter"));
-        col7.setCellValueFactory(new PropertyValueFactory<>("zone"));
-        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> colorizer =
-                new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+        importItem.setOnAction(this::importStarmap);
+        clearItem.setOnAction(this::clearStarmap);
+        exitItem.setOnAction(this::exit);
+        aboutItem.setOnAction(this::about);
+        refreshButton.setOnAction(this::refreshTable);
+        resizeCheckbox.setOnAction(this::setResize);
+        clearButton.setOnAction(this::clearTable);
+        galaxyBox.setOnAction(this::setGalaxy);
+        sectorBox.setOnAction(this::setSector);
+
+        col1.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getResource()));
+        col2.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getGalaxy()));
+        col3.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getSector()));
+        col4.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getSystem()));
+        col5.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getBody()));
+        col6.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getDiameter()));
+        col7.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getZone()));
+        Callback<TableColumn<Resource, String>, TableCell<Resource, String>> colorizer =
+                new Callback<TableColumn<Resource, String>, TableCell<Resource, String>>() {
             @Override
-            public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
-                return new TableCell<Object, Object>() {
+            public TableCell<Resource, String> call(TableColumn<Resource, String> param) {
+                return new TableCell<Resource, String>() {
                     @Override
-                    protected void updateItem(Object item, boolean empty) {
+                    protected void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
                         setText(empty ? null : getString());
                         if (getString().contains("Star")) this.setTextFill(Color.RED);
@@ -74,20 +99,20 @@ public class Main {
                     }
 
                     private String getString() {
-                        return getItem() == null ? "" : getItem().toString();
+                        return getItem() == null ? "" : getItem();
                     }
                 };
             }
         };
         col7.setCellFactory(colorizer);
 
-        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> blanker =
-                new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+        Callback<TableColumn<Resource, Integer>, TableCell<Resource, Integer>> blanker =
+                new Callback<TableColumn<Resource, Integer>, TableCell<Resource, Integer>>() {
             @Override
-            public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
-                return new TableCell<Object, Object>() {
+            public TableCell<Resource, Integer> call(TableColumn<Resource, Integer> param) {
+                return new TableCell<Resource, Integer>() {
                     @Override
-                    protected void updateItem(Object item, boolean empty) {
+                    protected void updateItem(Integer item, boolean empty) {
                         if (item != null && !empty) {
                             if (((Integer) item) == 0) {
                                 super.setText("");
@@ -107,30 +132,30 @@ public class Main {
             }
         };
 
-        Callback<TableColumn<Object, Object>, TableCell<Object, Object>> percentAdder =
-                new Callback<TableColumn<Object, Object>, TableCell<Object, Object>>() {
+        Callback<TableColumn<Resource, Integer>, TableCell<Resource, Integer>> percentAdder =
+                new Callback<TableColumn<Resource, Integer>, TableCell<Resource, Integer>>() {
             @Override
-            public TableCell<Object, Object> call(TableColumn<Object, Object> param) {
-                return new TableCell<Object, Object>() {
+            public TableCell<Resource, Integer> call(TableColumn<Resource, Integer> param) {
+                return new TableCell<Resource, Integer>() {
                     @Override
-                    protected void updateItem(Object item, boolean empty) {
+                    protected void updateItem(Integer item, boolean empty) {
                         super.setText(empty ? "" : item.toString() + "%");
                     }
                 };
             }
         };
 
-        col8.setCellValueFactory(new PropertyValueFactory<>("q1"));
+        col8.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getQ1()));
         col8.setCellFactory(blanker);
-        col9.setCellValueFactory(new PropertyValueFactory<>("q2"));
+        col9.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getQ2()));
         col9.setCellFactory(blanker);
-        col10.setCellValueFactory(new PropertyValueFactory<>("q3"));
+        col10.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getQ3()));
         col10.setCellFactory(blanker);
-        col11.setCellValueFactory(new PropertyValueFactory<>("a1"));
+        col11.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getA1()));
         col11.setCellFactory(percentAdder);
-        col12.setCellValueFactory(new PropertyValueFactory<>("a2"));
+        col12.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getA2()));
         col12.setCellFactory(percentAdder);
-        col13.setCellValueFactory(new PropertyValueFactory<>("a3"));
+        col13.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getA3()));
         col13.setCellFactory(percentAdder);
 
         ArrayList<String> resourceTypeNames = ResourceType.getAllNames();
@@ -209,12 +234,12 @@ public class Main {
     }
 
     @FXML
-    public void exit() {
+    public void exit(ActionEvent actionEvent) {
         RFinder.mainStage.close();
     }
 
     @FXML
-    public void about() {
+    public void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("RFinder 0.1.3");
@@ -224,7 +249,7 @@ public class Main {
     }
 
     @FXML
-    public void importStarmap() {
+    public void importStarmap(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open StarMap");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("StarMap (*.xml)", "*.xml"));
@@ -240,7 +265,7 @@ public class Main {
                 saxParser.parse(selectedFile, starMapHandler);
 
                 starMap = starMapHandler.getStarMap();
-                refreshTable();
+                refreshTable(null);
 
                 ArrayList<Galaxy> galaxies = starMap.getGalaxies();
                 galaxies.sort(Comparator.comparing(Galaxy::getName));
@@ -254,7 +279,7 @@ public class Main {
 
     @SuppressWarnings("ConstantConditions")
     @FXML
-    public void refreshTable() {
+    public void refreshTable(ActionEvent actionEvent) {
         if (starMap == null) return;
         resourceTable.getItems().clear();
 
@@ -348,7 +373,7 @@ public class Main {
     }
 
     @FXML
-    public void clearStarmap() {
+    public void clearStarmap(ActionEvent actionEvent) {
         resourceTable.getItems().clear();
         galaxyBox.getItems().clear();
         galaxyBox.setItems(FXCollections.observableArrayList(new Galaxy()));
@@ -360,16 +385,16 @@ public class Main {
 
     @FXML
     public void setResize(ActionEvent actionEvent) {
-        resize = ((CheckBox) actionEvent.getSource()).isSelected();
+        resize = resizeCheckbox.isSelected();
     }
 
     @FXML
-    public void clearTable() {
+    public void clearTable(ActionEvent actionEvent) {
         resourceTable.getItems().clear();
     }
 
     @FXML
-    public void setGalaxy() {
+    public void setGalaxy(ActionEvent actionEvent) {
         if (galaxyBox.getValue() == null || galaxyBox.getValue().isPlaceholder()) return;
         ArrayList<Sector> sectors = galaxyBox.getValue().getSectors();
         sectors.sort(Comparator.comparing(Sector::getName));
@@ -378,7 +403,7 @@ public class Main {
     }
 
     @FXML
-    public void setSector() {
+    public void setSector(ActionEvent actionEvent) {
         if (sectorBox.getValue() == null || sectorBox.getValue().isPlaceholder()) return;
         ArrayList<System> systems = sectorBox.getValue().getSystems();
         systems.sort(Comparator.comparing(System::getName));

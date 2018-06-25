@@ -36,13 +36,13 @@
     </rowConstraints>
     <MenuBar GridPane.columnIndex="3">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#importStarmap" text="Import Starmap"/>
-            <MenuItem mnemonicParsing="false" onAction="#clearStarmap" text="Clear Starmap"/>
+            <MenuItem fx:id="importItem" mnemonicParsing="false" text="Import Starmap"/>
+            <MenuItem fx:id="clearItem" mnemonicParsing="false" text="Clear Starmap"/>
             <SeparatorMenuItem/>
-            <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit"/>
+            <MenuItem fx:id="exitItem" mnemonicParsing="false" text="Exit"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" onAction="#about" text="About"/>
+            <MenuItem fx:id="aboutItem" mnemonicParsing="false" text="About"/>
         </Menu>
     </MenuBar>
     <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="3"
@@ -67,12 +67,12 @@
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                     </rowConstraints>
-                    <Button mnemonicParsing="false" onAction="#refreshTable" text="Refresh Table"
+                    <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh Table"
                             GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
-                    <CheckBox mnemonicParsing="false" onAction="#setResize" text="Auto-Resize Table"
+                    <CheckBox fx:id="resizeCheckbox" mnemonicParsing="false" text="Auto-Resize Table"
                               GridPane.columnIndex="1" GridPane.halignment="CENTER"
                               GridPane.valignment="CENTER"/>
-                    <Button mnemonicParsing="false" onAction="#clearTable" text="Clear Table"
+                    <Button fx:id="clearButton" mnemonicParsing="false" text="Clear Table"
                             GridPane.columnIndex="2" GridPane.halignment="CENTER"
                             GridPane.valignment="CENTER"/>
                 </GridPane>
@@ -108,7 +108,7 @@
                                 <Insets right="10.0"/>
                             </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="galaxyBox" onAction="#setGalaxy" prefWidth="150.0"/>
+                        <ComboBox fx:id="galaxyBox" prefWidth="150.0"/>
                     </HBox>
                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
                           GridPane.columnIndex="1">
@@ -117,7 +117,7 @@
                                 <Insets right="10.0"/>
                             </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="sectorBox" onAction="#setSector" prefWidth="150.0"/>
+                        <ComboBox fx:id="sectorBox" prefWidth="150.0"/>
                     </HBox>
                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                         <Label text="System:">

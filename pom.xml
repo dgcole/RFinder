@@ -53,8 +53,12 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <proguardInclude>config.pro</proguardInclude>
+                    <proguardInclude>util/config.pro</proguardInclude>
                     <outjar>${project.build.finalName}-obf.jar</outjar>
+                    <options>
+                        <option>-classobfuscationdictionary ${project.basedir}/util/obfuscationNames.txt</option>
+                        <option>-packageobfuscationdictionary ${project.basedir}/util/obfuscationNames.txt</option>
+                    </options>
                     <libs>
                         <lib>${java.home}/lib/rt.jar</lib>
                         <lib>${java.home}/lib/ext/jfxrt.jar</lib>
@@ -80,7 +84,7 @@
                             <downloadUrl>http://java.com/download</downloadUrl>
                             <stayAlive>false</stayAlive>
                             <restartOnCrash>false</restartOnCrash>
-                            <icon>l4j_assets/icon.ico</icon>
+                            <icon>util/icon.ico</icon>
                             <jre>
                                 <bundledJre64Bit>false</bundledJre64Bit>
                                 <bundledJreAsFallback>false</bundledJreAsFallback>
