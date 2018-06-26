@@ -484,7 +484,7 @@ public class MainController {
                 }
             }
             t = new Text(col.getText());
-            col.setPrefWidth(Math.max(max, t.getLayoutBounds().getWidth()) + 20.0);
+            col.setPrefWidth(Math.max(max + 50.0, t.getLayoutBounds().getWidth() + 20.0));
         });
     }
 
