@@ -1,15 +1,13 @@
 package rfinder.Controller;
 
-import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
+import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -54,6 +52,37 @@ public class ZoneController {
     static ZoneController getInstance() {
         return instance;
     }
+    private final Runnable copier = new Runnable() {
+        @Override
+        public void run() {
+            ObservableList<Zone> zones = zoneTable.getSelectionModel().getSelectedItems();
+            if (zones.size() == 0) return;
+            final Clipboard clipboard = Clipboard.getSystemClipboard();
+            final ClipboardContent content = new ClipboardContent();
+            ArrayList<String> data = new ArrayList<>();
+            for (Zone zone : zones) {
+                data.add(zone.getGalaxyName());
+                data.add(zone.getSectorName());
+                data.add(zone.getSystemName());
+                data.add(zone.getBodyName());
+                data.add(zone.getZone() == 0 ? "" : String.valueOf(zonCol.getCellData(zone)));
+                data.add(zone.getOrbitalZone());
+                data.add(zone.getBodyType().toString());
+                data.add(zone.getPopulationLimit() == 0 ? "" : String.valueOf(zone.getPopulationLimit()));
+                for (int i = 0; i < ResourceType.getTypes().size(); i++) {
+                    data.add(String.format("%d (%d%%)", zone.getQuality(i), zone.getAbundance(i)));
+                }
+                data.add("\n");
+            }
+            StringBuilder raw = new StringBuilder();
+            for (String s : data) {
+                raw.append(s);
+                if (!s.equals("\n")) raw.append("\t");
+            }
+            content.putString(raw.toString());
+            clipboard.setContent(content);
+        }
+    };
 
     private static final Callback<TableColumn<Zone, String>, TableCell<Zone, String>> zoneColorFactory = param -> new TableCell<Zone, String>() {
         @Override
@@ -68,9 +97,7 @@ public class ZoneController {
     public void initialize() {
         instance = this;
 
-        Platform.runLater(() -> zoneTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), () -> {
-
-        }));
+        zoneTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         refreshButton.setOnAction(this::refreshTable);
         clearButton.setOnAction(this::clearTable);
@@ -221,5 +248,10 @@ public class ZoneController {
         sectorBox.setItems(FXCollections.observableArrayList(new Sector()));
         systemBox.getItems().clear();
         systemBox.setItems(FXCollections.observableArrayList(new System()));
+    }
+
+    void registerCopier() {
+        zoneTable.getScene().getAccelerators().clear();
+        zoneTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), copier);
     }
 }

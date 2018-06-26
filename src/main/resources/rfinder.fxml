@@ -34,7 +34,7 @@
         </Menu>
     </MenuBar>
     <TabPane prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-        <Tab text="Resources">
+        <Tab fx:id="resourceTab" text="Resources">
             <VBox prefHeight="200.0" prefWidth="100.0">
                 <GridPane minHeight="150.0" VBox.vgrow="NEVER">
                     <columnConstraints>
@@ -132,7 +132,7 @@
                 </TableView>
             </VBox>
         </Tab>
-        <Tab text="Zones">
+        <Tab fx:id="zoneTab" text="Zones">
             <fx:include source="zones.fxml" />
         </Tab>
         <Tab text="Quality Distribution">

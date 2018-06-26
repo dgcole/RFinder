@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
@@ -70,6 +71,9 @@ public class MainController {
     @FXML
     private LineChart<Integer, Double> distributionChart;
 
+    @FXML
+    private Tab resourceTab, zoneTab;
+
     private StarMap starMap;
     private boolean resize = false;
     private static MainController instance;
@@ -107,24 +111,9 @@ public class MainController {
         }
     };
 
-    @SuppressWarnings("Duplicates")
-    @FXML
-    void initialize() {
-        instance = this;
-
-        importItem.setOnAction(this::importStarmap);
-        clearItem.setOnAction(this::clearStarmap);
-        exitItem.setOnAction(this::exit);
-        aboutItem.setOnAction(this::about);
-        refreshButton.setOnAction(this::refreshTable);
-        resizeCheckbox.setOnAction(this::setResize);
-        clearButton.setOnAction(this::clearTable);
-        galaxyBox.setOnAction(this::setGalaxy);
-        sectorBox.setOnAction(this::setSector);
-
-        resourceTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        Platform.runLater(() -> resourceTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), () -> {
+    private final Runnable copier = new Runnable() {
+        @Override
+        public void run() {
             ObservableList<Resource> resources = resourceTable.getSelectionModel().getSelectedItems();
             if (resources.size() == 0) return;
             final Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -153,7 +142,29 @@ public class MainController {
             }
             content.putString(raw.toString());
             clipboard.setContent(content);
-        }));
+        }
+    };
+
+    @SuppressWarnings("Duplicates")
+    @FXML
+    void initialize() {
+        instance = this;
+
+        importItem.setOnAction(this::importStarmap);
+        clearItem.setOnAction(this::clearStarmap);
+        exitItem.setOnAction(this::exit);
+        aboutItem.setOnAction(this::about);
+        refreshButton.setOnAction(this::refreshTable);
+        resizeCheckbox.setOnAction(this::setResize);
+        clearButton.setOnAction(this::clearTable);
+        galaxyBox.setOnAction(this::setGalaxy);
+        sectorBox.setOnAction(this::setSector);
+        resourceTab.setOnSelectionChanged(this::registerResourceCopier);
+        zoneTab.setOnSelectionChanged(this::registerZoneCopier);
+
+        resourceTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        Platform.runLater(() -> resourceTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), copier));
 
         col1.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getResourceType().toString()));
         col2.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getGalaxy()));
@@ -475,5 +486,20 @@ public class MainController {
             t = new Text(col.getText());
             col.setPrefWidth(Math.max(max, t.getLayoutBounds().getWidth()) + 20.0);
         });
+    }
+
+    @FXML
+    private void registerResourceCopier(Event event) {
+        if (resourceTab.isSelected()) {
+            resourceTable.getScene().getAccelerators().clear();
+            resourceTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), copier);
+        }
+    }
+
+    @FXML
+    private void registerZoneCopier(Event event) {
+        if (zoneTab.isSelected()) {
+            ZoneController.getInstance().registerCopier();
+        }
     }
 }
