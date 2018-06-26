@@ -1,6 +1,7 @@
 package rfinder.Tasks;
 
 import javafx.concurrent.Task;
+import rfinder.Controller.Main;
 import rfinder.Hazeron.Galaxy;
 import rfinder.Hazeron.Resource;
 import rfinder.Hazeron.Sector;
@@ -57,40 +58,8 @@ public class ResourceFilterTask extends Task<ArrayList<Resource>> {
                 diameterMatch = diameter.equals(r.getDiameter());
             }
 
-            boolean rangeMatch = false;
-
-            if (!range.isEmpty()) {
-                double targetX, targetY, targetZ;
-                targetX = targetY = targetZ = 0;
-                boolean set = false;
-                if ((system == null || system.isPlaceholder())
-                        && (sector != null && !sector.isPlaceholder())) {
-                    Sector target = sector;
-                    targetX = target.getX() * 10;
-                    targetY = target.getY() * 10;
-                    targetZ = target.getZ() * 10;
-                    set = true;
-                } else if ((system != null && !system.isPlaceholder())) {
-                    System target = system;
-                    targetX = target.getX();
-                    targetY = target.getY();
-                    targetZ = target.getZ();
-                    set = true;
-                }
-
-                if (set) {
-                    double originX = r.getSystemInternal().getX();
-                    double originY = r.getSystemInternal().getY();
-                    double originZ = r.getSystemInternal().getZ();
-
-                    double dist = Math.sqrt((targetX - originX) * (targetX - originX) +
-                            (targetY - originY) * (targetY - originY) + (targetZ - originZ) * (targetZ - originZ));
-                    if (dist < Double.parseDouble(range)) rangeMatch = true;
-                } else {
-                    rangeMatch = true;
-                }
-            }
-
+            int parsecs = range.isEmpty() ? 0 : Integer.parseInt(range);
+            boolean rangeMatch = Main.checkRange(sector, system, r.getSystemInternal(), parsecs);
 
             if (resourceMatch && qualityMatch && diameterMatch && zoneMatch && ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch)) {
                 matches.add(r);

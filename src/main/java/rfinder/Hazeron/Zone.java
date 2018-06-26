@@ -98,4 +98,16 @@ public class Zone {
     public int getAbundance(int index) {
         return abundances[index];
     }
+
+    public Galaxy getGalaxy() {
+        return galaxy;
+    }
+
+    public Sector getSector() {
+        return sector;
+    }
+
+    public System getSystem() {
+        return system;
+    }
 }

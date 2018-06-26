@@ -8,9 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
@@ -22,7 +20,7 @@ import rfinder.Hazeron.System;
 import rfinder.RFinder;
 import rfinder.Tasks.DistributionCalculatorTask;
 import rfinder.Tasks.ResourceFilterTask;
-import rfinder.Util.QualityColorizer;
+import rfinder.Util.Colorizer;
 import rfinder.Util.StarMapHandler;
 
 import javax.xml.parsers.SAXParser;
@@ -30,7 +28,6 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
@@ -74,13 +71,29 @@ public class Main {
     private boolean resize = false;
     private static Main instance;
 
-    public static Main getInstance() {
-        return instance;
-    }
+    private static Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
+        @Override
+        protected void updateItem(Galaxy item, boolean empty) {
+            super.updateItem(item, empty);
+            setText(empty ? "" : item.getName());
+        }
+    };
 
-    public StarMap getStarMap() {
-        return starMap;
-    }
+    private static Callback<ListView<Sector>, ListCell<Sector>> sectorBoxFactory = lv -> new ListCell<Sector>() {
+        @Override
+        protected void updateItem(Sector item, boolean empty) {
+            super.updateItem(item, empty);
+            setText(empty ? "" : item.getName());
+        }
+    };
+
+    private static Callback<ListView<System>, ListCell<System>> systemBoxFactory = lv -> new ListCell<System>() {
+        @Override
+        protected void updateItem(System item, boolean empty) {
+            super.updateItem(item, empty);
+            setText(empty ? "" : item.getName());
+        }
+    };
 
     @SuppressWarnings("Duplicates")
     @FXML
@@ -99,37 +112,35 @@ public class Main {
 
         resourceTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        Platform.runLater(() -> {
-            resourceTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), () -> {
-                ObservableList<Resource> resources = resourceTable.getSelectionModel().getSelectedItems();
-                final Clipboard clipboard = Clipboard.getSystemClipboard();
-                final ClipboardContent content = new ClipboardContent();
-                ArrayList<String> data = new ArrayList<String>();
-                for (Resource r : resources) {
-                    data.add(r.getResource());
-                    data.add(r.getGalaxy());
-                    data.add(r.getSector());
-                    data.add(r.getSystem());
-                    data.add(r.getBody());
-                    data.add(r.getDiameter());
-                    data.add(r.getZone());
-                    data.add(String.valueOf(r.getQ1()));
-                    data.add(String.valueOf(r.getQ2()));
-                    data.add(String.valueOf(r.getQ3()));
-                    data.add(String.valueOf(r.getA1()));
-                    data.add(String.valueOf(r.getA2()));
-                    data.add(String.valueOf(r.getA3()));
-                    data.add("\n");
-                }
-                StringBuilder raw = new StringBuilder();
-                for (String s : data) {
-                    raw.append(s);
-                    if (!s.equals("\n")) raw.append("\t");
-                }
-                content.putString(raw.toString());
-                clipboard.setContent(content);
-            });
-        });
+        Platform.runLater(() -> resourceTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), () -> {
+            ObservableList<Resource> resources = resourceTable.getSelectionModel().getSelectedItems();
+            final Clipboard clipboard = Clipboard.getSystemClipboard();
+            final ClipboardContent content = new ClipboardContent();
+            ArrayList<String> data = new ArrayList<>();
+            for (Resource r : resources) {
+                data.add(r.getResource());
+                data.add(r.getGalaxy());
+                data.add(r.getSector());
+                data.add(r.getSystem());
+                data.add(r.getBody());
+                data.add(r.getDiameter());
+                data.add(r.getZone());
+                data.add(String.valueOf(r.getQ1()));
+                data.add(String.valueOf(r.getQ2()));
+                data.add(String.valueOf(r.getQ3()));
+                data.add(String.valueOf(r.getA1()));
+                data.add(String.valueOf(r.getA2()));
+                data.add(String.valueOf(r.getA3()));
+                data.add("\n");
+            }
+            StringBuilder raw = new StringBuilder();
+            for (String s : data) {
+                raw.append(s);
+                if (!s.equals("\n")) raw.append("\t");
+            }
+            content.putString(raw.toString());
+            clipboard.setContent(content);
+        }));
 
         col1.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getResource()));
         col2.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getGalaxy()));
@@ -176,7 +187,7 @@ public class Main {
                                 return;
                             }
                             super.setText(item.toString());
-                            this.setTextFill(QualityColorizer.getColor(item));
+                            this.setTextFill(Colorizer.getQualityColor(item));
                         } else {
                             super.setText("");
                         }
@@ -255,33 +266,12 @@ public class Main {
         zoneBox.setItems(FXCollections.observableArrayList("Any", "Star", "Inferno", "Inner", "Habitable", "Frigid", "Outer"));
         zoneBox.setValue("Any");
 
-        Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
-            @Override
-            protected void updateItem(Galaxy item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? "" : item.getName());
-            }
-        };
         galaxyBox.setCellFactory(galaxyBoxFactory);
         galaxyBox.setButtonCell(galaxyBoxFactory.call(null));
 
-        Callback<ListView<Sector>, ListCell<Sector>> sectorBoxFactory = lv -> new ListCell<Sector>() {
-            @Override
-            protected void updateItem(Sector item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? "" : item.getName());
-            }
-        };
         sectorBox.setCellFactory(sectorBoxFactory);
         sectorBox.setButtonCell(sectorBoxFactory.call(null));
 
-        Callback<ListView<System>, ListCell<System>> systemBoxFactory = lv -> new ListCell<System>() {
-            @Override
-            protected void updateItem(System item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? "" : item.getName());
-            }
-        };
         systemBox.setCellFactory(systemBoxFactory);
         systemBox.setButtonCell(systemBoxFactory.call(null));
     }
@@ -311,6 +301,7 @@ public class Main {
         File selectedFile = fileChooser.showOpenDialog(RFinder.mainStage);
         if (selectedFile != null) {
             clearStarmap(actionEvent);
+            ZoneController.getInstance().clearStarmap();
             try {
 
                 Task<StarMap> mainTask = new Task<StarMap>() {
@@ -416,6 +407,25 @@ public class Main {
 
     @FXML
     public void setGalaxy(ActionEvent actionEvent) {
+        updateSectorList(galaxyBox, sectorBox);
+    }
+
+    @FXML
+    public void setSector(ActionEvent actionEvent) {
+        updateSystemList(sectorBox, systemBox);
+    }
+
+    static void updateSystemList(ComboBox<Sector> sectorBox, ComboBox<System> systemBox) {
+        if (sectorBox.getValue() == null || sectorBox.getValue().isPlaceholder()) return;
+        ArrayList<System> systems = sectorBox.getValue().getSystems();
+        systems.sort(Comparator.comparing(System::getName));
+        System placeholderSystem = new System();
+        systems.add(0, placeholderSystem);
+        systemBox.setItems(FXCollections.observableArrayList(systems));
+        systemBox.setValue(placeholderSystem);
+    }
+
+    static void updateSectorList(ComboBox<Galaxy> galaxyBox, ComboBox<Sector> sectorBox) {
         if (galaxyBox.getValue() == null || galaxyBox.getValue().isPlaceholder()) return;
         ArrayList<Sector> sectors = galaxyBox.getValue().getSectors();
         sectors.sort(Comparator.comparing(Sector::getName));
@@ -425,14 +435,53 @@ public class Main {
         sectorBox.setValue(placeholderSector);
     }
 
-    @FXML
-    public void setSector(ActionEvent actionEvent) {
-        if (sectorBox.getValue() == null || sectorBox.getValue().isPlaceholder()) return;
-        ArrayList<System> systems = sectorBox.getValue().getSystems();
-        systems.sort(Comparator.comparing(System::getName));
-        System placeholderSystem = new System();
-        systems.add(0, placeholderSystem);
-        systemBox.setItems(FXCollections.observableArrayList(systems));
-        systemBox.setValue(placeholderSystem);
+    static Main getInstance() {
+        return instance;
+    }
+
+    StarMap getStarMap() {
+        return starMap;
+    }
+
+    static Callback<ListView<Galaxy>, ListCell<Galaxy>> getGalaxyBoxFactory() {
+        return galaxyBoxFactory;
+    }
+
+    static Callback<ListView<Sector>, ListCell<Sector>> getSectorBoxFactory() {
+        return sectorBoxFactory;
+    }
+
+    static Callback<ListView<System>, ListCell<System>> getSystemBoxFactory() {
+        return systemBoxFactory;
+    }
+
+    public static boolean checkRange(Sector originSector, System originSystem, System target, int parsecs) {
+        double originX, originY, originZ;
+        originX = originY = originZ = 0;
+        boolean set = false;
+        if ((originSystem == null || originSystem.isPlaceholder())
+                && (originSector != null && !originSector.isPlaceholder())) {
+            originX = originSector.getX() * 10;
+            originY = originSector.getY() * 10;
+            originZ = originSector.getZ() * 10;
+            set = true;
+        } else if ((originSystem != null && !originSystem.isPlaceholder())) {
+            originX = originSystem.getX();
+            originY = originSystem.getY();
+            originZ = originSystem.getZ();
+            set = true;
+        }
+
+        if (set) {
+            double targetX = target.getX();
+            double targetY = target.getY();
+            double targetZ = target.getZ();
+
+            double dist = Math.sqrt((originX - targetX) * (originX - targetX) +
+                    (originY - targetY) * (originY - targetY) + (originZ - targetZ) * (originZ - targetZ));
+            return dist <= parsecs;
+        } else {
+            return false;
+        }
     }
 }
