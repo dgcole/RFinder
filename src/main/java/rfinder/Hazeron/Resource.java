@@ -20,7 +20,7 @@ public class Resource {
         this.parentIsStar = true;
     }
 
-    public Resource(ResourceType type, int q1, int q2, int q3, int a1, int a2, int a3, Planet parent) {
+    public Resource(ResourceType type, int q1, int q2, int q3, int a1, int a2, int a3, Body parent) {
         this.type = type;
         this.q1 = q1;
         this.q2 = q2;
@@ -33,8 +33,8 @@ public class Resource {
     }
 
     @FXML
-    public String getResource() {
-        return type.toString();
+    public ResourceType getResourceType() {
+        return type;
     }
 
     @FXML
@@ -42,7 +42,7 @@ public class Resource {
         if (parentIsStar) {
             return ((Star) parent).getParent().getParent().getParent().getName();
         } else {
-            return ((Planet) parent).getParent().getParent().getParent().getName();
+            return ((Body) parent).getParent().getParent().getParent().getName();
         }
     }
 
@@ -50,7 +50,7 @@ public class Resource {
         if (parentIsStar) {
             return ((Star) parent).getParent().getParent().getParent();
         } else {
-            return ((Planet) parent).getParent().getParent().getParent();
+            return ((Body) parent).getParent().getParent().getParent();
         }
     }
 
@@ -59,7 +59,7 @@ public class Resource {
         if (parentIsStar) {
             return ((Star) parent).getParent().getParent().getName();
         } else {
-            return ((Planet) parent).getParent().getParent().getName();
+            return ((Body) parent).getParent().getParent().getName();
         }
     }
 
@@ -67,7 +67,7 @@ public class Resource {
         if (parentIsStar) {
             return ((Star) parent).getParent().getParent();
         } else {
-            return ((Planet) parent).getParent().getParent();
+            return ((Body) parent).getParent().getParent();
         }
     }
 
@@ -76,7 +76,7 @@ public class Resource {
         if (parentIsStar) {
             return ((Star) parent).getParent().getName();
         } else {
-            return ((Planet) parent).getParent().getName();
+            return ((Body) parent).getParent().getName();
         }
     }
 
@@ -84,7 +84,7 @@ public class Resource {
         if (parentIsStar) {
             return ((Star) parent).getParent();
         } else {
-            return ((Planet) parent).getParent();
+            return ((Body) parent).getParent();
         }
     }
 
@@ -93,7 +93,7 @@ public class Resource {
         if (parentIsStar) {
             return ((Star) parent).getName();
         } else {
-            return ((Planet) parent).getName();
+            return ((Body) parent).getName();
         }
     }
 
@@ -102,7 +102,7 @@ public class Resource {
         if (parentIsStar) {
             return "N/A";
         } else {
-            return ((Planet) parent).getDiameter();
+            return ((Body) parent).getDiameter();
         }
     }
 
@@ -111,7 +111,7 @@ public class Resource {
         if (parentIsStar) {
             return "Star";
         } else {
-            return ((Planet) parent).getZone();
+            return ((Body) parent).getZone();
         }
     }
 

@@ -1,11 +1,12 @@
 package rfinder.Hazeron;
 
-public class Planet {
-    private final String name, zone, orbit, bodyType;
+public class Body {
+    private final String name, zone, orbit;
+    private final BodyType bodyType;
     private String diameter;
     private final System parent;
 
-    public Planet(String name, String zone, String orbit, String bodyType, System parent) {
+    public Body(String name, String zone, String orbit, BodyType bodyType, System parent) {
         this.name = name;
         this.zone = zone;
         this.orbit = orbit;
@@ -37,7 +38,7 @@ public class Planet {
         return orbit;
     }
 
-    public String getBodyType() {
+    public BodyType getBodyType() {
         return bodyType;
     }
 }

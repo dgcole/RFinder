@@ -9,7 +9,7 @@ public class StarMapHandler extends DefaultHandler {
     private Galaxy galaxy;
     private Sector sector;
     private rfinder.Hazeron.System system;
-    private Planet planet;
+    private Body body;
     private Star star;
     private boolean parsingStar = false;
     private Zone z1, z2, z3;
@@ -54,26 +54,27 @@ public class StarMapHandler extends DefaultHandler {
                 parsingStar = false;
                 String planetZone = attributes.getValue("zone");
                 planetZone = planetZone.substring(0, planetZone.indexOf(" "));
-                planet = new Planet(attributes.getValue("name"), planetZone,
-                        attributes.getValue("orbit"), attributes.getValue("bodyType"), system);
+                body = new Body(attributes.getValue("name"), planetZone,
+                        attributes.getValue("orbit"),
+                        BodyType.getType(attributes.getValue("bodyType")), system);
                 break;
             case "geosphere":
                 zones = Integer.parseInt(attributes.getValue("resourceZones"));
                 switch (zones) {
                     case 1:
-                        z1 = new Zone(1, false, planet);
+                        z1 = new Zone(1, false, body);
                         starMap.addZone(z1);
                         break;
                     case 2:
-                        z1 = new Zone(1, true, planet);
-                        z2 = new Zone(2, true, planet);
+                        z1 = new Zone(1, true, body);
+                        z2 = new Zone(2, true, body);
                         starMap.addZone(z1);
                         starMap.addZone(z2);
                         break;
                     case 3:
-                        z1 = new Zone(1, true, planet);
-                        z2 = new Zone(2, true, planet);
-                        z3 = new Zone(3, true, planet);
+                        z1 = new Zone(1, true, body);
+                        z2 = new Zone(2, true, body);
+                        z3 = new Zone(3, true, body);
                         starMap.addZone(z1);
                         starMap.addZone(z2);
                         starMap.addZone(z3);
@@ -81,7 +82,7 @@ public class StarMapHandler extends DefaultHandler {
                 }
                 String pDiameter = attributes.getValue("diameter");
                 pDiameter = pDiameter.substring(0, pDiameter.indexOf("m") + 1);
-                planet.setDiameter(pDiameter);
+                body.setDiameter(pDiameter);
                 break;
             case "resource":
                 ResourceType resourceType = ResourceType.getType(attributes.getValue("name"));
@@ -110,7 +111,7 @@ public class StarMapHandler extends DefaultHandler {
                     starMap.addResource(resource);
                 } else {
                     Resource resource = new Resource(resourceType, q1, q2, q3, a1,
-                            a2, a3, planet);
+                            a2, a3, body);
                     starMap.addResource(resource);
 
                     switch (zones) {

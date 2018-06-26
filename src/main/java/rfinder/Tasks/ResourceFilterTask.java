@@ -2,22 +2,21 @@ package rfinder.Tasks;
 
 import javafx.concurrent.Task;
 import rfinder.Controller.MainController;
-import rfinder.Hazeron.Galaxy;
-import rfinder.Hazeron.Resource;
-import rfinder.Hazeron.Sector;
+import rfinder.Hazeron.*;
 import rfinder.Hazeron.System;
 
 import java.util.ArrayList;
 
 public class ResourceFilterTask extends Task<ArrayList<Resource>> {
     private ArrayList<Resource> resources;
-    private String type, range, diameter, zone;
+    private ResourceType type;
+    private String range, diameter, zone;
     private int minQual;
     private Galaxy galaxy;
     private Sector sector;
     private System system;
 
-    public ResourceFilterTask(ArrayList<Resource> resources, String type, int minQual, Galaxy galaxy, Sector sector, System system, String range, String diameter, String zone) {
+    public ResourceFilterTask(ArrayList<Resource> resources, ResourceType type, int minQual, Galaxy galaxy, Sector sector, System system, String range, String diameter, String zone) {
         this.resources = resources;
         this.type = type;
         this.minQual = minQual;
@@ -34,7 +33,7 @@ public class ResourceFilterTask extends Task<ArrayList<Resource>> {
         ArrayList<Resource> matches = new ArrayList<>();
 
         for (Resource r : resources) {
-            boolean resourceMatch = (type == null || type.equals("Any")) || r.getResource().equals(type);
+            boolean resourceMatch = (type == null || type == ResourceType.ANY) || r.getResourceType() == type;
 
             boolean qualityMatch = (r.getQ1() >= minQual ||
                     r.getQ2() >= minQual || r.getQ3() >= minQual);

@@ -41,7 +41,10 @@ public class MainController {
     private TableView<Resource> resourceTable;
 
     @FXML
-    private ComboBox<String> resourceTypeBox, diameterBox, zoneBox;
+    private ComboBox<String> diameterBox, zoneBox;
+
+    @FXML
+    private ComboBox<ResourceType> resourceTypeBox;
 
     @FXML
     private ComboBox<Galaxy> galaxyBox;
@@ -95,6 +98,15 @@ public class MainController {
         }
     };
 
+    private static Callback<TableColumn<Resource, String>, TableCell<Resource, String>> zoneColorFactory = param -> new TableCell<Resource, String>() {
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            setText(empty ? "" : item);
+            setTextFill(empty ? Color.BLACK : Colorizer.getZoneColor(item));
+        }
+    };
+
     @SuppressWarnings("Duplicates")
     @FXML
     void initialize() {
@@ -118,7 +130,7 @@ public class MainController {
             final ClipboardContent content = new ClipboardContent();
             ArrayList<String> data = new ArrayList<>();
             for (Resource r : resources) {
-                data.add(r.getResource());
+                data.add(r.getResourceType().toString());
                 data.add(r.getGalaxy());
                 data.add(r.getSector());
                 data.add(r.getSystem());
@@ -142,37 +154,14 @@ public class MainController {
             clipboard.setContent(content);
         }));
 
-        col1.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getResource()));
+        col1.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getResourceType().toString()));
         col2.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getGalaxy()));
         col3.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getSector()));
         col4.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getSystem()));
         col5.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getBody()));
         col6.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getDiameter()));
         col7.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getZone()));
-        Callback<TableColumn<Resource, String>, TableCell<Resource, String>> colorizer =
-                new Callback<TableColumn<Resource, String>, TableCell<Resource, String>>() {
-            @Override
-            public TableCell<Resource, String> call(TableColumn<Resource, String> param) {
-                return new TableCell<Resource, String>() {
-                    @Override
-                    protected void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setText(empty ? null : getString());
-                        if (getString().contains("Star")) this.setTextFill(Color.RED);
-                        else if (getString().contains("Inf")) this.setTextFill(Color.RED);
-                        else if (getString().contains("Inn")) this.setTextFill(Color.ORANGE);
-                        else if (getString().contains("Hab")) this.setTextFill(Color.GREEN);
-                        else if (getString().contains("Out")) this.setTextFill(Color.BLUE);
-                        else if (getString().contains("Fri")) this.setTextFill(Color.LIGHTBLUE);
-                    }
-
-                    private String getString() {
-                        return getItem() == null ? "" : getItem();
-                    }
-                };
-            }
-        };
-        col7.setCellFactory(colorizer);
+        col7.setCellFactory(zoneColorFactory);
 
         Callback<TableColumn<Resource, Integer>, TableCell<Resource, Integer>> blanker =
                 new Callback<TableColumn<Resource, Integer>, TableCell<Resource, Integer>>() {
@@ -222,11 +211,10 @@ public class MainController {
         col13.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getA3()));
         col13.setCellFactory(percentAdder);
 
-        ArrayList<String> resourceTypeNames = ResourceType.getAllNames();
-        resourceTypeNames.sort(Comparator.comparing(String::toString));
-        resourceTypeNames.add(0, "Any");
-        resourceTypeBox.setItems(FXCollections.observableArrayList(resourceTypeNames));
-        resourceTypeBox.setValue("Any");
+        ArrayList<ResourceType> resourceTypes = new ArrayList<>(ResourceType.getTypes());
+        resourceTypes.add(0, ResourceType.ANY);
+        resourceTypeBox.setItems(FXCollections.observableArrayList(resourceTypes));
+        resourceTypeBox.setValue(ResourceType.ANY);
 
         Galaxy placeholderGalaxy = new Galaxy();
         galaxyBox.setItems(FXCollections.observableArrayList(placeholderGalaxy));
@@ -358,29 +346,11 @@ public class MainController {
         resourceFilterTask.setOnSucceeded(event -> {
             resourceTable.setItems(FXCollections.observableArrayList(resourceFilterTask.getValue()));
             if (resize) {
-                autoResize();
+                autoResize(resourceTable);
             }
         });
 
         new Thread(resourceFilterTask).start();
-    }
-
-    private void autoResize() {
-        if (resourceTable.getItems().isEmpty()) return;
-        resourceTable.getColumns().forEach((col) -> {
-            Text t = new Text(col.getText());
-            double max = t.getLayoutBounds().getWidth();
-            for (int i = 0; i < resourceTable.getItems().size(); i = i + (resourceTable.getItems().size() / 50) + 1) {
-                if (((TableColumn) col).getCellData(i) != null) {
-                    t = new Text(((TableColumn) col).getCellData(i).toString());
-                    double calcwidth = t.getLayoutBounds().getWidth();
-                    if (calcwidth > max) {
-                        max = calcwidth;
-                    }
-                }
-            }
-            col.setPrefWidth(max + 20.0d);
-        });
     }
 
     @FXML
@@ -485,5 +455,24 @@ public class MainController {
         } else {
             return false;
         }
+    }
+
+    static <T> void autoResize(TableView<T> tableView) {
+        if (tableView.getItems().isEmpty()) return;
+        tableView.getColumns().forEach((col) -> {
+            Text t = new Text(col.getText());
+            double max = t.getLayoutBounds().getWidth();
+            for (int i = 0; i < tableView.getItems().size(); i = i + (tableView.getItems().size() / 50) + 1) {
+                if (((TableColumn) col).getCellData(i) != null) {
+                    t = new Text(((TableColumn) col).getCellData(i).toString());
+                    double calcwidth = t.getLayoutBounds().getWidth();
+                    if (calcwidth > max) {
+                        max = calcwidth;
+                    }
+                }
+            }
+            t = new Text(col.getText());
+            col.setPrefWidth(Math.min(max, t.getLayoutBounds().getWidth()) + 20.0);
+        });
     }
 }

@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import rfinder.Hazeron.*;
@@ -52,6 +53,15 @@ public class ZoneController {
         return instance;
     }
 
+    private static Callback<TableColumn<Zone, String>, TableCell<Zone, String>> zoneColorFactory = param -> new TableCell<Zone, String>() {
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            setText(empty ? "" : item);
+            setTextFill(empty ? Color.BLACK : Colorizer.getZoneColor(item));
+        }
+    };
+
     @FXML
     public void initialize() {
         instance = this;
@@ -67,7 +77,8 @@ public class ZoneController {
         sysCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getSystemName()));
         bodCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getBodyName()));
         orbCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getOrbitalZone()));
-        btpCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getBodyType()));
+        orbCol.setCellFactory(zoneColorFactory);
+        btpCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getBodyType().toString()));
 
         Callback<TableColumn<Zone, Integer>, TableCell<Zone, Integer>> blanker = new Callback<TableColumn<Zone, Integer>, TableCell<Zone, Integer>>() {
             @Override
@@ -84,8 +95,7 @@ public class ZoneController {
         zonCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getZone()));
         zonCol.setCellFactory(blanker);
 
-        ArrayList<ResourceType> resourceTypes = new ArrayList<>(Arrays.asList(ResourceType.values()));
-        resourceTypes.sort(Comparator.comparing(ResourceType::toString));
+        ArrayList<ResourceType> resourceTypes = ResourceType.getTypes();
 
         for (int i = 0; i < resourceTypes.size(); i++) {
             ResourceType resourceType = resourceTypes.get(i);
@@ -104,7 +114,7 @@ public class ZoneController {
                     return new TableCell<Zone, Integer>() {
                         @Override
                         protected void updateItem(Integer item, boolean empty) {
-                            if (empty || item == null) return;
+                            if (empty || item == null || this.getTableRow().getItem() == null) return;
                             if (item == 0) {
                                 super.setText("");
                                 return;
@@ -112,7 +122,6 @@ public class ZoneController {
                             super.setTextFill(Colorizer.getQualityColor(item));
                             String qualityBuilder = String.valueOf(item) +
                                     " (" +
-                                    //TODO; NPE here when refreshing table.
                                     ((Zone) this.getTableRow().getItem()).getAbundance(index) +
                                     "%)";
                             super.setText(qualityBuilder);
@@ -166,6 +175,9 @@ public class ZoneController {
 
         zoneFilterTask.setOnSucceeded(event -> {
             zoneTable.setItems(FXCollections.observableArrayList(zoneFilterTask.getValue()));
+            if (resize) {
+                MainController.autoResize(zoneTable);
+            }
         });
 
         new Thread(zoneFilterTask).start();

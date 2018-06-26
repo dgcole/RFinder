@@ -4,36 +4,33 @@ public class Zone {
     private Galaxy galaxy;
     private Sector sector;
     private System system;
-    private String body, orbitalZone, bodyType;
+    private String body, orbitalZone;
+    private BodyType bodyType;
     private int zone;
     private boolean showZone;
     private int[] qualities;
     private int[] abundances;
-    private Object parent;
-    private boolean parentIsStar;
 
     public Zone(int zone, boolean showZone, Star parent) {
         this.system = parent.getParent();
         this.sector = system.getParent();
         this.galaxy = sector.getParent();
         this.body = parent.getName();
-        this.orbitalZone = "Star";
-        this.bodyType = "Star";
+        this.orbitalZone = "";
+        this.bodyType = BodyType.STAR;
         this.zone = zone;
         this.showZone = showZone;
-        this.qualities = new int[ResourceType.values().length];
+        this.qualities = new int[ResourceType.getTypes().size()];
         for (int i = 0; i < qualities.length; i++) {
             qualities[i] = 0;
         }
-        this.abundances = new int[ResourceType.values().length];
+        this.abundances = new int[ResourceType.getTypes().size()];
         for (int i = 0; i < abundances.length; i++) {
             abundances[i] = 0;
         }
-        this.parent = parent;
-        this.parentIsStar = true;
     }
 
-    public Zone(int zone, boolean showZone, Planet parent) {
+    public Zone(int zone, boolean showZone, Body parent) {
         this.system = parent.getParent();
         this.sector = system.getParent();
         this.galaxy = sector.getParent();
@@ -42,16 +39,14 @@ public class Zone {
         this.bodyType = parent.getBodyType();
         this.zone = zone;
         this.showZone = showZone;
-        this.qualities = new int[ResourceType.values().length];
+        this.qualities = new int[ResourceType.getTypes().size()];
         for (int i = 0; i < qualities.length; i++) {
             qualities[i] = 0;
         }
-        this.abundances = new int[ResourceType.values().length];
+        this.abundances = new int[ResourceType.getTypes().size()];
         for (int i = 0; i < abundances.length; i++) {
             abundances[i] = 0;
         }
-        this.parent = parent;
-        this.parentIsStar = false;
     }
 
     public void setQuality(int index, int quality) {
@@ -82,7 +77,7 @@ public class Zone {
         return orbitalZone;
     }
 
-    public String getBodyType() {
+    public BodyType getBodyType() {
         return bodyType;
     }
 
