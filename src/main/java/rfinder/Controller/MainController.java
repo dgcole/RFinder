@@ -74,7 +74,7 @@ public class MainController {
     private boolean resize = false;
     private static MainController instance;
 
-    private static Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
+    private static final Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
         @Override
         protected void updateItem(Galaxy item, boolean empty) {
             super.updateItem(item, empty);
@@ -82,7 +82,7 @@ public class MainController {
         }
     };
 
-    private static Callback<ListView<Sector>, ListCell<Sector>> sectorBoxFactory = lv -> new ListCell<Sector>() {
+    private static final Callback<ListView<Sector>, ListCell<Sector>> sectorBoxFactory = lv -> new ListCell<Sector>() {
         @Override
         protected void updateItem(Sector item, boolean empty) {
             super.updateItem(item, empty);
@@ -90,7 +90,7 @@ public class MainController {
         }
     };
 
-    private static Callback<ListView<System>, ListCell<System>> systemBoxFactory = lv -> new ListCell<System>() {
+    private static final Callback<ListView<System>, ListCell<System>> systemBoxFactory = lv -> new ListCell<System>() {
         @Override
         protected void updateItem(System item, boolean empty) {
             super.updateItem(item, empty);
@@ -98,7 +98,7 @@ public class MainController {
         }
     };
 
-    private static Callback<TableColumn<Resource, String>, TableCell<Resource, String>> zoneColorFactory = param -> new TableCell<Resource, String>() {
+    private static final Callback<TableColumn<Resource, String>, TableCell<Resource, String>> zoneColorFactory = param -> new TableCell<Resource, String>() {
         @Override
         protected void updateItem(String item, boolean empty) {
             super.updateItem(item, empty);
@@ -126,6 +126,7 @@ public class MainController {
 
         Platform.runLater(() -> resourceTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), () -> {
             ObservableList<Resource> resources = resourceTable.getSelectionModel().getSelectedItems();
+            if (resources.size() == 0) return;
             final Clipboard clipboard = Clipboard.getSystemClipboard();
             final ClipboardContent content = new ClipboardContent();
             ArrayList<String> data = new ArrayList<>();
@@ -472,7 +473,7 @@ public class MainController {
                 }
             }
             t = new Text(col.getText());
-            col.setPrefWidth(Math.min(max, t.getLayoutBounds().getWidth()) + 20.0);
+            col.setPrefWidth(Math.max(max, t.getLayoutBounds().getWidth()) + 20.0);
         });
     }
 }

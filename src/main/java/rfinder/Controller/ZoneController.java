@@ -1,12 +1,15 @@
 package rfinder.Controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -16,7 +19,6 @@ import rfinder.Tasks.ZoneFilterTask;
 import rfinder.Util.Colorizer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 public class ZoneController {
@@ -53,7 +55,7 @@ public class ZoneController {
         return instance;
     }
 
-    private static Callback<TableColumn<Zone, String>, TableCell<Zone, String>> zoneColorFactory = param -> new TableCell<Zone, String>() {
+    private static final Callback<TableColumn<Zone, String>, TableCell<Zone, String>> zoneColorFactory = param -> new TableCell<Zone, String>() {
         @Override
         protected void updateItem(String item, boolean empty) {
             super.updateItem(item, empty);
@@ -65,6 +67,10 @@ public class ZoneController {
     @FXML
     public void initialize() {
         instance = this;
+
+        Platform.runLater(() -> zoneTable.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY), () -> {
+
+        }));
 
         refreshButton.setOnAction(this::refreshTable);
         clearButton.setOnAction(this::clearTable);
@@ -80,6 +86,7 @@ public class ZoneController {
         orbCol.setCellFactory(zoneColorFactory);
         btpCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getBodyType().toString()));
 
+
         Callback<TableColumn<Zone, Integer>, TableCell<Zone, Integer>> blanker = new Callback<TableColumn<Zone, Integer>, TableCell<Zone, Integer>>() {
             @Override
             public TableCell<Zone, Integer> call(TableColumn<Zone, Integer> param) {
@@ -94,6 +101,8 @@ public class ZoneController {
         };
         zonCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getZone()));
         zonCol.setCellFactory(blanker);
+        popCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getPopulationLimit()));
+        popCol.setCellFactory(blanker);
 
         ArrayList<ResourceType> resourceTypes = ResourceType.getTypes();
 
@@ -102,12 +111,7 @@ public class ZoneController {
             final int index = i;
 
             TableColumn<Zone, Integer> newCol = new TableColumn<>(resourceType.toString());
-            newCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Zone, Integer>, ObservableValue<Integer>>() {
-                @Override
-                public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Zone, Integer> param) {
-                    return new ReadOnlyObjectWrapper<>(param.getValue().getQuality(index));
-                }
-            });
+            newCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getQuality(index)));
             newCol.setCellFactory(new Callback<TableColumn<Zone, Integer>, TableCell<Zone, Integer>>() {
                 @Override
                 public TableCell<Zone, Integer> call(TableColumn<Zone, Integer> param) {
@@ -135,6 +139,8 @@ public class ZoneController {
 
             zoneTable.getColumns().add(newCol);
         }
+        TableColumn<Zone, Object> fillerCol = new TableColumn<>("   ");
+        zoneTable.getColumns().add(fillerCol);
 
         Galaxy placeholderGalaxy = new Galaxy();
         galaxyBox.setItems(FXCollections.observableArrayList(placeholderGalaxy));

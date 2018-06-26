@@ -55,10 +55,12 @@ public class StarMapHandler extends DefaultHandler {
                 String planetZone = attributes.getValue("zone");
                 planetZone = planetZone.substring(0, planetZone.indexOf(" "));
                 body = new Body(attributes.getValue("name"), planetZone,
-                        attributes.getValue("orbit"),
                         BodyType.getType(attributes.getValue("bodyType")), system);
                 break;
             case "geosphere":
+                String pDiameter = attributes.getValue("diameter");
+                pDiameter = pDiameter.substring(0, pDiameter.indexOf("m") + 1);
+                body.setDiameter(pDiameter);
                 zones = Integer.parseInt(attributes.getValue("resourceZones"));
                 switch (zones) {
                     case 1:
@@ -80,9 +82,6 @@ public class StarMapHandler extends DefaultHandler {
                         starMap.addZone(z3);
                         break;
                 }
-                String pDiameter = attributes.getValue("diameter");
-                pDiameter = pDiameter.substring(0, pDiameter.indexOf("m") + 1);
-                body.setDiameter(pDiameter);
                 break;
             case "resource":
                 ResourceType resourceType = ResourceType.getType(attributes.getValue("name"));

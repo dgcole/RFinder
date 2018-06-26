@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DistributionCalculatorTask extends Task<XYChart.Series<Integer, Double>> {
-    private ArrayList<Resource> resources;
+    private final ArrayList<Resource> resources;
 
     public DistributionCalculatorTask(ArrayList<Resource> resources) {
         this.resources = resources;
     }
 
     @Override
-    protected XYChart.Series<Integer, Double> call() throws Exception {
+    protected XYChart.Series<Integer, Double> call() {
         ArrayList<AtomicInteger> occurrences = new ArrayList<>();
         for (int i = 0; i < 255; i++) occurrences.add(new AtomicInteger(0));
         int total = 0;

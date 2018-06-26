@@ -18,6 +18,7 @@ public enum BodyType {
     }
 
     public static BodyType getType(String type) {
+        if (type.contains("Ringworld")) return RINGWORLD;
       for (BodyType bt : values()) {
           if (type.equals(bt.text)) return bt;
       }

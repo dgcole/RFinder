@@ -8,13 +8,13 @@ import rfinder.Hazeron.System;
 import java.util.ArrayList;
 
 public class ResourceFilterTask extends Task<ArrayList<Resource>> {
-    private ArrayList<Resource> resources;
-    private ResourceType type;
-    private String range, diameter, zone;
-    private int minQual;
-    private Galaxy galaxy;
-    private Sector sector;
-    private System system;
+    private final ArrayList<Resource> resources;
+    private final ResourceType type;
+    private final String range, diameter, zone;
+    private final int minQual;
+    private final Galaxy galaxy;
+    private final Sector sector;
+    private final System system;
 
     public ResourceFilterTask(ArrayList<Resource> resources, ResourceType type, int minQual, Galaxy galaxy, Sector sector, System system, String range, String diameter, String zone) {
         this.resources = resources;
@@ -29,7 +29,7 @@ public class ResourceFilterTask extends Task<ArrayList<Resource>> {
     }
 
     @Override
-    protected ArrayList<Resource> call() throws Exception {
+    protected ArrayList<Resource> call() {
         ArrayList<Resource> matches = new ArrayList<>();
 
         for (Resource r : resources) {

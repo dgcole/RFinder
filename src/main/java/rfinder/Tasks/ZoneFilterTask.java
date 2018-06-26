@@ -10,11 +10,11 @@ import rfinder.Hazeron.System;
 import java.util.ArrayList;
 
 public class ZoneFilterTask extends Task<ArrayList<Zone>> {
-    private ArrayList<Zone> zones;
-    private Galaxy galaxy;
-    private Sector sector;
-    private System system;
-    private String range;
+    private final ArrayList<Zone> zones;
+    private final Galaxy galaxy;
+    private final Sector sector;
+    private final System system;
+    private final String range;
 
     public ZoneFilterTask(ArrayList<Zone> zones, Galaxy galaxy, Sector sector, System system, String range) {
         this.zones = zones;
@@ -25,8 +25,8 @@ public class ZoneFilterTask extends Task<ArrayList<Zone>> {
     }
 
     @Override
-    protected ArrayList<Zone> call() throws Exception {
-        ArrayList<Zone> matches = new ArrayList<Zone>();
+    protected ArrayList<Zone> call() {
+        ArrayList<Zone> matches = new ArrayList<>();
 
         for (Zone z : zones) {
             boolean galaxyMatch = (galaxy == null || galaxy.isPlaceholder()) || galaxy == z.getGalaxy();
