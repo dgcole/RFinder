@@ -1,7 +1,6 @@
 -target 1.8
 -dontshrink
 -optimizationpasses 4
--allowaccessmodification
 -mergeinterfacesaggressively
 -overloadaggressively
 -flattenpackagehierarchy 'go_away'

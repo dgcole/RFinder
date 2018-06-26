@@ -22,6 +22,7 @@ import rfinder.Hazeron.System;
 import rfinder.RFinder;
 import rfinder.Tasks.DistributionCalculatorTask;
 import rfinder.Tasks.ResourceFilterTask;
+import rfinder.Util.QualityColorizer;
 import rfinder.Util.StarMapHandler;
 
 import javax.xml.parsers.SAXParser;
@@ -71,10 +72,21 @@ public class Main {
 
     private StarMap starMap;
     private boolean resize = false;
+    private static Main instance;
+
+    public static Main getInstance() {
+        return instance;
+    }
+
+    public StarMap getStarMap() {
+        return starMap;
+    }
 
     @SuppressWarnings("Duplicates")
     @FXML
     void initialize() {
+        instance = this;
+
         importItem.setOnAction(this::importStarmap);
         clearItem.setOnAction(this::clearStarmap);
         exitItem.setOnAction(this::exit);
@@ -164,11 +176,7 @@ public class Main {
                                 return;
                             }
                             super.setText(item.toString());
-                            if (item < 75) this.setTextFill(Color.RED);
-                            else if (item < 155) this.setTextFill(Color.ORANGE);
-                            else if (item < 225) this.setTextFill(Color.GREEN);
-                            else if (item < 245) this.setTextFill(Color.DARKGREEN);
-                            else this.setTextFill(Color.BLUE);
+                            this.setTextFill(QualityColorizer.getColor(item));
                         } else {
                             super.setText("");
                         }
@@ -287,7 +295,7 @@ public class Main {
     public void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
-        alert.setHeaderText("RFinder 0.3.0");
+        alert.setHeaderText("RFinder 0.4.0");
         alert.setContentText("Developed by expert700.");
 
         alert.show();
@@ -321,6 +329,7 @@ public class Main {
                 mainTask.setOnSucceeded(event -> {
                     starMap = mainTask.getValue();
                     refreshTable(null);
+                    ZoneController.getInstance().refreshTable(null);
 
                     ArrayList<Galaxy> galaxies = starMap.getGalaxies();
                     Galaxy placeholderGalaxy = new Galaxy();

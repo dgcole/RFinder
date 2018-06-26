@@ -1,6 +1,9 @@
 package rfinder.Hazeron;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public enum ResourceType {
 
@@ -29,9 +32,13 @@ public enum ResourceType {
     TYPE_B_PREONS("Type B Preons"), TYPE_F_PREONS("Type F Preons"),
     TYPE_G_PREONS("Type G Preons"), TYPE_K_PREONS("Type K Preons"),
     TYPE_M_PREONS("Type M Preons"), TYPE_O_PREONS("Type O Preons"),
-    COAL("Coal"), NULL("Null");
+    COAL("Coal");
 
     private final String text;
+    private static final ArrayList<ResourceType> sortedResources = new ArrayList<>(Arrays.asList(values()));
+    static {
+        sortedResources.sort(Comparator.comparing(ResourceType::toString));
+    }
 
     ResourceType(final String text) {
         this.text = text;
@@ -41,7 +48,7 @@ public enum ResourceType {
         for (ResourceType type : ResourceType.values()) {
             if (type.text.equals(in)) return type;
         }
-        return NULL;
+        return COAL;
     }
 
 
@@ -54,5 +61,9 @@ public enum ResourceType {
         ArrayList<String> names = new ArrayList<>();
         for (ResourceType type : values()) names.add(type.text);
         return names;
+    }
+
+    public static int indexOf(ResourceType resourceType) {
+        return sortedResources.indexOf(resourceType);
     }
 }

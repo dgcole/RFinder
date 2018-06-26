@@ -12,6 +12,8 @@ public class StarMapHandler extends DefaultHandler {
     private Planet planet;
     private Star star;
     private boolean parsingStar = false;
+    private Zone z1, z2, z3;
+    private int zones;
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
@@ -45,14 +47,38 @@ public class StarMapHandler extends DefaultHandler {
                 String diameter = attributes.getValue("diameter");
                 diameter = diameter.substring(0, diameter.indexOf("au") + 2);
                 star = new Star(attributes.getValue("name"), diameter, system);
+                z1 = new Zone(1, false, star);
+                starMap.addZone(z1);
                 break;
             case "planet":
                 parsingStar = false;
                 String planetZone = attributes.getValue("zone");
                 planetZone = planetZone.substring(0, planetZone.indexOf(" "));
-                planet = new Planet(attributes.getValue("name"), planetZone, system);
+                planet = new Planet(attributes.getValue("name"), planetZone,
+                        attributes.getValue("orbit"), attributes.getValue("bodyType"), system);
                 break;
             case "geosphere":
+                zones = Integer.parseInt(attributes.getValue("resourceZones"));
+                switch (zones) {
+                    case 1:
+                        z1 = new Zone(1, false, planet);
+                        starMap.addZone(z1);
+                        break;
+                    case 2:
+                        z1 = new Zone(1, true, planet);
+                        z2 = new Zone(2, true, planet);
+                        starMap.addZone(z1);
+                        starMap.addZone(z2);
+                        break;
+                    case 3:
+                        z1 = new Zone(1, true, planet);
+                        z2 = new Zone(2, true, planet);
+                        z3 = new Zone(3, true, planet);
+                        starMap.addZone(z1);
+                        starMap.addZone(z2);
+                        starMap.addZone(z3);
+                        break;
+                }
                 String pDiameter = attributes.getValue("diameter");
                 pDiameter = pDiameter.substring(0, pDiameter.indexOf("m") + 1);
                 planet.setDiameter(pDiameter);
@@ -75,14 +101,50 @@ public class StarMapHandler extends DefaultHandler {
                 int a3 = attributes.getValue("abundanceZone3") != null ?
                         Integer.parseInt(attributes.getValue("abundanceZone3")) : 0;
 
+                int index = ResourceType.indexOf(resourceType);
                 if (parsingStar) {
                     Resource resource = new Resource(resourceType, q1, q2, q3, a1,
                             a2, a3, star);
+                    z1.setQuality(index, q1);
+                    z1.setAbundance(index, a1);
                     starMap.addResource(resource);
                 } else {
                     Resource resource = new Resource(resourceType, q1, q2, q3, a1,
                             a2, a3, planet);
                     starMap.addResource(resource);
+
+                    switch (zones) {
+                        case 1:
+                            z1.setQuality(index, q1);
+                            z1.setAbundance(index, a1);
+                            break;
+                        case 2:
+                            z1.setQuality(index, q1);
+                            z1.setAbundance(index, a1);
+                            if (q2 != 0) {
+                                z2.setQuality(index, q2);
+                                z2.setAbundance(index, a2);
+                            } else {
+                                z2.setQuality(index, q1);
+                                z2.setAbundance(index, a1);
+                            }
+                            break;
+                        case 3:
+                            z1.setQuality(index, q1);
+                            z1.setAbundance(index, a1);
+                            if (q3 != 0) {
+                                z2.setQuality(index, q2);
+                                z2.setAbundance(index, a2);
+                                z3.setQuality(index, q3);
+                                z3.setAbundance(index, a3);
+                            } else {
+                                z2.setQuality(index, q1);
+                                z2.setAbundance(index, a1);
+                                z3.setQuality(index, q1);
+                                z3.setAbundance(index, a1);
+                            }
+                            break;
+                    }
                 }
                 break;
         }
