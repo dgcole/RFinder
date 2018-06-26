@@ -329,6 +329,8 @@ public class Main {
                     galaxyBox.setItems(FXCollections.observableArrayList(galaxies));
                     galaxyBox.setValue(placeholderGalaxy);
 
+                    ZoneController.getInstance().setupStarmap();
+
                     DistributionCalculatorTask distributionCalculatorTask = new DistributionCalculatorTask(starMap.getResources());
                     distributionCalculatorTask.setOnSucceeded(param -> distributionChart.getData().add(distributionCalculatorTask.getValue()));
                     new Thread(distributionCalculatorTask).start();

@@ -1,6 +1,7 @@
 package rfinder.Tasks;
 
 import javafx.concurrent.Task;
+import rfinder.Controller.Main;
 import rfinder.Hazeron.Galaxy;
 import rfinder.Hazeron.Sector;
 import rfinder.Hazeron.Zone;
@@ -34,9 +35,12 @@ public class ZoneFilterTask extends Task<ArrayList<Zone>> {
 
             boolean systemMatch = (system == null || system.isPlaceholder()) || system == z.getSystem();
 
-            boolean rangeMatch = false;
+            int parsecs = range.isEmpty() ? 0 : Integer.parseInt(range);
+            boolean rangeMatch = Main.checkRange(sector, system, z.getSystem(), parsecs);
 
-
+            if ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch) {
+                matches.add(z);
+            }
         }
 
         return matches;
