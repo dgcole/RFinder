@@ -29,7 +29,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Main {
+public class MainController {
 
     @FXML
     private TableColumn<Resource, String> col1, col2, col3, col4, col5, col6, col7;
@@ -69,7 +69,7 @@ public class Main {
 
     private StarMap starMap;
     private boolean resize = false;
-    private static Main instance;
+    private static MainController instance;
 
     private static Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
         @Override
@@ -437,7 +437,7 @@ public class Main {
         sectorBox.setValue(placeholderSector);
     }
 
-    static Main getInstance() {
+    static MainController getInstance() {
         return instance;
     }
 

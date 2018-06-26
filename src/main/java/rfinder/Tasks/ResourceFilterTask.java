@@ -1,7 +1,7 @@
 package rfinder.Tasks;
 
 import javafx.concurrent.Task;
-import rfinder.Controller.Main;
+import rfinder.Controller.MainController;
 import rfinder.Hazeron.Galaxy;
 import rfinder.Hazeron.Resource;
 import rfinder.Hazeron.Sector;
@@ -59,7 +59,7 @@ public class ResourceFilterTask extends Task<ArrayList<Resource>> {
             }
 
             int parsecs = range.isEmpty() ? 0 : Integer.parseInt(range);
-            boolean rangeMatch = Main.checkRange(sector, system, r.getSystemInternal(), parsecs);
+            boolean rangeMatch = MainController.checkRange(sector, system, r.getSystemInternal(), parsecs);
 
             if (resourceMatch && qualityMatch && diameterMatch && zoneMatch && ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch)) {
                 matches.add(r);

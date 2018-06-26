@@ -130,25 +130,25 @@ public class ZoneController {
         Galaxy placeholderGalaxy = new Galaxy();
         galaxyBox.setItems(FXCollections.observableArrayList(placeholderGalaxy));
         galaxyBox.setValue(placeholderGalaxy);
-        galaxyBox.setCellFactory(Main.getGalaxyBoxFactory());
-        galaxyBox.setButtonCell(Main.getGalaxyBoxFactory().call(null));
+        galaxyBox.setCellFactory(MainController.getGalaxyBoxFactory());
+        galaxyBox.setButtonCell(MainController.getGalaxyBoxFactory().call(null));
 
         Sector placeholderSector = new Sector();
         sectorBox.setItems(FXCollections.observableArrayList(placeholderSector));
         sectorBox.setValue(placeholderSector);
-        sectorBox.setCellFactory(Main.getSectorBoxFactory());
-        sectorBox.setButtonCell(Main.getSectorBoxFactory().call(null));
+        sectorBox.setCellFactory(MainController.getSectorBoxFactory());
+        sectorBox.setButtonCell(MainController.getSectorBoxFactory().call(null));
 
         System placeholderSystem = new System();
         systemBox.setItems(FXCollections.observableArrayList(placeholderSystem));
         systemBox.setValue(placeholderSystem);
-        systemBox.setCellFactory(Main.getSystemBoxFactory());
-        systemBox.setButtonCell(Main.getSystemBoxFactory().call(null));
+        systemBox.setCellFactory(MainController.getSystemBoxFactory());
+        systemBox.setButtonCell(MainController.getSystemBoxFactory().call(null));
     }
 
     @FXML
     public void setupStarmap() {
-        ArrayList<Galaxy> galaxies = Main.getInstance().getStarMap().getGalaxies();
+        ArrayList<Galaxy> galaxies = MainController.getInstance().getStarMap().getGalaxies();
         Galaxy placeholderGalaxy = new Galaxy();
         galaxies.sort(Comparator.comparing(Galaxy::getName));
         galaxies.add(0, placeholderGalaxy);
@@ -160,7 +160,7 @@ public class ZoneController {
     public void refreshTable(ActionEvent actionEvent) {
         zoneTable.getItems().clear();
 
-        ArrayList<Zone> zones = Main.getInstance().getStarMap().getZones();
+        ArrayList<Zone> zones = MainController.getInstance().getStarMap().getZones();
         ZoneFilterTask zoneFilterTask = new ZoneFilterTask(zones, galaxyBox.getValue(), sectorBox.getValue(),
                 systemBox.getValue(), rangeField.getText());
 
@@ -183,19 +183,19 @@ public class ZoneController {
 
     @FXML
     public void setGalaxy(ActionEvent actionEvent) {
-        Main.updateSectorList(galaxyBox, sectorBox);
+        MainController.updateSectorList(galaxyBox, sectorBox);
     }
 
 
 
     @FXML
     public void setSector(ActionEvent actionEvent) {
-        Main.updateSystemList(sectorBox, systemBox);
+        MainController.updateSystemList(sectorBox, systemBox);
     }
 
     @FXML
     public void clearStarmap() {
-        if (Main.getInstance().getStarMap() == null) return;
+        if (MainController.getInstance().getStarMap() == null) return;
         zoneTable.getItems().clear();
         galaxyBox.getItems().clear();
         galaxyBox.setItems(FXCollections.observableArrayList(new Galaxy()));
