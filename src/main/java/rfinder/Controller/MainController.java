@@ -290,7 +290,7 @@ public class MainController {
     public void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
-        alert.setHeaderText("RFinder 0.4.0");
+        alert.setHeaderText("RFinder 0.4.1");
         alert.setContentText("Developed by expert700.");
 
         alert.show();
