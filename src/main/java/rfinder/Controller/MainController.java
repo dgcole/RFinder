@@ -29,6 +29,8 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainController {
 
@@ -77,6 +79,7 @@ public class MainController {
     private StarMap starMap;
     private boolean resize = false;
     private static MainController instance;
+    private static ExecutorService threadPool;
 
     private static final Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
         @Override
@@ -149,6 +152,8 @@ public class MainController {
     @FXML
     void initialize() {
         instance = this;
+
+        threadPool = Executors.newFixedThreadPool(2);
 
         importItem.setOnAction(this::importStarmap);
         clearItem.setOnAction(this::clearStarmap);
@@ -333,10 +338,11 @@ public class MainController {
 
                     DistributionCalculatorTask distributionCalculatorTask = new DistributionCalculatorTask(starMap.getResources());
                     distributionCalculatorTask.setOnSucceeded(param -> distributionChart.getData().add(distributionCalculatorTask.getValue()));
-                    new Thread(distributionCalculatorTask).start();
+                    threadPool.submit(distributionCalculatorTask);
+
                 });
 
-                new Thread(mainTask).start();
+                threadPool.submit(mainTask);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -362,7 +368,7 @@ public class MainController {
             }
         });
 
-        new Thread(resourceFilterTask).start();
+        threadPool.submit(resourceFilterTask);
     }
 
     @FXML

@@ -18,6 +18,8 @@ import rfinder.Util.Colorizer;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ZoneController {
     @FXML
@@ -49,9 +51,12 @@ public class ZoneController {
 
     private static ZoneController instance;
     private boolean resize = false;
+    private static ExecutorService threadPool;
+
     static ZoneController getInstance() {
         return instance;
     }
+
     private final Runnable copier = new Runnable() {
         @Override
         public void run() {
@@ -96,6 +101,8 @@ public class ZoneController {
     @FXML
     public void initialize() {
         instance = this;
+
+        threadPool = Executors.newFixedThreadPool(2);
 
         zoneTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -213,7 +220,7 @@ public class ZoneController {
             }
         });
 
-        new Thread(zoneFilterTask).start();
+        threadPool.submit(zoneFilterTask);
     }
 
     @FXML
