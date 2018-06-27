@@ -86,20 +86,21 @@ public class StarMapHandler extends DefaultHandler {
             case "resource":
                 ResourceType resourceType = ResourceType.getType(attributes.getValue("name"));
 
-                int q1 = attributes.getValue("qualityZone1") != null ?
-                        Integer.parseInt(attributes.getValue("qualityZone1")) :
-                        (attributes.getValue("quality") != null ? Integer.parseInt(attributes.getValue("quality")) : 0);
-                int q2 = attributes.getValue("qualityZone2") != null ?
-                        Integer.parseInt(attributes.getValue("qualityZone2")) : 0;
-                int q3 = attributes.getValue("qualityZone3") != null ?
-                        Integer.parseInt(attributes.getValue("qualityZone3")) : 0;
-                int a1 = attributes.getValue("abundanceZone1") != null ?
-                        Integer.parseInt(attributes.getValue("abundanceZone1")) :
-                        (attributes.getValue("abundance") != null ? Integer.parseInt(attributes.getValue("abundance")) : 0);
-                int a2 = attributes.getValue("abundanceZone2") != null ?
-                        Integer.parseInt(attributes.getValue("abundanceZone2")) : 0;
-                int a3 = attributes.getValue("abundanceZone3") != null ?
-                        Integer.parseInt(attributes.getValue("abundanceZone3")) : 0;
+                String qVal = attributes.getValue("quality");
+                String q1Val = attributes.getValue("qualityZone1");
+                String q2Val = attributes.getValue("qualityZone2");
+                String q3Val = attributes.getValue("qualityZone3");
+                String aVal = attributes.getValue("abundance");
+                String a1Val = attributes.getValue("abundanceZone1");
+                String a2Val = attributes.getValue("abundanceZone2");
+                String a3Val = attributes.getValue("abundanceZone3");
+
+                int q1 = q1Val != null ? Integer.parseInt(q1Val) : (qVal != null ? Integer.parseInt(qVal) : 0);
+                int q2 = q2Val != null ? Integer.parseInt(q2Val) : 0;
+                int q3 = q3Val != null ? Integer.parseInt(q3Val) : 0;
+                int a1 = a1Val != null ? Integer.parseInt(a1Val) : (aVal != null ? Integer.parseInt(aVal) : 0);
+                int a2 = a2Val != null ? Integer.parseInt(a2Val) : 0;
+                int a3 = a3Val != null ? Integer.parseInt(a3Val) : 0;
 
                 int index = ResourceType.indexOf(resourceType);
                 if (parsingStar) {

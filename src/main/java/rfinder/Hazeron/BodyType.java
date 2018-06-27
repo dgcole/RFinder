@@ -1,5 +1,9 @@
 package rfinder.Hazeron;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+
 public enum BodyType {
     GAS_GIANT("Gas Giant"), PLANET("Planet"),
     LARGE_MOON("Large Moon"), MOON("Moon"),
@@ -7,6 +11,10 @@ public enum BodyType {
     STAR("Star");
 
     private final String text;
+    private static final ArrayList<BodyType> sortedValues = new ArrayList<>(Arrays.asList(values()));
+    static {
+        sortedValues.sort(Comparator.comparing(BodyType::toString));
+    }
 
     BodyType(final String text) {
         this.text = text;
@@ -19,7 +27,7 @@ public enum BodyType {
 
     public static BodyType getType(String type) {
         if (type.contains("Ringworld")) return RINGWORLD;
-      for (BodyType bt : values()) {
+      for (BodyType bt : sortedValues) {
           if (type.equals(bt.text)) return bt;
       }
       return PLANET;

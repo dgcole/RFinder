@@ -3,6 +3,7 @@ package rfinder.Hazeron;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public enum ResourceType {
 
@@ -42,6 +43,12 @@ public enum ResourceType {
         sortedResources.sort(Comparator.comparing(ResourceType::toString));
         sortedResources.remove(ANY);
     }
+    private static final HashMap<String, ResourceType> resourceMap = new HashMap<>();
+    static {
+        for (ResourceType r : sortedResources) {
+            resourceMap.put(r.internalName, r);
+        }
+    }
 
     ResourceType(final String internalName, final String displayName) {
         this.internalName = internalName;
@@ -49,10 +56,8 @@ public enum ResourceType {
     }
 
     public static ResourceType getType(String in) {
-        for (ResourceType type : ResourceType.values()) {
-            if (type.internalName.equals(in)) return type;
-        }
-        return ANY;
+        ResourceType retrieved = resourceMap.get(in);
+        return retrieved == null ? ANY : retrieved;
     }
 
 

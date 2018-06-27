@@ -33,6 +33,8 @@ public class ResourceFilterTask extends Task<ArrayList<Resource>> {
         ArrayList<Resource> matches = new ArrayList<>();
 
         for (Resource r : resources) {
+            System rSystem = r.getSystemInternal();
+
             boolean resourceMatch = (type == null || type == ResourceType.ANY) || r.getResourceType() == type;
 
             boolean qualityMatch = (r.getQ1() >= minQual ||
@@ -45,7 +47,7 @@ public class ResourceFilterTask extends Task<ArrayList<Resource>> {
                     || sector == r.getSectorInternal();
 
             boolean systemMatch = (system == null || system.isPlaceholder())
-                    || system == r.getSystemInternal();
+                    || system == rSystem;
 
             boolean diameterMatch = (diameter == null || diameter.equals("Any"))
                     || (diameter.equals("Ringworld") && r.getBody().contains("Ringworld"));
@@ -58,7 +60,7 @@ public class ResourceFilterTask extends Task<ArrayList<Resource>> {
             }
 
             int parsecs = range.isEmpty() ? 0 : Integer.parseInt(range);
-            boolean rangeMatch = MainController.checkRange(sector, system, r.getSystemInternal(), parsecs);
+            boolean rangeMatch = MainController.checkRange(sector, system, rSystem, parsecs);
 
             if (resourceMatch && qualityMatch && diameterMatch && zoneMatch && ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch)) {
                 matches.add(r);
