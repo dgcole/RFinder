@@ -1,6 +1,7 @@
 package rfinder;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,6 +29,10 @@ public class RFinder extends Application {
         mainStage.setScene(rootScene);
         mainStage.setMinWidth(1024);
         mainStage.setMinHeight(768);
+        mainStage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
         mainStage.show();
 
 

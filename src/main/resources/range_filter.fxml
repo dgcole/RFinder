@@ -11,7 +11,7 @@
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" type="GridPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
       <ColumnConstraints />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="56.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="70.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="194.0" />
   </columnConstraints>
   <rowConstraints>
@@ -44,6 +44,6 @@
       <Label text="Galaxy:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
       <Label text="Sector:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
       <Label text="System:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-      <Label text="Range:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+      <Label text="Range (pc):" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
    </children>
 </fx:root>

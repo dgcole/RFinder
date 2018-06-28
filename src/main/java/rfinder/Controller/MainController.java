@@ -29,8 +29,6 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainController {
 
@@ -74,7 +72,7 @@ public class MainController {
     private LineChart<Integer, Double> distributionChart;
 
     @FXML
-    private Tab resourceTab, zoneTab;
+    private Tab resourceTab, zoneTab, analyzerTab;
 
     private StarMap starMap;
     private boolean resize = false;
@@ -163,6 +161,7 @@ public class MainController {
         sectorBox.setOnAction(this::setSector);
         resourceTab.setOnSelectionChanged(this::registerResourceCopier);
         zoneTab.setOnSelectionChanged(this::registerZoneCopier);
+        analyzerTab.setOnSelectionChanged(this::registerAnalyzerCopier);
 
         resourceTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -280,14 +279,15 @@ public class MainController {
 
     @FXML
     public void exit(ActionEvent actionEvent) {
-        RFinder.mainStage.close();
+        Platform.exit();
+        java.lang.System.exit(0);
     }
 
     @FXML
     public void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
-        alert.setHeaderText("RFinder 0.4.1");
+        alert.setHeaderText("RFinder 1.0.0");
         alert.setContentText("Developed by expert700.");
 
         alert.show();
@@ -513,6 +513,13 @@ public class MainController {
     private void registerZoneCopier(Event event) {
         if (zoneTab.isSelected()) {
             ZoneController.getInstance().registerCopier();
+        }
+    }
+
+    @FXML
+    private void registerAnalyzerCopier(Event event) {
+        if (analyzerTab.isSelected()) {
+            AnalyzerController.getInstance().registerCopier();
         }
     }
 }

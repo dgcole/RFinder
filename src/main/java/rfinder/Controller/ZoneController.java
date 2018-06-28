@@ -19,8 +19,6 @@ import rfinder.Util.Colorizer;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ZoneController {
     @FXML
