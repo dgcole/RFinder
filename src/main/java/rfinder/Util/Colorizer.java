@@ -2,22 +2,43 @@ package rfinder.Util;
 
 import javafx.scene.paint.Color;
 
+import java.util.HashMap;
+
 public class Colorizer {
+    private static final Color[] qualityLookup = new Color[256];
+    static {
+        for (int i = 0; i < 75; i++) {
+            qualityLookup[i] = Color.RED;
+        }
+        for (int i = 75; i < 155; i++) {
+            qualityLookup[i] = Color.ORANGE;
+        }
+        for (int i = 155; i < 225; i++) {
+            qualityLookup[i] = Color.GREEN;
+        }
+        for (int i = 225; i < 245; i++) {
+            qualityLookup[i] = Color.BLUE;
+        }
+        for (int i = 245; i < 256; i++) {
+            qualityLookup[i] = Color.LIGHTBLUE;
+        }
+    }
+    private static final HashMap<String, Color>  zoneLookup = new HashMap<String, Color>() {
+        {
+            put("Star", Color.RED);
+            put("Inferno", Color.RED);
+            put("Inner", Color.ORANGE);
+            put("Habitable", Color.GREEN);
+            put("Outer", Color.BLUE);
+            put("Frigid", Color.LIGHTBLUE);
+        }
+    };
+
     public static Color getQualityColor(Integer quality) {
-        if (quality < 75) return Color.RED;
-        else if (quality < 155) return Color.ORANGE;
-        else if (quality < 225) return Color.GREEN;
-        else if (quality < 245) return Color.DARKGREEN;
-        return Color.BLUE;
+        return qualityLookup[quality];
     }
 
     public static Color getZoneColor(String zone) {
-        if (zone.contains("Star")) return Color.RED;
-        else if (zone.contains("Inf")) return Color.RED;
-        else if (zone.contains("Inn")) return Color.ORANGE;
-        else if (zone.contains("Hab")) return Color.GREEN;
-        else if (zone.contains("Out")) return Color.BLUE;
-        else if (zone.contains("Fri")) return Color.LIGHTBLUE;
-        else return Color.BLACK;
+        return zoneLookup.get(zone);
     }
 }
