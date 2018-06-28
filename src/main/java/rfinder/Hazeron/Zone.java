@@ -134,4 +134,11 @@ public class Zone {
     public int getPopulationLimit() {
         return pop;
     }
+
+    public boolean hasQuality(int threshold) {
+        for (int q : qualities) {
+            if (q >= threshold) return true;
+        }
+        return false;
+    }
 }

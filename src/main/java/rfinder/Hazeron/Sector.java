@@ -54,7 +54,7 @@ public class Sector {
         return new ArrayList<>(systems.values());
     }
 
-    Galaxy getParent() {
+    public Galaxy getParent() {
         return parent;
     }
 

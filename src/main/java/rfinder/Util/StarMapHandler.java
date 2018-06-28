@@ -36,11 +36,12 @@ public class StarMapHandler extends DefaultHandler {
                 break;
             case "system":
                 String systemID = attributes.getValue("systemId");
-                system = new rfinder.Hazeron.System(attributes.getValue("name"),
+                system = new rfinder.Hazeron.System(attributes.getValue("name"), systemID,
                         Double.parseDouble(attributes.getValue("x")),
                         Double.parseDouble(attributes.getValue("y")),
                         Double.parseDouble(attributes.getValue("z")), sector);
                 sector.addSystem(system, systemID);
+                starMap.addSystem(system, systemID);
                 break;
             case "star":
                 parsingStar = true;
@@ -48,6 +49,7 @@ public class StarMapHandler extends DefaultHandler {
                 diameter = diameter.substring(0, diameter.indexOf("au") + 2);
                 star = new Star(attributes.getValue("name"), diameter, system);
                 z1 = new Zone(1, false, star);
+                system.addZone(z1);
                 starMap.addZone(z1);
                 break;
             case "planet":
@@ -65,11 +67,14 @@ public class StarMapHandler extends DefaultHandler {
                 switch (zones) {
                     case 1:
                         z1 = new Zone(1, false, body);
+                        system.addZone(z1);
                         starMap.addZone(z1);
                         break;
                     case 2:
                         z1 = new Zone(1, true, body);
                         z2 = new Zone(2, true, body);
+                        system.addZone(z1);
+                        system.addZone(z2);
                         starMap.addZone(z1);
                         starMap.addZone(z2);
                         break;
@@ -77,6 +82,9 @@ public class StarMapHandler extends DefaultHandler {
                         z1 = new Zone(1, true, body);
                         z2 = new Zone(2, true, body);
                         z3 = new Zone(3, true, body);
+                        system.addZone(z1);
+                        system.addZone(z2);
+                        system.addZone(z3);
                         starMap.addZone(z1);
                         starMap.addZone(z2);
                         starMap.addZone(z3);

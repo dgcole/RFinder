@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import rfinder.Hazeron.*;
 import rfinder.Hazeron.System;
+import rfinder.RFinder;
 import rfinder.Tasks.ZoneFilterTask;
 import rfinder.Util.Colorizer;
 
@@ -51,7 +52,6 @@ public class ZoneController {
 
     private static ZoneController instance;
     private boolean resize = false;
-    private static ExecutorService threadPool;
 
     static ZoneController getInstance() {
         return instance;
@@ -101,8 +101,6 @@ public class ZoneController {
     @FXML
     public void initialize() {
         instance = this;
-
-        threadPool = Executors.newFixedThreadPool(2);
 
         zoneTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -220,7 +218,7 @@ public class ZoneController {
             }
         });
 
-        threadPool.submit(zoneFilterTask);
+        RFinder.threadPool.submit(zoneFilterTask);
     }
 
     @FXML

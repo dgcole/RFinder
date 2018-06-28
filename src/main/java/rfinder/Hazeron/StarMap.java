@@ -7,11 +7,13 @@ public class StarMap {
     private final HashMap<String, Galaxy> galaxies;
     private final ArrayList<Resource> resources;
     private final ArrayList<Zone> zones;
+    private final HashMap<String, System> systems;
 
     public StarMap() {
         galaxies = new HashMap<>();
         resources = new ArrayList<>();
         zones = new ArrayList<>();
+        systems = new HashMap<>();
     }
 
     public void addGalaxy(Galaxy galaxy, String galaxyName) {
@@ -26,6 +28,10 @@ public class StarMap {
         zones.add(zone);
     }
 
+    public void addSystem(System system, String systemID) {
+        systems.put(systemID, system);
+    }
+
     public ArrayList<Galaxy> getGalaxies() {
         return new ArrayList<>(galaxies.values());
     }
@@ -36,5 +42,9 @@ public class StarMap {
 
     public ArrayList<Zone> getZones() {
         return zones;
+    }
+
+    public ArrayList<System> getSystems() {
+        return new ArrayList<>(systems.values());
     }
 }

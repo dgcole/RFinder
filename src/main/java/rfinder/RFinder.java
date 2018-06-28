@@ -8,9 +8,12 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RFinder extends Application {
     public static Stage mainStage;
+    public static ExecutorService threadPool = Executors.newFixedThreadPool(2);
 
     @Override
     public void start(Stage mainStage) throws Exception {

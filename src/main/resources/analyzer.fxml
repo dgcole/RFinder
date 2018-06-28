@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="743.0" prefWidth="995.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.AnalyzerController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+         <content>
+            <VBox alignment="CENTER">
+               <children>
+                  <GridPane prefHeight="75.0" prefWidth="250.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ComboBox fx:id="filterTypeBox" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <children>
+                              <Button fx:id="addButton" alignment="CENTER" mnemonicParsing="false" prefWidth="90.0" text="Add">
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin></Button>
+                              <Button fx:id="clearButton" mnemonicParsing="false" prefWidth="90.0" text="Clear" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+                  <Separator prefWidth="200.0" />
+                  <VBox fx:id="filterBox" />
+               </children></VBox>
+         </content>
+      </ScrollPane>
+      <GridPane GridPane.columnIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TableView fx:id="systemTable" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn fx:id="galCol" minWidth="125.0" prefWidth="125.0" text="Galaxy" />
+                <TableColumn fx:id="secCol" minWidth="125.0" prefWidth="125.0" text="Sector" />
+                  <TableColumn fx:id="sysCol" minWidth="125.0" prefWidth="125.0" text="System" />
+              </columns>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </TableView>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="scanButton" mnemonicParsing="false" prefWidth="250.0" text="Scan">
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="tableClearButton" mnemonicParsing="false" prefWidth="250.0" text="Clear" />
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </children>
+</GridPane>

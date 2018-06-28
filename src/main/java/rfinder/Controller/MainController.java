@@ -79,7 +79,6 @@ public class MainController {
     private StarMap starMap;
     private boolean resize = false;
     private static MainController instance;
-    private static ExecutorService threadPool;
 
     private static final Callback<ListView<Galaxy>, ListCell<Galaxy>> galaxyBoxFactory = lv -> new ListCell<Galaxy>() {
         @Override
@@ -152,8 +151,6 @@ public class MainController {
     @FXML
     void initialize() {
         instance = this;
-
-        threadPool = Executors.newFixedThreadPool(2);
 
         importItem.setOnAction(this::importStarmap);
         clearItem.setOnAction(this::clearStarmap);
@@ -338,11 +335,11 @@ public class MainController {
 
                     DistributionCalculatorTask distributionCalculatorTask = new DistributionCalculatorTask(starMap.getResources());
                     distributionCalculatorTask.setOnSucceeded(param -> distributionChart.getData().add(distributionCalculatorTask.getValue()));
-                    threadPool.submit(distributionCalculatorTask);
+                    RFinder.threadPool.submit(distributionCalculatorTask);
 
                 });
 
-                threadPool.submit(mainTask);
+                RFinder.threadPool.submit(mainTask);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -368,7 +365,7 @@ public class MainController {
             }
         });
 
-        threadPool.submit(resourceFilterTask);
+        RFinder.threadPool.submit(resourceFilterTask);
     }
 
     @FXML
@@ -406,30 +403,40 @@ public class MainController {
     }
 
     static void updateSystemList(ComboBox<Sector> sectorBox, ComboBox<System> systemBox) {
-        if (sectorBox.getValue() == null || sectorBox.getValue().isPlaceholder()) return;
+        if (sectorBox.getValue() == null) return;
+        System placeholderSystem = new System();
+        if (sectorBox.getValue().isPlaceholder()) {
+            systemBox.setItems(FXCollections.observableArrayList(placeholderSystem));
+            systemBox.setValue(placeholderSystem);
+            return;
+        }
         ArrayList<System> systems = sectorBox.getValue().getSystems();
         systems.sort(Comparator.comparing(System::getName));
-        System placeholderSystem = new System();
         systems.add(0, placeholderSystem);
         systemBox.setItems(FXCollections.observableArrayList(systems));
         systemBox.setValue(placeholderSystem);
     }
 
     static void updateSectorList(ComboBox<Galaxy> galaxyBox, ComboBox<Sector> sectorBox) {
-        if (galaxyBox.getValue() == null || galaxyBox.getValue().isPlaceholder()) return;
+        if (galaxyBox.getValue() == null) return;
+        Sector placeholderSector = new Sector();
+        if (galaxyBox.getValue().isPlaceholder()) {
+            sectorBox.setItems(FXCollections.observableArrayList(placeholderSector));
+            sectorBox.setValue(placeholderSector);
+            return;
+        }
         ArrayList<Sector> sectors = galaxyBox.getValue().getSectors();
         sectors.sort(Comparator.comparing(Sector::getName));
-        Sector placeholderSector = new Sector();
         sectors.add(0, placeholderSector);
         sectorBox.setItems(FXCollections.observableArrayList(sectors));
         sectorBox.setValue(placeholderSector);
     }
 
-    static MainController getInstance() {
+    public static MainController getInstance() {
         return instance;
     }
 
-    StarMap getStarMap() {
+    public StarMap getStarMap() {
         return starMap;
     }
 
