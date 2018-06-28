@@ -74,12 +74,15 @@ public class AnalyzerController {
     private void clearFilters(ActionEvent actionEvent) {
         filterBox.getChildren().clear();
         resourceFilters.clear();
+        rangeFilters.clear();
     }
 
     private void scanSystems(ActionEvent actionEvent) {
-        if (resourceFilters.size() == 0 || MainController.getInstance().getStarMap() == null) return;
+        if ((resourceFilters.size() == 0 && rangeFilters.size() == 0)
+                || MainController.getInstance().getStarMap() == null) return;
 
-        SystemFilterTask systemFilterTask = new SystemFilterTask(MainController.getInstance().getStarMap().getSystems(), resourceFilters);
+        SystemFilterTask systemFilterTask = new SystemFilterTask(MainController.getInstance().getStarMap().getSystems(),
+                resourceFilters, rangeFilters);
 
         systemFilterTask.setOnSucceeded(event -> {
             systemTable.setItems(FXCollections.observableArrayList(systemFilterTask.getValue()));

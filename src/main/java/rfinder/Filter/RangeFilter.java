@@ -1,6 +1,7 @@
 package rfinder.Filter;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
@@ -43,6 +44,9 @@ public class RangeFilter extends GridPane {
 
     @FXML
     public void initialize() {
+        galaxyBox.setOnAction(this::setGalaxy);
+        sectorBox.setOnAction(this::setSector);
+
         rangeField.textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.isEmpty()) return;
             if (!newVal.matches("\\d*")) {
@@ -50,13 +54,34 @@ public class RangeFilter extends GridPane {
             }
         });
 
+        galaxyBox.setCellFactory(MainController.getGalaxyBoxFactory());
+        galaxyBox.setButtonCell(MainController.getGalaxyBoxFactory().call(null));
+
+        sectorBox.setCellFactory(MainController.getSectorBoxFactory());
+        sectorBox.setButtonCell(MainController.getSectorBoxFactory().call(null));
+
+        systemBox.setCellFactory(MainController.getSystemBoxFactory());
+        systemBox.setButtonCell(MainController.getSystemBoxFactory().call(null));
+
         StarMap starMap = MainController.getInstance().getStarMap();
-        if (starMap == null) return;
-        ArrayList<Galaxy> galaxies = starMap.getGalaxies();
+
         Galaxy placeholderGalaxy = new Galaxy();
-        galaxies.add(0, placeholderGalaxy);
-        galaxyBox.setItems(FXCollections.observableArrayList(galaxies));
+        if (starMap == null) {
+            galaxyBox.setItems(FXCollections.observableArrayList(placeholderGalaxy));
+        } else {
+            ArrayList<Galaxy> galaxies = starMap.getGalaxies();
+            galaxies.add(0, placeholderGalaxy);
+            galaxyBox.setItems(FXCollections.observableArrayList(galaxies));
+        }
         galaxyBox.setValue(placeholderGalaxy);
+
+        Sector placeholderSector = new Sector();
+        sectorBox.setItems(FXCollections.observableArrayList(placeholderSector));
+        sectorBox.setValue(placeholderSector);
+
+        System placeholderSystem = new System();
+        systemBox.setItems(FXCollections.observableArrayList(placeholderSystem));
+        systemBox.setValue(placeholderSystem);
     }
 
     public Galaxy getGalaxy() {
@@ -76,7 +101,12 @@ public class RangeFilter extends GridPane {
     }
 
     @FXML
-    private void updateSectorList() {
+    private void setGalaxy(ActionEvent actionEvent) {
+        MainController.updateSectorList(galaxyBox, sectorBox);
+    }
 
+    @FXML
+    private void setSector(ActionEvent actionEvent) {
+        MainController.updateSystemList(sectorBox, systemBox);
     }
 }

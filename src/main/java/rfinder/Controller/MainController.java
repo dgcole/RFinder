@@ -402,7 +402,7 @@ public class MainController {
         updateSystemList(sectorBox, systemBox);
     }
 
-    static void updateSystemList(ComboBox<Sector> sectorBox, ComboBox<System> systemBox) {
+    public static void updateSystemList(ComboBox<Sector> sectorBox, ComboBox<System> systemBox) {
         if (sectorBox.getValue() == null) return;
         System placeholderSystem = new System();
         if (sectorBox.getValue().isPlaceholder()) {
@@ -417,7 +417,7 @@ public class MainController {
         systemBox.setValue(placeholderSystem);
     }
 
-    static void updateSectorList(ComboBox<Galaxy> galaxyBox, ComboBox<Sector> sectorBox) {
+    public static void updateSectorList(ComboBox<Galaxy> galaxyBox, ComboBox<Sector> sectorBox) {
         if (galaxyBox.getValue() == null) return;
         Sector placeholderSector = new Sector();
         if (galaxyBox.getValue().isPlaceholder()) {
@@ -440,15 +440,15 @@ public class MainController {
         return starMap;
     }
 
-    static Callback<ListView<Galaxy>, ListCell<Galaxy>> getGalaxyBoxFactory() {
+    public static Callback<ListView<Galaxy>, ListCell<Galaxy>> getGalaxyBoxFactory() {
         return galaxyBoxFactory;
     }
 
-    static Callback<ListView<Sector>, ListCell<Sector>> getSectorBoxFactory() {
+    public static Callback<ListView<Sector>, ListCell<Sector>> getSectorBoxFactory() {
         return sectorBoxFactory;
     }
 
-    static Callback<ListView<System>, ListCell<System>> getSystemBoxFactory() {
+    public static Callback<ListView<System>, ListCell<System>> getSystemBoxFactory() {
         return systemBoxFactory;
     }
 
