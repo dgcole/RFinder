@@ -43,6 +43,13 @@ public class StarMapHandler extends DefaultHandler {
                 sector.addSystem(system, systemID);
                 starMap.addSystem(system, systemID);
                 break;
+            case "wormhole":
+                double destX = Double.parseDouble(attributes.getValue("destX"));
+                double destY = Double.parseDouble(attributes.getValue("destY"));
+                double destZ = Double.parseDouble(attributes.getValue("destZ"));
+                Wormhole wormhole = new Wormhole(destX, destY, destZ);
+                system.addWormhole(wormhole);
+                break;
             case "star":
                 parsingStar = true;
                 String diameter = attributes.getValue("diameter");

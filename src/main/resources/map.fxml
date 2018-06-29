@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.SubScene?>
+<?import javafx.scene.layout.Region?>
+
+<SubScene fx:id="subScene" fill="BLACK" height="743.0" width="995.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.MapController" depthBuffer="true">
+  <root>
+    <Region />
+  </root>
+</SubScene>

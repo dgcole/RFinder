@@ -8,6 +8,7 @@ public class System {
     private Sector parent;
     private final boolean placeholder;
     private ArrayList<Zone> zones;
+    private ArrayList<Wormhole> wormholes;
 
     public System() {
         this.placeholder = true;
@@ -24,6 +25,7 @@ public class System {
         this.parent = parent;
         this.placeholder = false;
         this.zones = new ArrayList<>();
+        this.wormholes = new ArrayList<>();
     }
 
     public String getName() {
@@ -58,7 +60,15 @@ public class System {
         zones.add(zone);
     }
 
+    public void addWormhole(Wormhole wormhole) {
+        wormholes.add(wormhole);
+    }
+
     public ArrayList<Zone> getZones() {
         return zones;
+    }
+
+    public ArrayList<Wormhole> getWormholes() {
+        return wormholes;
     }
 }

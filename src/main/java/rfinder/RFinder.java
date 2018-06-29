@@ -3,6 +3,7 @@ package rfinder;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.DepthTest;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -20,7 +21,6 @@ public class RFinder extends Application {
     public void start(Stage mainStage) throws Exception {
         RFinder.mainStage = mainStage;
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("rfinder.fxml")));
-
 
         Scene rootScene = new Scene(root);
 

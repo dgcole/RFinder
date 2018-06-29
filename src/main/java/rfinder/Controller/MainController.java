@@ -72,7 +72,7 @@ public class MainController {
     private LineChart<Integer, Double> distributionChart;
 
     @FXML
-    private Tab resourceTab, zoneTab, analyzerTab;
+    private Tab resourceTab, zoneTab, analyzerTab, mapTab;
 
     private StarMap starMap;
     private boolean resize = false;
@@ -162,6 +162,9 @@ public class MainController {
         resourceTab.setOnSelectionChanged(this::registerResourceCopier);
         zoneTab.setOnSelectionChanged(this::registerZoneCopier);
         analyzerTab.setOnSelectionChanged(this::registerAnalyzerCopier);
+        mapTab.setOnSelectionChanged(event -> {
+            if (mapTab.isSelected() && starMap != null) MapController.getInstance().setup();
+        });
 
         resourceTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -336,7 +339,6 @@ public class MainController {
                     DistributionCalculatorTask distributionCalculatorTask = new DistributionCalculatorTask(starMap.getResources());
                     distributionCalculatorTask.setOnSucceeded(param -> distributionChart.getData().add(distributionCalculatorTask.getValue()));
                     RFinder.threadPool.submit(distributionCalculatorTask);
-
                 });
 
                 RFinder.threadPool.submit(mainTask);
