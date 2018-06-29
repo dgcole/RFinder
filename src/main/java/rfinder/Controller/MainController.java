@@ -162,9 +162,6 @@ public class MainController {
         resourceTab.setOnSelectionChanged(this::registerResourceCopier);
         zoneTab.setOnSelectionChanged(this::registerZoneCopier);
         analyzerTab.setOnSelectionChanged(this::registerAnalyzerCopier);
-        mapTab.setOnSelectionChanged(event -> {
-            if (mapTab.isSelected() && starMap != null) MapController.getInstance().setup();
-        });
 
         resourceTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 

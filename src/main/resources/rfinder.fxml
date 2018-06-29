@@ -148,8 +148,5 @@
       <Tab fx:id="analyzerTab" text="System Analyzer">
           <fx:include source="analyzer.fxml" />
       </Tab>
-      <Tab fx:id="mapTab" text="3D Map">
-          <fx:include source="map.fxml"/>
-      </Tab>
     </TabPane>
 </VBox>
