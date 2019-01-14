@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.MainController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="File">
             <MenuItem fx:id="importItem" mnemonicParsing="false" text="Import Starmap" />
@@ -34,119 +21,8 @@
         </Menu>
     </MenuBar>
     <TabPane prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-        <Tab fx:id="resourceTab" text="Resources">
-            <VBox prefHeight="200.0" prefWidth="100.0">
-                <GridPane minHeight="150.0" VBox.vgrow="NEVER">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="221.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="221.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="221.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="221.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <VBox alignment="CENTER" prefHeight="150.0" prefWidth="85.0">
-                        <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh Table" />
-                        <CheckBox fx:id="resizeCheckbox" mnemonicParsing="false" text="Auto-Resize Table">
-                            <VBox.margin>
-                                <Insets bottom="25.0" top="25.0" />
-                            </VBox.margin>
-                        </CheckBox>
-                        <Button fx:id="clearButton" mnemonicParsing="false" prefWidth="88.0" text="Clear Table" />
-                    </VBox>
-                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                        <Label text="Resource Type:">
-                            <VBox.margin>
-                                <Insets bottom="10.0" />
-                            </VBox.margin>
-                        </Label>
-                        <ComboBox fx:id="resourceTypeBox" prefWidth="150.0" />
-                        <Label text="Minimum Quality:">
-                            <VBox.margin>
-                                <Insets bottom="10.0" top="10.0" />
-                            </VBox.margin>
-                        </Label>
-                        <TextField fx:id="minimumQuality" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" text="1" />
-                    </VBox>
-                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
-                        <Label text="Galaxy:">
-                            <VBox.margin>
-                                <Insets bottom="10.0" />
-                            </VBox.margin>
-                        </Label>
-                        <ComboBox fx:id="galaxyBox" prefWidth="150.0" />
-                        <Label text="Sector:">
-                            <VBox.margin>
-                                <Insets bottom="10.0" top="10.0" />
-                            </VBox.margin>
-                        </Label>
-                        <ComboBox fx:id="sectorBox" prefWidth="150.0" />
-                    </VBox>
-                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
-                        <Label text="System:">
-                            <VBox.margin>
-                                <Insets bottom="10.0" />
-                            </VBox.margin>
-                        </Label>
-                        <ComboBox fx:id="systemBox" prefWidth="150.0" />
-                        <Label text="Range (pc):">
-                            <VBox.margin>
-                                <Insets bottom="10.0" top="10.0" />
-                            </VBox.margin>
-                        </Label>
-                        <TextField fx:id="range" maxWidth="-Infinity" prefWidth="150.0" />
-                    </VBox>
-                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4">
-                        <Label text="Geosphere Diameter:">
-                            <VBox.margin>
-                                <Insets bottom="10.0" />
-                            </VBox.margin>
-                        </Label>
-                        <ComboBox fx:id="diameterBox" prefWidth="150.0" />
-                        <Label text="Zone:">
-                            <VBox.margin>
-                                <Insets bottom="10.0" top="10.0" />
-                            </VBox.margin>
-                        </Label>
-                        <ComboBox fx:id="zoneBox" prefWidth="150.0" />
-                    </VBox>
-                </GridPane>
-                <TableView fx:id="resourceTable" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="col1" prefWidth="75.0" text="Resource" />
-                        <TableColumn fx:id="col2" prefWidth="75.0" text="Galaxy" />
-                        <TableColumn fx:id="col3" prefWidth="75.0" text="Sector" />
-                        <TableColumn fx:id="col4" prefWidth="75.0" text="System" />
-                        <TableColumn fx:id="col5" prefWidth="75.0" text="Body" />
-                        <TableColumn fx:id="col6" prefWidth="125.0" text="Geosphere Diameter" />
-                        <TableColumn fx:id="col7" prefWidth="75.0" text="Zone" />
-                        <TableColumn fx:id="col8" prefWidth="60.0" text="Q1" />
-                        <TableColumn fx:id="col9" prefWidth="60.0" text="Q2" />
-                        <TableColumn fx:id="col10" prefWidth="60.0" text="Q3" />
-                        <TableColumn fx:id="col11" prefWidth="60.0" text="A1" />
-                        <TableColumn fx:id="col12" prefWidth="60.0" text="A2" />
-                        <TableColumn fx:id="col13" prefWidth="60.0" text="A3" />
-                    </columns>
-                </TableView>
-            </VBox>
-        </Tab>
-        <Tab fx:id="zoneTab" text="Zones">
-            <fx:include source="zones.fxml" />
-        </Tab>
-        <Tab text="Quality Distribution">
-            <LineChart fx:id="distributionChart" title="Quality Distribution">
-                <xAxis>
-                    <NumberAxis autoRanging="false" side="BOTTOM" tickUnit="15.0" upperBound="255" />
-                </xAxis>
-                <yAxis>
-                    <NumberAxis autoRanging="false" label="Occurrence (%)" side="LEFT" tickUnit="0.1" upperBound="1.0" />
-                </yAxis>
-            </LineChart>
-        </Tab>
-      <Tab fx:id="analyzerTab" text="System Analyzer">
-          <fx:include source="analyzer.fxml" />
-      </Tab>
+        <Tab fx:id="resourceTab" text="Resources" />
+        <Tab fx:id="statisticTab" text="Statistics" />
+      <Tab fx:id="systemTab" text="Systems" />
     </TabPane>
 </VBox>

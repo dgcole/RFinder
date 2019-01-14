@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="743.0" prefWidth="995.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.ZoneController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="743.0" prefWidth="995.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.ResourceController">
    <children>
       <GridPane maxHeight="75.0" minHeight="75.0" prefHeight="75.0">
         <columnConstraints>
@@ -35,12 +35,12 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="clearButton" mnemonicParsing="false" prefWidth="88.0" text="Clear Table" />
+                  <Button fx:id="clearButton" mnemonicParsing="false" prefWidth="108.0" text="Clear Table" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                <children>
-                  <CheckBox fx:id="resizeCheckbox" mnemonicParsing="false" text="Auto-Resize Table" />
+                  <CheckBox fx:id="resizeCheckbox" mnemonicParsing="false" text="Auto-Resize" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
