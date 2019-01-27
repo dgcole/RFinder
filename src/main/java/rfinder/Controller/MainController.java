@@ -4,22 +4,18 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import rfinder.Hazeron.*;
 import rfinder.RFinder;
+import rfinder.Reference;
 import rfinder.Util.StarMapHandler;
 import rfinder.Util.StarMapReceiver;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
-import java.lang.System;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class MainController {
 
@@ -30,34 +26,16 @@ public class MainController {
     private Tab resourceTab, statisticTab, systemTab;
 
     private StarMap starMap;
-    private static MainController instance;
-    private ArrayList<Object> controllers;
+
+    private static ArrayList<StarMapReceiver> receivers = new ArrayList<>();
 
     @SuppressWarnings("Duplicates")
     @FXML
     void initialize() {
-        instance = this;
-
-        controllers = new ArrayList<>();
-
         importItem.setOnAction(this::importStarmap);
         clearItem.setOnAction(this::clearStarmap);
         exitItem.setOnAction(this::exit);
         aboutItem.setOnAction(this::about);
-
-        try {
-            Parent resourceTabContents = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("resources.fxml")));
-            resourceTab.setContent(resourceTabContents);
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Something is very wrong.");
-            alert.setContentText("RFinder could not load some or all of the \nfxml layout files, and can not continue.");
-            alert.showAndWait();
-
-            e.printStackTrace();
-            System.exit(1);
-        }
     }
 
     @FXML
@@ -70,7 +48,7 @@ public class MainController {
     private void about(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
-        alert.setHeaderText("RFinder 1.0.0");
+        alert.setHeaderText("RFinder " + Reference.VERSION);
         alert.setContentText("Developed by expert700.");
 
         alert.show();
@@ -87,7 +65,6 @@ public class MainController {
         if (selectedFile != null) {
             clearStarmap(actionEvent);
             try {
-
                 Task<StarMap> mainTask = new Task<StarMap>() {
                     @Override
                     protected StarMap call() throws Exception {
@@ -103,6 +80,9 @@ public class MainController {
 
                 mainTask.setOnSucceeded(event -> {
                     starMap = mainTask.getValue();
+                    for (StarMapReceiver starMapReceiver : receivers) {
+                        starMapReceiver.onStarMapUpdate(starMap);
+                    }
                 });
 
                 RFinder.threadPool.submit(mainTask);
@@ -117,11 +97,7 @@ public class MainController {
         starMap = null;
     }
 
-    static MainController getInstance() {
-        return instance;
-    }
-
-    public <T extends StarMapReceiver> void registerController(T controller) {
-        controllers.add(controller);
+    public static <T extends StarMapReceiver> void registerController(T controller) {
+        receivers.add(controller);
     }
 }

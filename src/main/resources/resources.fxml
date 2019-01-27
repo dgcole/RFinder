@@ -14,87 +14,87 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="743.0" prefWidth="995.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rfinder.Controller.ResourceController">
-   <children>
-      <GridPane maxHeight="75.0" minHeight="75.0" prefHeight="75.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="18.75" />
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="18.75" />
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="18.75" />
-          <ColumnConstraints hgrow="SOMETIMES" percentWidth="18.75" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh Table">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="clearButton" mnemonicParsing="false" prefWidth="108.0" text="Clear Table" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-               <children>
-                  <CheckBox fx:id="resizeCheckbox" mnemonicParsing="false" text="Auto-Resize" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
-               <children>
-                  <Label text="Galaxy:">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ComboBox fx:id="galaxyBox" prefWidth="150.0" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
-               <children>
-                  <Label text="Sector:">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ComboBox fx:id="sectorBox" prefWidth="150.0" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4">
-               <children>
-                  <Label text="System:">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ComboBox fx:id="systemBox" prefWidth="150.0" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5">
-               <children>
-                  <Label text="Range (pc):">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextField fx:id="rangeField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" VBox.vgrow="SOMETIMES" />
-               </children>
-            </VBox>
-         </children>
-      </GridPane>
-      <TableView fx:id="zoneTable" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
-         <columns>
-            <TableColumn fx:id="galCol" prefWidth="75.0" text="Galaxy" />
-            <TableColumn fx:id="secCol" prefWidth="75.0" text="Sector" />
-            <TableColumn fx:id="sysCol" prefWidth="75.0" text="System" />
-            <TableColumn fx:id="bodCol" prefWidth="75.0" text="Body" />
-            <TableColumn fx:id="zonCol" prefWidth="75.0" text="Zone" />
-            <TableColumn fx:id="orbCol" prefWidth="84.0" text="Orbital Zone" />
-            <TableColumn fx:id="btpCol" prefWidth="73.0" text="Body Type" />
-            <TableColumn fx:id="popCol" prefWidth="102.0" text="Population Limit" />
-         </columns></TableView>
-   </children>
+    <children>
+        <GridPane maxHeight="75.0" minHeight="75.0" prefHeight="75.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.5" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="18.75" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="18.75" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="18.75" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="18.75" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Button fx:id="clearButton" mnemonicParsing="false" prefWidth="108.0" text="Clear Table" />
+                        <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh Table">
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                    <children>
+                        <CheckBox fx:id="resizeCheckBox" mnemonicParsing="false" text="Auto-Resize" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+                    <children>
+                        <Label text="Galaxy:">
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <ComboBox fx:id="galaxyBox" prefWidth="150.0" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
+                    <children>
+                        <Label text="Sector:">
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <ComboBox fx:id="sectorBox" prefWidth="150.0" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4">
+                    <children>
+                        <Label text="System:">
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <ComboBox fx:id="systemBox" prefWidth="150.0" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5">
+                    <children>
+                        <Label text="Range (pc):">
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <TextField fx:id="rangeField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" VBox.vgrow="SOMETIMES" />
+                    </children>
+                </VBox>
+            </children>
+        </GridPane>
+        <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="galCol" prefWidth="75.0" text="Galaxy" />
+                <TableColumn fx:id="secCol" prefWidth="75.0" text="Sector" />
+                <TableColumn fx:id="sysCol" prefWidth="75.0" text="System" />
+                <TableColumn fx:id="bodCol" prefWidth="75.0" text="Body" />
+                <TableColumn fx:id="zonCol" prefWidth="75.0" text="Zone" />
+                <TableColumn fx:id="orbCol" prefWidth="100.0" text="Orbital Zone" />
+                <TableColumn fx:id="btpCol" prefWidth="90.0" text="Body Type" />
+                <TableColumn fx:id="popCol" prefWidth="130.0" text="Population Limit" />
+            </columns></TableView>
+    </children>
 </VBox>

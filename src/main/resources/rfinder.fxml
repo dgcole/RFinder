@@ -21,7 +21,9 @@
         </Menu>
     </MenuBar>
     <TabPane prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-        <Tab fx:id="resourceTab" text="Resources" />
+        <Tab fx:id="resourceTab" text="Resources">
+            <fx:include source="resources.fxml"/>
+        </Tab>
         <Tab fx:id="statisticTab" text="Statistics" />
       <Tab fx:id="systemTab" text="Systems" />
     </TabPane>

@@ -119,16 +119,9 @@ public class StarMapHandler extends DefaultHandler {
 
                 int index = ResourceType.indexOf(resourceType);
                 if (parsingStar) {
-                    Resource resource = new Resource(resourceType, q1, q2, q3, a1,
-                            a2, a3, star);
                     z1.setQuality(index, q1);
                     z1.setAbundance(index, a1);
-                    starMap.addResource(resource);
                 } else {
-                    Resource resource = new Resource(resourceType, q1, q2, q3, a1,
-                            a2, a3, body);
-                    starMap.addResource(resource);
-
                     switch (zones) {
                         case 1:
                             z1.setQuality(index, q1);
