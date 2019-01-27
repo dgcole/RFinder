@@ -2,7 +2,6 @@ package rfinder.Controller;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
@@ -22,9 +21,6 @@ public class MainController {
     @FXML
     private MenuItem importItem, clearItem, exitItem, aboutItem;
 
-    @FXML
-    private Tab resourceTab, statisticTab, systemTab;
-
     private StarMap starMap;
 
     private static ArrayList<StarMapReceiver> receivers = new ArrayList<>();
@@ -32,20 +28,20 @@ public class MainController {
     @SuppressWarnings("Duplicates")
     @FXML
     void initialize() {
-        importItem.setOnAction(this::importStarmap);
-        clearItem.setOnAction(this::clearStarmap);
-        exitItem.setOnAction(this::exit);
-        aboutItem.setOnAction(this::about);
+        importItem.setOnAction(actionEvent -> importStarMap());
+        clearItem.setOnAction(actionEvent -> clearStarMap());
+        exitItem.setOnAction(actionEvent -> exit());
+        aboutItem.setOnAction(actionEvent -> about());
     }
 
     @FXML
-    private void exit(ActionEvent actionEvent) {
+    private void exit() {
         Platform.exit();
         java.lang.System.exit(0);
     }
 
     @FXML
-    private void about(ActionEvent actionEvent) {
+    private void about() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("RFinder " + Reference.VERSION);
@@ -55,15 +51,15 @@ public class MainController {
     }
 
     @FXML
-    private void importStarmap(ActionEvent actionEvent) {
+    private void importStarMap() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open StarMap");
+        fileChooser.setTitle("Open Starmap");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("StarMap (*.xml)", "*.xml"));
         fileChooser.setInitialDirectory(new File(java.lang.System.getProperty("user.home") + "/Shores of Hazeron/"));
 
         File selectedFile = fileChooser.showOpenDialog(RFinder.mainStage);
         if (selectedFile != null) {
-            clearStarmap(actionEvent);
+            clearStarMap();
             try {
                 Task<StarMap> mainTask = new Task<StarMap>() {
                     @Override
@@ -93,11 +89,11 @@ public class MainController {
     }
 
     @FXML
-    private void clearStarmap(ActionEvent actionEvent) {
+    private void clearStarMap() {
         starMap = null;
     }
 
-    public static <T extends StarMapReceiver> void registerController(T controller) {
+    static <T extends StarMapReceiver> void registerController(T controller) {
         receivers.add(controller);
     }
 }

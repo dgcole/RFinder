@@ -4,10 +4,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
@@ -138,15 +135,11 @@ public class ResourceController implements StarMapReceiver {
 
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        refreshButton.setOnAction(this::refreshTable);
-        clearButton.setOnAction(actionEvent -> {
-            clearData();
-        });
-        resizeCheckBox.setOnAction(actionEvent -> {
-            resize = ((CheckBox) actionEvent.getSource()).isSelected();
-        });
-        galaxyBox.setOnAction(this::updateSectorList);
-        sectorBox.setOnAction(this::updateSystemList);
+        refreshButton.setOnAction(actionEvent1 -> refreshTable());
+        clearButton.setOnAction(actionEvent -> clearData());
+        resizeCheckBox.setOnAction(actionEvent -> resize = ((CheckBox) actionEvent.getSource()).isSelected());
+        galaxyBox.setOnAction(actionEvent -> updateSectorList());
+        sectorBox.setOnAction(actionEvent -> updateSystemList());
 
         galCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getGalaxyName()));
         secCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getSectorName()));
@@ -181,7 +174,7 @@ public class ResourceController implements StarMapReceiver {
                                 return;
                             }
                             super.setTextFill(Colorizer.getQualityColor(item));
-                            String qualityBuilder = String.valueOf(item) +
+                            String qualityBuilder = item +
                                     " (" +
                                     ((Zone) this.getTableRow().getItem()).getAbundance(index) +
                                     "%)";
@@ -217,11 +210,9 @@ public class ResourceController implements StarMapReceiver {
         systemBox.setValue(placeholderSystem);
         systemBox.setCellFactory(systemBoxFactory);
         systemBox.setButtonCell(systemBoxFactory.call(null));
-
-        Scene a = table.getScene();
     }
 
-    private void refreshTable(ActionEvent actionEvent) {
+    private void refreshTable() {
         if (starMap == null) return;
 
         if (table.getScene().getAccelerators().isEmpty()) {
@@ -263,7 +254,7 @@ public class ResourceController implements StarMapReceiver {
     }
 
     @SuppressWarnings("Duplicates")
-    private void updateSectorList(ActionEvent actionEvent) {
+    private void updateSectorList() {
         if (galaxyBox.getValue() == null) return;
 
         Sector placeholderSector = new Sector();
@@ -283,7 +274,7 @@ public class ResourceController implements StarMapReceiver {
     }
 
     @SuppressWarnings("Duplicates")
-    private void updateSystemList(ActionEvent actionEvent) {
+    private void updateSystemList() {
         if (sectorBox.getValue() == null) return;
 
         System placeholderSystem = new System();
@@ -302,6 +293,7 @@ public class ResourceController implements StarMapReceiver {
         systemBox.setValue(placeholderSystem);
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void onStarMapUpdate(StarMap starMap) {
         this.starMap = starMap;
@@ -313,7 +305,7 @@ public class ResourceController implements StarMapReceiver {
         galaxyBox.setItems(FXCollections.observableArrayList(galaxies));
         galaxyBox.setValue(placeholderGalaxy);
 
-        refreshTable(null);
+        refreshTable();
     }
 
     private void clearData() {
