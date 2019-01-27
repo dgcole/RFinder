@@ -23,20 +23,23 @@ public class ZoneFilterTask extends Task<ArrayList<Zone>> {
         this.range = range;
     }
 
-    private boolean checkRange(Sector originSector, System originSystem, System target, int parsecs) {
+    private boolean checkRange(System target, int parsecs) {
+        if (target.getParent().getParent() != galaxy) return false;
+
         double originX, originY, originZ;
         originX = originY = originZ = 0;
+
         boolean set = false;
-        if ((originSystem == null || originSystem.isPlaceholder())
-                && (originSector != null && !originSector.isPlaceholder())) {
-            originX = originSector.getX() * 10;
-            originY = originSector.getY() * 10;
-            originZ = originSector.getZ() * 10;
+        if ((system == null || system.isPlaceholder())
+                && (sector != null && !sector.isPlaceholder())) {
+            originX = sector.getX() * 10;
+            originY = sector.getY() * 10;
+            originZ = sector.getZ() * 10;
             set = true;
-        } else if ((originSystem != null && !originSystem.isPlaceholder())) {
-            originX = originSystem.getX();
-            originY = originSystem.getY();
-            originZ = originSystem.getZ();
+        } else if ((system != null && !system.isPlaceholder())) {
+            originX = system.getX();
+            originY = system.getY();
+            originZ = system.getZ();
             set = true;
         }
 
@@ -65,7 +68,7 @@ public class ZoneFilterTask extends Task<ArrayList<Zone>> {
             boolean systemMatch = (system == null || system.isPlaceholder()) || system == z.getSystem();
 
             int parsecs = range.isEmpty() ? 0 : Integer.parseInt(range);
-            boolean rangeMatch = checkRange(sector, system, z.getSystem(), parsecs);
+            boolean rangeMatch = checkRange(z.getSystem(), parsecs);
 
             if ((galaxyMatch && sectorMatch && systemMatch) || rangeMatch) {
                 matches.add(z);
