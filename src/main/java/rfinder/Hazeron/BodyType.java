@@ -10,9 +10,9 @@ import java.util.Comparator;
 
 public enum BodyType {
     GAS_GIANT("Gas Giant"), PLANET("Planet"),
-    LARGE_MOON("Large Moon"), MOON("Moon"),
-    RINGWORLD("Ringworld"), RING("Ring"),
-    STAR("Star");
+    MOON("Moon"), RINGWORLD("Ringworld"),
+    RING("Ring"), STAR("Star"),
+    TITAN("Titan"), ASTEROID("Asteroid");
 
     private final String text;
     private static final ArrayList<BodyType> sortedValues = new ArrayList<>(Arrays.asList(values()));
@@ -31,9 +31,11 @@ public enum BodyType {
 
     public static BodyType getType(String type) {
         if (type.contains("Ringworld")) return RINGWORLD;
-      for (BodyType bt : sortedValues) {
-          if (type.equals(bt.text)) return bt;
-      }
-      return PLANET;
+
+        for (BodyType bt : sortedValues) {
+            if (type.equals(bt.text)) return bt;
+        }
+
+        return PLANET;
     }
 }
