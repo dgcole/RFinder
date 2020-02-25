@@ -138,7 +138,7 @@
             <fx:include source="zones.fxml" />
         </Tab>
         <Tab text="Quality Distribution">
-            <LineChart fx:id="distributionChart" title="Quality Distribution">
+            <LineChart fx:id="distributionChart" title="Quality Distribution" createSymbols="false">
                 <xAxis>
                     <NumberAxis autoRanging="false" side="BOTTOM" tickUnit="15.0" upperBound="255" />
                 </xAxis>
