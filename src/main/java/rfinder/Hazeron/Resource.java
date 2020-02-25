@@ -4,30 +4,34 @@ import javafx.fxml.FXML;
 
 public class Resource {
     private final ResourceType type;
-    private final int q1, q2, q3, a1, a2, a3;
+    private final int q1, q2, q3, q4, a1, a2, a3, a4;
     private final Object parent;
     private final boolean parentIsStar;
 
-    public Resource(ResourceType type, int q1, int q2, int q3, int a1, int a2, int a3, Star parent) {
+    public Resource(ResourceType type, int q1, int q2, int q3, int q4, int a1, int a2, int a3, int a4, Star parent) {
         this.type = type;
         this.q1 = q1;
         this.q2 = q2;
         this.q3 = q3;
+        this.q4 = q4;
         this.a1 = a1;
         this.a2 = a2;
         this.a3 = a3;
+        this.a4 = q4;
         this.parent = parent;
         this.parentIsStar = true;
     }
 
-    public Resource(ResourceType type, int q1, int q2, int q3, int a1, int a2, int a3, Body parent) {
+    public Resource(ResourceType type, int q1, int q2, int q3, int q4, int a1, int a2, int a3, int a4, Body parent) {
         this.type = type;
         this.q1 = q1;
         this.q2 = q2;
         this.q3 = q3;
+        this.q4 = q4;
         this.a1 = a1;
         this.a2 = a2;
         this.a3 = a3;
+        this.a4 = q4;
         this.parent = parent;
         this.parentIsStar = false;
     }
@@ -131,6 +135,11 @@ public class Resource {
     }
 
     @FXML
+    public int getQ4() {
+        return q4;
+    }
+
+    @FXML
     public int getA1() {
         return a1;
     }
@@ -143,5 +152,10 @@ public class Resource {
     @FXML
     public int getA3() {
         return a3;
+    }
+
+    @FXML
+    public int getA4() {
+        return a4;
     }
 }

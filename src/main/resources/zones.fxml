@@ -94,7 +94,6 @@
             <TableColumn fx:id="zonCol" prefWidth="75.0" text="Zone" />
             <TableColumn fx:id="orbCol" prefWidth="84.0" text="Orbital Zone" />
             <TableColumn fx:id="btpCol" prefWidth="73.0" text="Body Type" />
-            <TableColumn fx:id="popCol" prefWidth="102.0" text="Population Limit" />
          </columns></TableView>
    </children>
 </VBox>

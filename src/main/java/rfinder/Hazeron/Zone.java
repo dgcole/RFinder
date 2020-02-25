@@ -8,25 +8,9 @@ public class Zone {
     private final System system;
     private final String body, orbitalZone;
     private final BodyType bodyType;
-    private final int zone, pop;
+    private final int zone;
     private final boolean showZone;
     private final int[] qualities, abundances;
-    private static final HashMap<String, Integer> popLookup = new HashMap<String, Integer>() {
-        {
-            put("1900m", 11269);
-            put("3800m", 45076);
-            put("5700m", 101420);
-            put("7600m", 180303);
-            put("9500m", 281723);
-            put("11400m", 405681);
-            put("13300m", 552177);
-            put("15200m", 721210);
-            put("17000m", 912782);
-            put("18900m", 1126891);
-            put("20800m", 1363538);
-            put("22700m", 1622723);
-        }
-    };
 
     public Zone(int zone, boolean showZone, Star parent) {
         this.system = parent.getParent();
@@ -36,7 +20,6 @@ public class Zone {
         this.orbitalZone = "";
         this.bodyType = BodyType.STAR;
         this.zone = zone;
-        this.pop = 0;
         this.showZone = showZone;
         this.qualities = new int[ResourceType.getTypes().size()];
         for (int i = 0; i < qualities.length; i++) {
@@ -56,13 +39,6 @@ public class Zone {
         this.orbitalZone = parent.getZone();
         this.bodyType = parent.getBodyType();
         this.zone = zone;
-        if (bodyType == BodyType.RING) {
-            pop = 0;
-        } else if (bodyType == BodyType.RINGWORLD){
-            pop = 4102166;
-        } else {
-            pop = popLookup.get(parent.getDiameter());
-        }
         this.showZone = showZone;
         this.qualities = new int[ResourceType.getTypes().size()];
         for (int i = 0; i < qualities.length; i++) {
@@ -129,10 +105,6 @@ public class Zone {
 
     public System getSystem() {
         return system;
-    }
-
-    public int getPopulationLimit() {
-        return pop;
     }
 
     public boolean hasQuality(int threshold) {

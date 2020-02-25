@@ -22,10 +22,10 @@ import java.util.Comparator;
 
 public class ZoneController {
     @FXML
-    private TableColumn<Zone, String> galCol, secCol, sysCol, bodCol, orbCol, btpCol;
+    private TableColumn<Zone, String> galCol, secCol, sysCol, bodCol, orbCol, btpCol, dimCol;
 
     @FXML
-    private TableColumn<Zone, Integer> zonCol, popCol;
+    private TableColumn<Zone, Integer> zonCol;
 
     @FXML
     private TableView<Zone> zoneTable;
@@ -71,7 +71,6 @@ public class ZoneController {
                 data.add(zone.getZone() == 0 ? "" : String.valueOf(zonCol.getCellData(zone)));
                 data.add(zone.getOrbitalZone());
                 data.add(zone.getBodyType().toString());
-                data.add(zone.getPopulationLimit() == 0 ? "" : String.valueOf(zone.getPopulationLimit()));
                 for (int i = 0; i < ResourceType.getTypes().size(); i++) {
                     data.add(String.format("%d (%d%%)", zone.getQuality(i), zone.getAbundance(i)));
                 }
@@ -131,8 +130,6 @@ public class ZoneController {
         };
         zonCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getZone()));
         zonCol.setCellFactory(blanker);
-        popCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getPopulationLimit()));
-        popCol.setCellFactory(blanker);
 
         ArrayList<ResourceType> resourceTypes = ResourceType.getTypes();
 

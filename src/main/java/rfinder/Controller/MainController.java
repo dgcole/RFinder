@@ -36,7 +36,7 @@ public class MainController {
     private TableColumn<Resource, String> col1, col2, col3, col4, col5, col6, col7;
 
     @FXML
-    private TableColumn<Resource, Integer> col8, col9, col10, col11, col12, col13;
+    private TableColumn<Resource, Integer> col8, col9, col10, col14, col11, col12, col13, col15;
 
     @FXML
     private TableView<Resource> resourceTable;
@@ -130,9 +130,11 @@ public class MainController {
                 data.add(String.valueOf(r.getQ1()));
                 data.add(String.valueOf(r.getQ2()));
                 data.add(String.valueOf(r.getQ3()));
+                data.add(String.valueOf(r.getQ4()));
                 data.add(String.valueOf(r.getA1()));
                 data.add(String.valueOf(r.getA2()));
                 data.add(String.valueOf(r.getA3()));
+                data.add(String.valueOf(r.getA4()));
                 data.add("\n");
             }
             StringBuilder raw = new StringBuilder();
@@ -217,12 +219,16 @@ public class MainController {
         col9.setCellFactory(blanker);
         col10.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getQ3()));
         col10.setCellFactory(blanker);
+        col14.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getQ4()));
+        col14.setCellFactory(blanker);
         col11.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getA1()));
         col11.setCellFactory(percentAdder);
         col12.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getA2()));
         col12.setCellFactory(percentAdder);
         col13.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getA3()));
         col13.setCellFactory(percentAdder);
+        col15.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getA4()));
+        col15.setCellFactory(percentAdder);
 
         ArrayList<ResourceType> resourceTypes = new ArrayList<>(ResourceType.getTypes());
         resourceTypes.add(0, ResourceType.ANY);
@@ -260,9 +266,8 @@ public class MainController {
         });
 
 
-        diameterBox.setItems(FXCollections.observableArrayList("Any", "1800m", "3800m", "5700m",
-                "7600m", "9400m", "11400m", "15200m", "17000m", "19000m", "20800m", "22800m", "Ringworld"));
         diameterBox.setValue("Any");
+        diameterBox.setDisable(true);
 
         zoneBox.setItems(FXCollections.observableArrayList("Any", "Star", "Inferno", "Inner", "Habitable", "Frigid", "Outer"));
         zoneBox.setValue("Any");
