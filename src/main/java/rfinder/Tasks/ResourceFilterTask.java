@@ -2,8 +2,8 @@ package rfinder.Tasks;
 
 import javafx.concurrent.Task;
 import rfinder.Controller.MainController;
-import rfinder.Hazeron.*;
 import rfinder.Hazeron.System;
+import rfinder.Hazeron.*;
 
 import java.util.ArrayList;
 

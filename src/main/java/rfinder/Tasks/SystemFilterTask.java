@@ -5,8 +5,8 @@ import rfinder.Controller.MainController;
 import rfinder.Filter.RangeFilter;
 import rfinder.Filter.ResourceFilter;
 import rfinder.Hazeron.ResourceType;
-import rfinder.Hazeron.Zone;
 import rfinder.Hazeron.System;
+import rfinder.Hazeron.Zone;
 
 import java.util.ArrayList;
 

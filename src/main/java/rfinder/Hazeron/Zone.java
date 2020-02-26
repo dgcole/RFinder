@@ -1,7 +1,5 @@
 package rfinder.Hazeron;
 
-import java.util.HashMap;
-
 public class Zone {
     private final Galaxy galaxy;
     private final Sector sector;

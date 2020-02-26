@@ -1,10 +1,10 @@
 # RFinder
 
-A utility for parsing Shores of Hazeron maps.
+A utility for parsing Shores of Hazeron starmaps.
 
 Requirements:
 
-* Java 1.8+
+* Java 13+
 * OpenJFX if you're using the OpenJDK
 
 Contributing

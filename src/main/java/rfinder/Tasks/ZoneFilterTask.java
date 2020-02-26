@@ -4,8 +4,8 @@ import javafx.concurrent.Task;
 import rfinder.Controller.MainController;
 import rfinder.Hazeron.Galaxy;
 import rfinder.Hazeron.Sector;
-import rfinder.Hazeron.Zone;
 import rfinder.Hazeron.System;
+import rfinder.Hazeron.Zone;
 
 import java.util.ArrayList;
 
